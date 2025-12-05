@@ -5710,6 +5710,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nowait-app@workspace:."
   dependencies:
+    "@emotion/babel-plugin": "npm:^11.13.5"
     "@emotion/native": "npm:^11.11.0"
     "@emotion/react": "npm:^11.14.0"
     "@react-navigation/bottom-tabs": "npm:^7.8.11"
