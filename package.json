@@ -26,6 +26,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.13.5",
     "@types/react": "~19.1.0",
     "@types/react-dom": "^19",
     "@types/react-native-web": "^0",

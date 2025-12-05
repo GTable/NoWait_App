@@ -54,12 +54,12 @@ export function AppRouter() {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
             name="Tabs"
             component={BottomTabNavigator}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
             name="StoreDetail"
