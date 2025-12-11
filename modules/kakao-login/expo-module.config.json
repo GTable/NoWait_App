@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["KakaoLoginModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.kakaologin.KakaoLoginModule"]
+  }
+}

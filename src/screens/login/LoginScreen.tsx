@@ -1,17 +1,20 @@
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import { OnboardSlide } from "@/features/login/components/OnboardSlide";
+import { useKakaoLogin } from "@/features/login/model/useKakaoLogin";
 import { Button } from "@/shared/ui/Button";
 import styled from "@emotion/native";
 import React from "react";
 
 const LoginScreen = () => {
+  const { handleKakaoLogin } = useKakaoLogin();
+
   return (
     <ScreenLayout>
       <E.Container>
         <OnboardSlide />
       </E.Container>
       <E.ButtonContainer>
-        <Button variant="kakao" />
+        <Button variant="kakao" onPress={handleKakaoLogin} />
       </E.ButtonContainer>
     </ScreenLayout>
   );
