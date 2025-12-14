@@ -1,48 +1,32 @@
 import ExpoModulesCore
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 public class KakaoLoginModule: Module {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
   public func definition() -> ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('KakaoLogin')` in JavaScript.
     Name("KakaoLogin")
 
-    // Defines constant property on the module.
-    Constant("PI") {
-      Double.pi
-    }
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
-    }
-
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { (value: String) in
-      // Send an event to JavaScript.
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
-    View(KakaoLoginView.self) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { (view: KakaoLoginView, url: URL) in
-        if view.webView.url != url {
-          view.webView.load(URLRequest(url: url))
+    AsyncFunction("login") { (promise: Promise) in
+      // 카카오톡 앱이 설치되어 있으면 카카오톡으로 로그인
+      if UserApi.isKakaoTalkLoginAvailable() {
+        UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
+          if let error = error {
+            promise.reject("KAKAO_LOGIN_ERROR", error.localizedDescription)
+          } else if let token = oauthToken {
+            promise.resolve(token.accessToken)
+          }
+        }
+      } else {
+        // 카카오톡 앱이 없으면 카카오 계정(웹뷰)으로 로그인
+        UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
+          if let error = error {
+            promise.reject("KAKAO_LOGIN_ERROR", error.localizedDescription)
+          } else if let token = oauthToken {
+            promise.resolve(token.accessToken)
+          }
         }
       }
-
-      Events("onLoad")
     }
   }
 }

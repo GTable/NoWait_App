@@ -15,7 +15,17 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.orinuguri25.NoWait-App"
+      "bundleIdentifier": "com.orinuguri25.NoWait-App",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleTypeRole": "Editor",
+            "CFBundleURLSchemes": ["kakao${KAKAO_NATIVE_APP_KEY}"]
+          }
+        ],
+        "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +34,10 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.orinuguri25.NoWaitApp"
+      "package": "com.orinuguri25.NoWaitApp",
+      "manifestPlaceholders": {
+        "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
