@@ -13,7 +13,7 @@ export const ScreenLayout = ({ children }: ScreenLayoutProps) => {
 };
 
 const E = {
-  MainLayout: styled.SafeAreaView({
+  MainLayout: styled(SafeAreaView)({
     flex: 1,
     backgroundColor: colors.white[100],
   }),
