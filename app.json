@@ -17,11 +17,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.orinuguri25.NoWait-App",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+        "LSApplicationQueriesSchemes": [
+          "kakaokompassauth"
+        ],
         "CFBundleURLTypes": [
           {
             "CFBundleTypeRole": "Editor",
-            "CFBundleURLSchemes": ["kakao${KAKAO_NATIVE_APP_KEY}"]
+            "CFBundleURLSchemes": [
+              "kakao${KAKAO_NATIVE_APP_KEY}"
+            ]
           }
         ],
         "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}"
@@ -43,7 +47,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ]
   }
 }
