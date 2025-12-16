@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const SERVER_URI = process.env.SERVER_URI;
 
@@ -11,7 +12,11 @@ export const api = axios.create({
 
 // 요청 인터셉터: 요청 전 헤더 추가 및 전처리
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
+    const accessToken = await SecureStore.getItemAsync("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
     return config;
   },
   (error) => {
