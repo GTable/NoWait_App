@@ -23,7 +23,7 @@ interface KakaoLoginResponse {
 export const kakaoLogin = async (
   kakaoAccessToken: string
 ): Promise<KakaoLoginResponse> => {
-  const response = await api.post<KakaoLoginRequest, KakaoLoginResponse>(
+  const response = await api.post<KakaoLoginResponse>(
     "/v2/app/oauth/kakao/login",
     {
       kakaoAccessToken,
