@@ -3,7 +3,7 @@ import axios from "axios";
 const SERVER_URI = process.env.SERVER_URI;
 
 export const api = axios.create({
-  baseURL: SERVER_URI?.replace(/\/$/, ""),
+  baseURL: SERVER_URI.replace(/\/$/, ""),
   headers: {
     "Content-Type": "application/json",
   },
