@@ -18,7 +18,7 @@ const SplashScreen = () => {
   useEffect(() => {
     if (!fontsLoaded) return;
 
-    // 폰트 로드 완료 후 최소 2초 대기 후 화면 이동
+    // 폰트 로드 완료 후 2초 대기 후 화면 이동
     const timer = setTimeout(() => {
       navigation.reset({
         index: 0,

@@ -11,5 +11,10 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "declarations.d.ts"
+  ]
 }
