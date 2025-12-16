@@ -10,33 +10,23 @@ import SplashScreen from "@/screens/splash/SplashScreen";
 import LoginScreen from "@/screens/login/LoginScreen";
 import StoreDetailScreen from "@/screens/store_detail/StoreDetailScreen";
 import { View } from "react-native";
+import { CustomBottomTab } from "@/shared/ui/CustomBottomTab";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 function BottomTabNavigator() {
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen
-        name="Main"
-        component={MainScreen}
-        options={{ headerShown: false }}
-      />
-      <BottomTab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
-      <BottomTab.Screen
-        name="Map"
-        component={MapScreen}
-        options={{ headerShown: false }}
-      />
-      <BottomTab.Screen
-        name="MyPage"
-        component={MyPageScreen}
-        options={{ headerShown: false }}
-      />
+    <BottomTab.Navigator
+      tabBar={(props) => <CustomBottomTab {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <BottomTab.Screen name="Main" component={MainScreen} />
+      <BottomTab.Screen name="Search" component={SearchScreen} />
+      <BottomTab.Screen name="Map" component={MapScreen} />
+      <BottomTab.Screen name="MyPage" component={MyPageScreen} />
     </BottomTab.Navigator>
   );
 }
