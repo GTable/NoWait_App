@@ -46,3 +46,4 @@ yarn-error.*
 modules/**/android/build/
 modules/**/android/local.properties
 modules/**/ios/build/
+*.hprof

@@ -38,10 +38,10 @@ android {
     versionName "0.7.6"
 
     // 카카오 네이티브 앱 키를 AndroidManifest에 주입
-    // gradle.properties 에 반드시 설정된 값을 사용 (다른 경로는 허용하지 않음)
-    def kakaoNativeAppKey = project.findProperty('KAKAO_NATIVE_APP_KEY')
+    // 환경변수에서만 읽기
+    def kakaoNativeAppKey = System.getenv('KAKAO_NATIVE_APP_KEY')
     if (!kakaoNativeAppKey) {
-      throw new IllegalStateException("KAKAO_NATIVE_APP_KEY must be set in gradle.properties")
+      throw new IllegalStateException("KAKAO_NATIVE_APP_KEY must be set as environment variable")
     }
     manifestPlaceholders = [kakaoNativeAppKey: kakaoNativeAppKey]
   }
