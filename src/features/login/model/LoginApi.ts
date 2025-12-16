@@ -23,12 +23,12 @@ interface KakaoLoginResponse {
 export const kakaoLogin = async (
   kakaoAccessToken: string
 ): Promise<KakaoLoginResponse> => {
-  const response = await api.post<KakaoLoginResponse>(
+  const response = (await api.post(
     "/v2/app/oauth/kakao/login",
     {
       kakaoAccessToken,
     }
-  );
+  )) as KakaoLoginResponse;
 
   // 토큰 저장
   if (response.response.accessToken) {
