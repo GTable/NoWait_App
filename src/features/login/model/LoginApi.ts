@@ -24,7 +24,7 @@ export const kakaoLogin = async (
   kakaoAccessToken: string
 ): Promise<KakaoLoginResponse> => {
   const response = (await api.post(
-    "/v2/app/oauth/kakao/login",
+    "/oauth/kakao/login",
     {
       kakaoAccessToken,
     }
