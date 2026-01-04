@@ -15,17 +15,13 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.orinuguri25.NoWait-App",
+      "bundleIdentifier": "com.nowait.NoWait-App",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "kakaokompassauth"
-        ],
+        "LSApplicationQueriesSchemes": ["kakaokompassauth"],
         "CFBundleURLTypes": [
           {
             "CFBundleTypeRole": "Editor",
-            "CFBundleURLSchemes": [
-              "kakao${KAKAO_NATIVE_APP_KEY}"
-            ]
+            "CFBundleURLSchemes": ["kakao${KAKAO_NATIVE_APP_KEY}"]
           }
         ],
         "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}"
@@ -46,9 +42,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font",
-      "expo-secure-store"
-    ]
+    "plugins": ["expo-font", "expo-secure-store"]
   }
 }

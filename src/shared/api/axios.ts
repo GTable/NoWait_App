@@ -13,10 +13,16 @@ export const api = axios.create({
 // 요청 인터셉터: 요청 전 헤더 추가 및 전처리
 api.interceptors.request.use(
   async (config) => {
-    const accessToken = await SecureStore.getItemAsync("accessToken");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    // 로그인 API는 Authorization 헤더가 필요 없으므로 제외
+    const isLoginRequest = config.url?.includes("/auth/app/kakao/login");
+
+    if (!isLoginRequest) {
+      const accessToken = await SecureStore.getItemAsync("accessToken");
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
     }
+
     return config;
   },
   (error) => {
