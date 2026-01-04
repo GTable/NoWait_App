@@ -1,10 +1,6 @@
 import { api } from "@/shared/api/axios";
 import * as SecureStore from "expo-secure-store";
 
-interface KakaoLoginRequest {
-  kakaoAccessToken: string;
-}
-
 interface KakaoLoginResponse {
   success: boolean;
   response: {
@@ -24,7 +20,7 @@ export const kakaoLogin = async (
   kakaoAccessToken: string
 ): Promise<KakaoLoginResponse> => {
   const response = (await api.post(
-    "/oauth/kakao/login",
+    "/auth/app/kakao/login",
     {
       kakaoAccessToken,
     }
