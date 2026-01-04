@@ -38,7 +38,7 @@ android {
     versionName "0.7.6"
 
     // 카카오 네이티브 앱 키를 AndroidManifest에 주입
-    // 환경변수에서만 읽기
+    // 환경변수에서만 읽기 (Expo CLI가 .env.local을 자동으로 export)
     def kakaoNativeAppKey = System.getenv('KAKAO_NATIVE_APP_KEY')
     if (!kakaoNativeAppKey) {
       throw new IllegalStateException("KAKAO_NATIVE_APP_KEY must be set as environment variable")

@@ -17,8 +17,13 @@ expo-env.d.ts
 *.mobileprovision
 
 # Expo prebuild generated folders
-android/
 ios/
+
+# Android
+android/local.properties
+android/app/build/
+android/build/
+android/.gradle/
 
 # Metro
 .metro-health-check*
@@ -43,7 +48,6 @@ yarn-error.*
 *.tsbuildinfo
 
 # module build artifacts
-modules/**/android/build/
 modules/**/android/local.properties
 modules/**/ios/build/
 *.hprof
