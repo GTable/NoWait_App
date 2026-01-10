@@ -25,3 +25,6 @@ export const SvgIcons = {
   "bottom-tab-mypage-active": BottomTabMyPageActive,
   "bottom-tab-mypage-inactive": BottomTabMyPageInactive,
 };
+
+export { CheckSvg } from "./images/ui/check/CheckSvg";
+export { ArrowRightSvg } from "./images/ui/arrow/Icon/ArrowRightSvg";

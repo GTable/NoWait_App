@@ -43,6 +43,9 @@ export const colors = {
   white: {
     100: "#FFFFFF",
   },
+  coolBlack: {
+    100: "#16191E",
+  },
 } as const;
 
 export type ColorType = keyof typeof colors;

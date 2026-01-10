@@ -1,4 +1,13 @@
 export const typography = {
+  // Heading
+  "h1-20-bold": {
+    fontSize: 20,
+    lineHeight: 20 * 1.36,
+    letterSpacing: 20 * -0.02,
+    fontWeight: "700" as const,
+    fontFamily: "Pretendard-Bold",
+  },
+
   // Headline
   "headline-28-bold": {
     fontSize: 28,
