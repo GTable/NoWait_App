@@ -48,7 +48,12 @@ const BUTTON_STYLES: Record<
   },
 };
 
-export const Button = ({ variant, onPress, children, icon }: ButtonProps) => {
+export const CustomButton = ({
+  variant,
+  onPress,
+  children,
+  icon,
+}: ButtonProps) => {
   const style = BUTTON_STYLES[variant];
   const iconSource = icon || (style.icon && Images[style.icon]);
   const hasText = children || style.text;

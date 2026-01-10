@@ -3,7 +3,7 @@ import { typography } from "@/app/styles/typography";
 import styled from "@emotion/native";
 import { CheckBox } from "./CustomCheckBox";
 import { ArrowRightSvg } from "../assets/images";
-import { Button } from "./CutsomButton";
+import { CustomButton } from "./CutsomButton";
 import React, { useState } from "react";
 import Animated, {
   useSharedValue,
@@ -126,7 +126,7 @@ export const CustomBottomSheet = ({
       </E.MainSection>
       {/* 확인 버튼 */}
       <E.ButtonSection>
-        <Button variant="rounded12">확인하기</Button>
+        <CustomButton variant="rounded12">확인하기</CustomButton>
       </E.ButtonSection>
     </E.Container>
   );
