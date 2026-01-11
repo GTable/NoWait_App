@@ -1,0 +1,41 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="expo.modules.kakaologin" >
+4
+5    <uses-sdk android:minSdkVersion="24" />
+6
+7    <uses-permission android:name="android.permission.INTERNET" />
+7-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:3:5-67
+7-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:3:22-64
+8
+9    <application>
+9-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:5:5-17:19
+10        <activity
+10-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:6:9-16:20
+11            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+11-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:7:13-70
+12            android:exported="true" >
+12-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:8:13-36
+13            <intent-filter>
+13-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:9:13-15:29
+14                <action android:name="android.intent.action.VIEW" />
+14-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:10:17-69
+14-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:10:25-66
+15
+16                <category android:name="android.intent.category.DEFAULT" />
+16-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:11:17-76
+16-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:11:27-73
+17                <category android:name="android.intent.category.BROWSABLE" />
+17-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:12:17-78
+17-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:12:27-75
+18
+19                <data
+20                    android:host="oauth"
+20-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:13:23-43
+21                    android:scheme="kakaocc3ae28e282542e8ba1aecd3d73f0ccd" />
+21-->/Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:14:23-65
+22            </intent-filter>
+23        </activity>
+24    </application>
+25
+26</manifest>

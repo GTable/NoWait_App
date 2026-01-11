@@ -1,0 +1,49 @@
+-- Merging decision tree log ---
+data
+INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:13:17-14:68
+	android:host
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:13:23-43
+	android:scheme
+		INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:14:23-65
+manifest
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:1:1-19:12
+INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:1:1-19:12
+	package
+		INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:3:5-67
+	android:name
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:3:22-64
+application
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:5:5-17:19
+activity#com.kakao.sdk.auth.AuthCodeHandlerActivity
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:6:9-16:20
+	android:exported
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:8:13-36
+	android:name
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:7:13-70
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:oauth+data:scheme:kakaocc3ae28e282542e8ba1aecd3d73f0ccd
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:9:13-15:29
+action#android.intent.action.VIEW
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:10:17-69
+	android:name
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:10:25-66
+category#android.intent.category.DEFAULT
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:11:17-76
+	android:name
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:11:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:12:17-78
+	android:name
+		ADDED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml:12:27-75
+uses-sdk
+INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
+INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/byeongjun/Documents/workfile/NoWait-App/modules/kakao-login/android/src/main/AndroidManifest.xml
