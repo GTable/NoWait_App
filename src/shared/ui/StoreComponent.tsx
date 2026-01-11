@@ -6,6 +6,16 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import styled from "@emotion/native";
 import { CustomBadge } from "./CustomBadge";
+import Animated from "react-native-reanimated";
+import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
+
+const STORE_PRESS_ANIMATION = {
+  scale: 0.96,
+  opacity: 1,
+  dimColor: "rgba(2, 32, 71, 0.05)",
+  damping: 55,
+  stiffness: 800,
+};
 
 interface StoreComponentProps {
   /** 주점 이름 */
@@ -29,31 +39,69 @@ export const StoreComponent = ({
   waitNumber,
   onPress,
 }: StoreComponentProps) => {
+  const {
+    isPressed,
+    dimStyle,
+    dimAnimatedStyle,
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
+  } = usePressScaleAnimation(STORE_PRESS_ANIMATION);
+
   return (
-    <E.Container onPress={onPress}>
-      <E.ContentWrapper>
-        {/* 주점 로고 */}
-        <E.StoreLogo />
+    <E.Wrapper>
+      <E.Dim
+        pointerEvents="none"
+        style={[dimStyle, dimAnimatedStyle]}
+      />
+      <Animated.View style={animatedStyle}>
+        <E.Container
+          onPress={onPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          activeOpacity={1}
+          style={isPressed ? { paddingHorizontal: 14 } : undefined}
+        >
+          <E.ContentWrapper>
+            {/* 주점 로고 */}
+            <E.StoreLogo />
 
-        <E.InfoSection>
-          <E.TopRow>
-            {/* 주점 이름 (길면 말줄임표 처리) */}
-            <E.StoreName numberOfLines={1} ellipsizeMode="tail">
-              {storeName}
-            </E.StoreName>
-            {/* 대기 상태 배지 */}
-            <CustomBadge waitNumber={waitNumber} />
-          </E.TopRow>
+            <E.InfoSection>
+              <E.TopRow>
+                {/* 주점 이름 (길면 말줄임표 처리) */}
+                <E.StoreName numberOfLines={1} ellipsizeMode="tail">
+                  {storeName}
+                </E.StoreName>
+                {/* 대기 상태 배지 */}
+                <CustomBadge waitNumber={waitNumber} />
+              </E.TopRow>
 
-          {/* 학과명 */}
-          <E.Department>{department}</E.Department>
-        </E.InfoSection>
-      </E.ContentWrapper>
-    </E.Container>
+              {/* 학과명 */}
+              <E.Department>{department}</E.Department>
+            </E.InfoSection>
+          </E.ContentWrapper>
+        </E.Container>
+      </Animated.View>
+    </E.Wrapper>
   );
 };
 
 const E = {
+  Wrapper: styled.View({
+    position: "relative",
+    width: "100%",
+  }),
+
+  Dim: styled(Animated.View)({
+    position: "absolute",
+    top: 0,
+    left: 14,
+    right: 14,
+    bottom: 0,
+    borderRadius: 15.4,
+    zIndex: 1,
+  }),
+
   /** 전체 카드 컨테이너 (클릭 가능) */
   Container: styled.TouchableOpacity({
     display: "flex",
