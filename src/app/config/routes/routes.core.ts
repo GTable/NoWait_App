@@ -54,4 +54,5 @@ export type RootStackParamList = {
   Tabs: NavigatorScreenParams<BottomTabParamList>;
   StoreDetail: AppRouteMap["StoreDetail"];
   Login: AppRouteMap["Login"];
+  Search: AppRouteMap["Search"];
 };

@@ -25,3 +25,6 @@ export const SvgIcons = {
   "bottom-tab-mypage-active": BottomTabMyPageActive,
   "bottom-tab-mypage-inactive": BottomTabMyPageInactive,
 };
+
+export { SearchSvg } from "./images/search/SearchSvg";
+export { CancelSvg } from "./images/search/CancelSvg";
