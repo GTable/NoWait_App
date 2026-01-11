@@ -49,6 +49,12 @@ export const CustomBottomTab = ({
         if (!tabConfig) return null;
 
         const onPress = () => {
+          // Search 탭은 바텀바 없는 검색 스크린으로 이동
+          if (route.name === "Search") {
+            navigation.getParent()?.navigate("Search");
+            return;
+          }
+
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,

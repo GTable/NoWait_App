@@ -52,6 +52,11 @@ export function AppRouter() {
             options={{ headerShown: false, animation: "none" }}
           />
           <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="StoreDetail"
             component={StoreDetailScreen}
             options={{ headerShown: false }}
