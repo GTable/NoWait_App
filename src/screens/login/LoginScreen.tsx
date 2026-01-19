@@ -1,7 +1,7 @@
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import { OnboardSlide } from "@/features/login/components/OnboardSlide";
 import { useKakaoLogin } from "@/features/login/model/useKakaoLogin";
-import { CustomButton } from "@/shared/ui/CutsomButton";
+import { CustomButton } from "@/shared/ui/CustomButton";
 import styled from "@emotion/native";
 import React from "react";
 

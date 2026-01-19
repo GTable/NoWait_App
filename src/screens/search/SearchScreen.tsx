@@ -1,10 +1,10 @@
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
-import { typography } from "@/app/styles/typography";
 import { SearchComponents } from "@/features/search/components/SearchComponents";
 import { RecentSearchComponent } from "@/features/search/components/RecentSearchComponent";
 import styled from "@emotion/native";
 import React, { useState } from "react";
 import { SearchResultComponent } from "@/features/search/components/SearchResultComponent";
+import { Keyboard, Pressable } from "react-native";
 
 /**
  * 검색 화면
@@ -42,23 +42,30 @@ const SearchScreen = () => {
 
   return (
     <ScreenLayout>
-      <E.Container>
-        <SearchComponents
-          searchText={searchText}
-          onSearchTextChange={setSearchText}
-          onClose={() => setSearchText("")}
-        />
-
-        {/* 검색어 입력 중일 때는 검색 결과, 아닐 때는 최근 검색어 표시 */}
-        {searchText.trim() ? (
-          <SearchResultComponent
-            stores={mockSearchResults}
-            onStorePress={handleStorePress}
+      {/* 전체 화면을 누르면 키보드가 내려가도록 설정 */}
+      <Pressable
+        style={{ flex: 1 }}
+        onPress={Keyboard.dismiss}
+        accessible={false}
+      >
+        <E.Container>
+          <SearchComponents
+            searchText={searchText}
+            onSearchTextChange={setSearchText}
+            onClose={() => setSearchText("")}
           />
-        ) : (
-          <RecentSearchComponent />
-        )}
-      </E.Container>
+
+          {/* 검색어 입력 중일 때는 검색 결과, 아닐 때는 최근 검색어 표시 */}
+          {searchText.trim() ? (
+            <SearchResultComponent
+              stores={mockSearchResults}
+              onStorePress={handleStorePress}
+            />
+          ) : (
+            <RecentSearchComponent />
+          )}
+        </E.Container>
+      </Pressable>
     </ScreenLayout>
   );
 };

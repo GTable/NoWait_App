@@ -3,20 +3,19 @@ import { typography } from "@/app/styles/typography";
 import styled from "@emotion/native";
 import { CheckBox } from "./CustomCheckBox";
 import { ArrowRightSvg } from "../assets/images";
-import { CustomButton } from "./CutsomButton";
-import React, { useState } from "react";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from "react-native-reanimated";
+import { CustomButton } from "./CustomButton";
+import React from "react";
+import Animated from "react-native-reanimated";
 import { Pressable } from "react-native";
+import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
 
-// Spring 애니메이션 설정 (재사용을 위한 상수)
-const SPRING_CONFIG = {
+const TERM_PRESS_ANIMATION = {
+  scale: 0.96,
+  opacity: 1,
+  dimColor: "rgba(0, 0, 0, 0.1)",
   damping: 55,
   stiffness: 1000,
-} as const;
+};
 
 /**
  * 약관 항목 인터페이스
@@ -43,31 +42,14 @@ interface CustomBottomSheetProps {
  * - Press 시 해당 항목에만 dim 표시
  */
 const AnimatedTermItem = ({ term }: { term: TermItem }) => {
-  // scale 애니메이션을 위한 shared value
-  const scale = useSharedValue(1);
-  const [isPressed, setIsPressed] = useState(false);
-
-  // scale 변환 스타일
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  // Press In 시 scale 축소 (0.96) 및 dim 표시
-  const handlePressIn = () => {
-    setIsPressed(true);
-    scale.value = withSpring(0.96, SPRING_CONFIG);
-  };
-
-  // Press Out 시 scale 복원 (1) 및 dim 제거
-  const handlePressOut = () => {
-    setIsPressed(false);
-    scale.value = withSpring(1, SPRING_CONFIG);
-  };
+  // Press 인터랙션 애니메이션 훅 사용
+  const { isPressed, dimStyle, animatedStyle, handlePressIn, handlePressOut } =
+    usePressScaleAnimation(TERM_PRESS_ANIMATION);
 
   return (
     <E.ItemWrapper>
       {/* Press 시 해당 항목만 어두워짐 */}
-      {isPressed && <E.ItemDim />}
+      {isPressed && <E.ItemDim style={dimStyle} />}
       <Animated.View style={animatedStyle}>
         <Pressable
           onPressIn={handlePressIn}
@@ -126,7 +108,9 @@ export const CustomBottomSheet = ({
       </E.MainSection>
       {/* 확인 버튼 */}
       <E.ButtonSection>
-        <CustomButton variant="rounded12">확인하기</CustomButton>
+        <CustomButton variant="rounded12" animated>
+          확인하기
+        </CustomButton>
       </E.ButtonSection>
     </E.Container>
   );
