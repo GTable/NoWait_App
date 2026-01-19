@@ -17,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.nowait.NoWait-App",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+        "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaolink"],
         "CFBundleURLTypes": [
           {
             "CFBundleTypeRole": "Editor",
@@ -34,14 +34,15 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.orinuguri25.NoWaitApp",
-      "manifestPlaceholders": {
-        "KAKAO_NATIVE_APP_KEY": "${KAKAO_NATIVE_APP_KEY}"
-      }
+      "package": "com.orinuguri25.NoWaitApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font", "expo-secure-store"]
+    "plugins": [
+      "expo-font",
+      "expo-secure-store",
+      ["./plugins/withKakaoSDK", { "kakaoAppKey": "${KAKAO_NATIVE_APP_KEY}" }]
+    ]
   }
 }

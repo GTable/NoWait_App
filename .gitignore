@@ -16,8 +16,15 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
-# Expo prebuild generated folders
-ios/
+# iOS (track project, ignore build/user-specific artifacts)
+ios/Pods/
+ios/build/
+ios/.xcode.env
+ios/.xcode.env.local
+ios/*.xcworkspace/xcuserdata/
+ios/*.xcodeproj/xcuserdata/
+ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+ios/NoWaitApp/Info.plist
 
 # Android
 android/local.properties
