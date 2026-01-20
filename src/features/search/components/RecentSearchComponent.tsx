@@ -3,11 +3,18 @@ import { typography } from "@/app/styles/typography";
 import { CancelSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
 import React from "react";
+import { Pressable } from "react-native";
+import { RecentSearchItem } from "@/features/search/model/recentSearchStorage";
 
-export const RecentSearchComponent = () => {
-  // TODO: 실제 데이터로 대체 필요
-  const recentSearches = ["스페이시스"]; // 빈 배열로 설정하면 "최근검색어가 없습니다." 표시
+interface RecentSearchComponentProps {
+  recentSearches: RecentSearchItem[];
+  onRemove?: (id: string) => void;
+}
 
+export const RecentSearchComponent = ({
+  recentSearches,
+  onRemove,
+}: RecentSearchComponentProps) => {
   const hasRecentSearches = recentSearches.length > 0;
 
   return (
@@ -15,10 +22,16 @@ export const RecentSearchComponent = () => {
       <E.SectionTitle>최근 검색</E.SectionTitle>
       {hasRecentSearches ? (
         <E.SearchList>
-          {recentSearches.map((searchKeyword, index) => (
-            <E.SearchItem key={index}>
-              <E.SearchKeyword>{searchKeyword}</E.SearchKeyword>
-              <CancelSvg width={16} height={16} />
+          {recentSearches.map((search) => (
+            <E.SearchItem key={search.id}>
+              <E.SearchKeyword>{search.name}</E.SearchKeyword>
+              {onRemove ? (
+                <Pressable onPress={() => onRemove(search.id)}>
+                  <CancelSvg width={16} height={16} />
+                </Pressable>
+              ) : (
+                <CancelSvg width={16} height={16} />
+              )}
             </E.SearchItem>
           ))}
         </E.SearchList>
@@ -68,6 +81,7 @@ const E = {
   }),
 
   EmptyMessage: styled.Text({
+    width: "100%",
     textAlign: "center",
     ...typography["text-16-regular"],
     color: colors.black[50],

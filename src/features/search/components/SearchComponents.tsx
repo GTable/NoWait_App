@@ -3,6 +3,7 @@ import { typography } from "@/app/styles/typography";
 import { SearchSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
 import React from "react";
+import { View } from "react-native";
 
 interface SearchComponentsProps {
   /** 검색어 */
@@ -25,7 +26,9 @@ export const SearchComponents = ({
     <E.SearchSection>
       <E.SearchContainer>
         <E.SearchBox>
-          <SearchSvg width={20} height={20} />
+          <View pointerEvents="none">
+            <SearchSvg width={20} height={20} />
+          </View>
           <E.SearchInput
             placeholder="주점명, 메뉴, 학과 검색"
             placeholderTextColor={colors.black[50]}
@@ -61,7 +64,7 @@ const E = {
     flexDirection: "row",
   }),
 
-  SearchBox: styled.TouchableOpacity({
+  SearchBox: styled.View({
     paddingHorizontal: 16,
     paddingVertical: 14,
     alignItems: "center",
