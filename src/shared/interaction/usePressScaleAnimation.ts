@@ -17,7 +17,7 @@ export const usePressScaleAnimation = (
   {
     scale: pressedScale = 0.96,
     opacity: pressedOpacity = 1,
-    dimColor = "rgba(0, 0, 0, 0.1)",
+    dimColor = "#0000001A",
     damping = 55,
     stiffness = 1000,
   }: PressScaleAnimationOptions = {},

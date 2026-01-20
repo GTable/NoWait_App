@@ -6,16 +6,34 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import styled from "@emotion/native";
 import { CustomBadge } from "./CustomBadge";
-import Animated from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
+import { Pressable } from "react-native";
 
+/**
+ * 프레스 애니메이션 설정값
+ * - scale: 눌렀을 때 카드 크기 (0.96 = 96%)
+ * - opacity: 눌렀을 때 투명도 (1 = 변화 없음)
+ * - dimColor: 눌렀을 때 오버레이 색상 (#0220470D = 5% 투명도)
+ * - damping: 스프링 감쇠 (높을수록 덜 튀김)
+ * - stiffness: 스프링 강도 (높을수록 빠름)
+ */
 const STORE_PRESS_ANIMATION = {
   scale: 0.96,
   opacity: 1,
-  dimColor: "rgba(2, 32, 71, 0.05)",
-  damping: 55,
-  stiffness: 800,
+  dimColor: "#0220470D",
+  damping: 200,
+  stiffness: 1000,
 };
+
+/** 기본 수평 패딩 */
+const BASE_PADDING_HORIZONTAL = 20;
+/** 눌렀을 때 수평 패딩 (줄어듦) */
+const PRESSED_PADDING_HORIZONTAL = 14;
 
 interface StoreComponentProps {
   /** 주점 이름 */
@@ -39,8 +57,8 @@ export const StoreComponent = ({
   waitNumber,
   onPress,
 }: StoreComponentProps) => {
+  // scale, opacity, dim 효과를 위한 애니메이션 훅
   const {
-    isPressed,
     dimStyle,
     dimAnimatedStyle,
     animatedStyle,
@@ -48,39 +66,60 @@ export const StoreComponent = ({
     handlePressOut,
   } = usePressScaleAnimation(STORE_PRESS_ANIMATION);
 
+  // 수평 패딩 애니메이션을 위한 shared value (20에서 시작)
+  const paddingH = useSharedValue(BASE_PADDING_HORIZONTAL);
+
+  // 패딩 값이 변할 때 적용되는 애니메이션 스타일
+  const paddingAnimatedStyle = useAnimatedStyle(() => ({
+    paddingHorizontal: paddingH.value,
+  }));
+
+  // 누를 때: scale/dim 효과 + 패딩 줄어듦 (20 → 14)
+  const onPressIn = () => {
+    handlePressIn();
+    paddingH.value = withSpring(PRESSED_PADDING_HORIZONTAL, {
+      damping: STORE_PRESS_ANIMATION.damping,
+      stiffness: STORE_PRESS_ANIMATION.stiffness,
+    });
+  };
+
+  // 뗄 때: scale/dim 효과 + 패딩 복원 (14 → 20)
+  const onPressOut = () => {
+    handlePressOut();
+    paddingH.value = withSpring(BASE_PADDING_HORIZONTAL, {
+      damping: STORE_PRESS_ANIMATION.damping,
+      stiffness: STORE_PRESS_ANIMATION.stiffness,
+    });
+  };
+
   return (
     <E.Wrapper>
-      <E.Dim
-        pointerEvents="none"
-        style={[dimStyle, dimAnimatedStyle]}
-      />
+      {/* 눌렀을 때 나타나는 dim 오버레이 */}
+      <E.Dim pointerEvents="none" style={[dimStyle, dimAnimatedStyle]} />
+
+      {/* scale/opacity 애니메이션이 적용되는 영역 */}
       <Animated.View style={animatedStyle}>
-        <E.Container
+        <Pressable
           onPress={onPress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          activeOpacity={1}
-          style={isPressed ? { paddingHorizontal: 14 } : undefined}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
         >
-          <E.ContentWrapper>
-            {/* 주점 로고 */}
-            <E.StoreLogo />
-
-            <E.InfoSection>
-              <E.TopRow>
-                {/* 주점 이름 (길면 말줄임표 처리) */}
-                <E.StoreName numberOfLines={1} ellipsizeMode="tail">
-                  {storeName}
-                </E.StoreName>
-                {/* 대기 상태 배지 */}
-                <CustomBadge waitNumber={waitNumber} />
-              </E.TopRow>
-
-              {/* 학과명 */}
-              <E.Department>{department}</E.Department>
-            </E.InfoSection>
-          </E.ContentWrapper>
-        </E.Container>
+          {/* 패딩 애니메이션이 적용되는 컨테이너 */}
+          <E.Container style={paddingAnimatedStyle}>
+            <E.ContentWrapper>
+              <E.StoreLogo />
+              <E.InfoSection>
+                <E.TopRow>
+                  <E.StoreName numberOfLines={1} ellipsizeMode="tail">
+                    {storeName}
+                  </E.StoreName>
+                  <CustomBadge waitNumber={waitNumber} />
+                </E.TopRow>
+                <E.Department>{department}</E.Department>
+              </E.InfoSection>
+            </E.ContentWrapper>
+          </E.Container>
+        </Pressable>
       </Animated.View>
     </E.Wrapper>
   );
@@ -102,11 +141,9 @@ const E = {
     zIndex: 1,
   }),
 
-  /** 전체 카드 컨테이너 (클릭 가능) */
-  Container: styled.TouchableOpacity({
-    display: "flex",
+  /** 전체 카드 컨테이너 */
+  Container: styled(Animated.View)({
     width: "100%",
-    paddingHorizontal: 20,
     paddingVertical: 12,
     flexDirection: "column",
     alignItems: "flex-start",

@@ -20,9 +20,7 @@ export const CustomBadge = ({ type, waitNumber }: CustomBadgeProps) => {
   const text = isBeforeOpen ? "오픈 전" : `대기 ${waitNumber}팀`;
 
   // 오픈 전: 회색 배경, 대기 중: 주황색 배경
-  const containerBgColor = isBeforeOpen
-    ? colors.black[15]
-    : "rgba(255, 225, 215, 0.60)";
+  const containerBgColor = isBeforeOpen ? colors.black[15] : "#FFE1D799"; // 60%투명도 = 99
   const textColor = isBeforeOpen ? colors.black[50] : colors.primary;
 
   return (
@@ -46,10 +44,10 @@ const E = {
 
   Text: styled.Text({
     textAlign: "center",
-    fontFamily: "Prentendard",
+    fontFamily: "Pretendard",
     fontSize: 12,
     fontStyle: "normal",
     fontWeight: "700",
-    lineHeight: 12 * 1,
+    // lineHeight
   }),
 };

@@ -13,8 +13,8 @@ const TERM_PRESS_ANIMATION = {
   scale: 0.96,
   opacity: 1,
   dimColor: "rgba(0, 0, 0, 0.1)",
-  damping: 55,
-  stiffness: 1000,
+  damping: 70,
+  stiffness: 800,
 };
 
 /**
