@@ -26,7 +26,7 @@ const STORE_PRESS_ANIMATION = {
   scale: 0.96,
   opacity: 1,
   dimColor: "#0220470D",
-  damping: 55,
+  damping: 200,
   stiffness: 1000,
 };
 
@@ -34,8 +34,6 @@ const STORE_PRESS_ANIMATION = {
 const BASE_PADDING_HORIZONTAL = 20;
 /** 눌렀을 때 수평 패딩 (줄어듦) */
 const PRESSED_PADDING_HORIZONTAL = 14;
-/** 패딩 애니메이션 스프링 설정 */
-const SPRING_CONFIG = { damping: 55, stiffness: 1000 };
 
 interface StoreComponentProps {
   /** 주점 이름 */
@@ -60,8 +58,13 @@ export const StoreComponent = ({
   onPress,
 }: StoreComponentProps) => {
   // scale, opacity, dim 효과를 위한 애니메이션 훅
-  const { dimStyle, dimAnimatedStyle, animatedStyle, handlePressIn, handlePressOut } =
-    usePressScaleAnimation(STORE_PRESS_ANIMATION);
+  const {
+    dimStyle,
+    dimAnimatedStyle,
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
+  } = usePressScaleAnimation(STORE_PRESS_ANIMATION);
 
   // 수평 패딩 애니메이션을 위한 shared value (20에서 시작)
   const paddingH = useSharedValue(BASE_PADDING_HORIZONTAL);
@@ -74,13 +77,19 @@ export const StoreComponent = ({
   // 누를 때: scale/dim 효과 + 패딩 줄어듦 (20 → 14)
   const onPressIn = () => {
     handlePressIn();
-    paddingH.value = withSpring(PRESSED_PADDING_HORIZONTAL, SPRING_CONFIG);
+    paddingH.value = withSpring(PRESSED_PADDING_HORIZONTAL, {
+      damping: STORE_PRESS_ANIMATION.damping,
+      stiffness: STORE_PRESS_ANIMATION.stiffness,
+    });
   };
 
   // 뗄 때: scale/dim 효과 + 패딩 복원 (14 → 20)
   const onPressOut = () => {
     handlePressOut();
-    paddingH.value = withSpring(BASE_PADDING_HORIZONTAL, SPRING_CONFIG);
+    paddingH.value = withSpring(BASE_PADDING_HORIZONTAL, {
+      damping: STORE_PRESS_ANIMATION.damping,
+      stiffness: STORE_PRESS_ANIMATION.stiffness,
+    });
   };
 
   return (
@@ -90,7 +99,11 @@ export const StoreComponent = ({
 
       {/* scale/opacity 애니메이션이 적용되는 영역 */}
       <Animated.View style={animatedStyle}>
-        <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
+        <Pressable
+          onPress={onPress}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+        >
           {/* 패딩 애니메이션이 적용되는 컨테이너 */}
           <E.Container style={paddingAnimatedStyle}>
             <E.ContentWrapper>
