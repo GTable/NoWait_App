@@ -31,3 +31,6 @@ export { ArrowRightSvg } from "./images/ui/arrow/ArrowRightSvg";
 export { AlertCircleSvg } from "./images/ui/alert/AlertCircleSvg";
 export { SearchSvg } from "./images/search/SearchSvg";
 export { CancelSvg } from "./images/search/CancelSvg";
+export { BookmarkSvg } from "./images/button/bookmark/BookmarkSvg";
+export { BookmarkFilledSvg } from "./images/button/bookmark/BookmarkFilledSvg";
+export { LineShareSvg } from "./images/button/share/LineShareSvg";
