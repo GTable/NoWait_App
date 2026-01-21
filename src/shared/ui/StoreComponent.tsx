@@ -12,7 +12,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
-import { Pressable } from "react-native";
+import { Image, Pressable } from "react-native";
 
 /**
  * 프레스 애니메이션 설정값
@@ -37,11 +37,15 @@ const PRESSED_PADDING_HORIZONTAL = 14;
 
 interface StoreComponentProps {
   /** 주점 이름 */
-  storeName: string;
+  name: string;
   /** 학과명 */
-  department: string;
-  /** 대기 팀 수 (없으면 "오픈 전" 배지 표시) */
-  waitNumber?: number;
+  departmentName: string;
+  /** 주점 로고 이미지 URL */
+  storeLogoUrl?: string;
+  /** 주점 오픈 여부. false면 "오픈 전" 배지 표시 */
+  isActive: boolean;
+  /** 대기 팀 수 */
+  waitingCount: number;
   /** 카드 클릭 시 실행될 콜백 함수 */
   onPress?: () => void;
 }
@@ -51,12 +55,9 @@ interface StoreComponentProps {
  * - 주점 로고, 이름, 학과, 대기 상태를 표시
  * - 클릭 가능한 카드 형태로 제공
  */
-export const StoreComponent = ({
-  storeName,
-  department,
-  waitNumber,
-  onPress,
-}: StoreComponentProps) => {
+export const StoreComponent = (props: StoreComponentProps) => {
+  const { name, departmentName, storeLogoUrl, onPress, isActive, waitingCount } =
+    props;
   // scale, opacity, dim 효과를 위한 애니메이션 훅
   const {
     dimStyle,
@@ -107,15 +108,25 @@ export const StoreComponent = ({
           {/* 패딩 애니메이션이 적용되는 컨테이너 */}
           <E.Container style={paddingAnimatedStyle}>
             <E.ContentWrapper>
-              <E.StoreLogo />
+              <E.StoreLogo>
+                {storeLogoUrl ? (
+                  <E.StoreLogoImage
+                    source={{ uri: storeLogoUrl }}
+                    resizeMode="cover"
+                  />
+                ) : null}
+              </E.StoreLogo>
               <E.InfoSection>
                 <E.TopRow>
                   <E.StoreName numberOfLines={1} ellipsizeMode="tail">
-                    {storeName}
+                    {name}
                   </E.StoreName>
-                  <CustomBadge waitNumber={waitNumber} />
+                  <CustomBadge
+                    isActive={isActive}
+                    waitingCount={waitingCount}
+                  />
                 </E.TopRow>
-                <E.Department>{department}</E.Department>
+                <E.Department>{departmentName}</E.Department>
               </E.InfoSection>
             </E.ContentWrapper>
           </E.Container>
@@ -164,6 +175,14 @@ const E = {
     height: 44,
     borderRadius: 44,
     backgroundColor: "#0063A7",
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+  }),
+
+  StoreLogoImage: styled(Image)({
+    width: "100%",
+    height: "100%",
   }),
 
   /** 주점 정보(이름, 학과, 배지) 영역 */
