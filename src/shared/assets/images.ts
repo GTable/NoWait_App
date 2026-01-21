@@ -34,3 +34,5 @@ export { CancelSvg } from "./images/search/CancelSvg";
 export { BookmarkSvg } from "./images/button/bookmark/BookmarkSvg";
 export { BookmarkFilledSvg } from "./images/button/bookmark/BookmarkFilledSvg";
 export { LineShareSvg } from "./images/button/share/LineShareSvg";
+export { MapPinSvg } from "./images/storeDetail/MapPinSvg";
+export { ClockSvg } from "./images/storeDetail/ClockSvg";
