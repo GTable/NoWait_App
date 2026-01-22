@@ -4,11 +4,11 @@ import { CancelSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
 import React from "react";
 import { Pressable } from "react-native";
-import { RecentSearchItem } from "@/features/search/model/recentSearchStorage";
+import { RecentSearchItem } from "../types";
 
 interface RecentSearchComponentProps {
   recentSearches: RecentSearchItem[];
-  onRemove?: (id: string) => void;
+  onRemove?: (publicCode: string) => void;
 }
 
 export const RecentSearchComponent = ({
@@ -23,10 +23,10 @@ export const RecentSearchComponent = ({
       {hasRecentSearches ? (
         <E.SearchList>
           {recentSearches.map((search) => (
-            <E.SearchItem key={search.id}>
+            <E.SearchItem key={search.publicCode}>
               <E.SearchKeyword>{search.name}</E.SearchKeyword>
               {onRemove ? (
-                <Pressable onPress={() => onRemove(search.id)}>
+                <Pressable onPress={() => onRemove(search.publicCode)}>
                   <CancelSvg width={16} height={16} />
                 </Pressable>
               ) : (

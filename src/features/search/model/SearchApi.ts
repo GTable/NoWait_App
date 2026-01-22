@@ -1,5 +1,7 @@
 import { storeApi } from "@/shared/api/storeApi";
+import { SearchStore } from "../types";
 
+// API 응답 타입
 interface StoreSearchResponse {
   success: boolean;
   response: StoreSearchApiItem[];
@@ -17,16 +19,7 @@ interface StoreSearchApiItem {
   } | null;
 }
 
-export interface SearchStore {
-  storeId: string;
-  publicCode: string;
-  name: string;
-  departmentName: string;
-  storeLogoUrl?: string;
-  isActive: boolean;
-  waitingCount: number;
-}
-
+// 주점 검색 API
 export const searchStores = async (keyword: string): Promise<SearchStore[]> => {
   const response = (await storeApi.get("/search", {
     params: { keyword },

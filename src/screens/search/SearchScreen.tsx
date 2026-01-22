@@ -21,10 +21,9 @@ const SearchScreen = () => {
   const { recentSearches, addRecentSearch, removeRecentSearch } =
     useRecentSearches();
 
-  const handleStorePress = (publicCode: string, storeName: string) => {
-    addRecentSearch({ publicCode, name: storeName });
-    // TODO: 주점 상세 페이지로 이동
-    console.log("Store pressed:", publicCode, storeName);
+  // 주점 클릭 시 최근 검색어에 추가
+  const handleStorePress = (publicCode: string, name: string) => {
+    addRecentSearch({ publicCode, name });
   };
 
   return (

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  loadRecentSearches,
-  RecentSearchItem,
-  saveRecentSearches,
-} from "../model/recentSearchStorage";
+import { loadRecentSearches, saveRecentSearches } from "../model/recentSearchStorage";
+import { RecentSearchItem } from "../types";
 
 const MAX_RECENT_SEARCHES = 10;
 

@@ -2,23 +2,15 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import { StoreComponent } from "@/shared/ui/StoreComponent";
 import styled from "@emotion/native";
-
-interface Store {
-  publicCode: string;
-  name: string;
-  departmentName: string;
-  storeLogoUrl?: string;
-  isActive: boolean;
-  waitingCount: number;
-}
+import { SearchStore } from "../types";
 
 interface SearchResultComponentProps {
   /** 검색 결과 주점 목록 */
-  stores: Store[];
-  /** 주점 카드 클릭 시 실행될 콜백 함수 */
-  onStorePress?: (publicCode: string, storeName: string) => void;
+  stores: SearchStore[];
   /** 검색 완료 여부 (빈 결과 메시지 표시용) */
   hasSearched?: boolean;
+  /** 주점 클릭 시 호출되는 콜백 (최근 검색어 저장용) */
+  onStorePress?: (publicCode: string, name: string) => void;
 }
 
 /**
@@ -28,6 +20,7 @@ interface SearchResultComponentProps {
 export const SearchResultComponent = ({
   stores,
   hasSearched = true,
+  onStorePress,
 }: SearchResultComponentProps) => {
   const showEmptyMessage = hasSearched && stores.length === 0;
 
@@ -46,6 +39,7 @@ export const SearchResultComponent = ({
             storeLogoUrl={store.storeLogoUrl}
             isActive={store.isActive}
             waitingCount={store.waitingCount}
+            onPress={() => onStorePress?.(store.publicCode, store.name)}
           />
         ))
       )}

@@ -1,12 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RecentSearchItem } from "../types";
 
 // 최근 검색어 저장 키
 const RECENT_SEARCHES_KEY = "recentSearches";
-
-export interface RecentSearchItem {
-  publicCode: string;
-  name: string;
-}
 
 // 저장된 항목의 형태를 검사하는 타입 가드
 const isRecentSearchItem = (item: unknown): item is RecentSearchItem => {
@@ -15,7 +11,9 @@ const isRecentSearchItem = (item: unknown): item is RecentSearchItem => {
   }
 
   const candidate = item as { publicCode?: unknown; name?: unknown };
-  return typeof candidate.publicCode === "string" && typeof candidate.name === "string";
+  return (
+    typeof candidate.publicCode === "string" && typeof candidate.name === "string"
+  );
 };
 
 // 최근 검색어 목록을 불러옴

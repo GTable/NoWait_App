@@ -51,6 +51,8 @@ interface StoreComponentProps {
   isActive: boolean;
   /** 대기 팀 수 */
   waitingCount: number;
+  /** 클릭 시 추가 동작 (네비게이션 전에 호출됨) */
+  onPress?: () => void;
 }
 
 /**
@@ -59,12 +61,20 @@ interface StoreComponentProps {
  * - 클릭 가능한 카드 형태로 제공
  */
 export const StoreComponent = (props: StoreComponentProps) => {
-  const { publicCode, name, departmentName, storeLogoUrl, isActive, waitingCount } =
-    props;
+  const {
+    publicCode,
+    name,
+    departmentName,
+    storeLogoUrl,
+    isActive,
+    waitingCount,
+    onPress,
+  } = props;
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const handlePress = () => {
+    onPress?.();
     navigation.navigate("StoreDetail", { publicCode });
   };
   // scale, opacity, dim 효과를 위한 애니메이션 훅
