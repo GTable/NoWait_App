@@ -39,7 +39,11 @@ const StoreDetailScreen = () => {
 
       {/* 하단 고정 버튼 */}
       <E.BottomButtonWrapper>
-        <CustomTwoButton type="waiting" />
+        <CustomTwoButton
+          isBookmark={storeDetail?.isBookmark}
+          isActive={storeDetail?.isActive}
+          isWaiting={storeDetail?.isWaiting}
+        />
       </E.BottomButtonWrapper>
     </ScreenLayout>
   );
