@@ -1,15 +1,15 @@
 import { colors } from "@/app/styles/colors";
 import styled from "@emotion/native";
-import { BookmarkFilledSvg, BookmarkSvg, LineShareSvg } from "../assets/images";
+import { BookmarkFilledSvg, BookmarkSvg } from "../assets/images";
 import { typography } from "@/app/styles/typography";
 
-type ButtonType = "waiting" | "share";
-
 interface CustomTwoButtonProps {
-  /** 버튼 타입 (waiting: 대기하기, share: 웨이팅하기) */
-  type: ButtonType;
-  /** 북마크 활성화 상태 (type이 waiting일 때만 사용) */
-  isBookmarked?: boolean;
+  /** 북마크 활성화 상태 */
+  isBookmark?: boolean;
+  /** 주점 운영 상태 */
+  isActive?: boolean;
+  /** 웨이팅 상태 */
+  isWaiting?: boolean;
   /** 왼쪽 버튼 클릭 핸들러 */
   onLeftPress?: () => void;
   /** 오른쪽 버튼 클릭 핸들러 */
@@ -17,19 +17,30 @@ interface CustomTwoButtonProps {
 }
 
 export const CustomTwoButton = ({
-  type,
-  isBookmarked = false,
+  isBookmark = false,
+  isActive,
+  isWaiting,
   onLeftPress,
   onRightPress,
 }: CustomTwoButtonProps) => {
-  const renderIcon = () => {
-    if (type === "share") {
-      return <LineShareSvg />;
-    }
-    return isBookmarked ? <BookmarkFilledSvg /> : <BookmarkSvg />;
-  };
+  // 웨이팅 중인 상태
+  const isWaitingState = Boolean(isWaiting);
+  // 비활성 상태지만 웨이팅 중이 아닌 경우
+  const isInactive = isActive === false && !isWaitingState;
+  // 상태에 따라 버튼 문구 결정
+  const buttonText = isWaitingState
+    ? "대기 중이에요"
+    : isInactive
+      ? "지금은 대기할 수 없어요"
+      : "대기하기";
+  // 웨이팅 중/비활성 상태는 톤다운 색상 사용
+  const backgroundColor =
+    isWaitingState || isInactive ? colors.black[15] : colors.coolBlack[100];
+  const textColor =
+    isWaitingState || isInactive ? colors.black[50] : colors.white[100];
 
-  const buttonText = type === "share" ? "웨이팅하기" : "대기하기";
+  const renderIcon = () =>
+    isBookmark ? <BookmarkFilledSvg /> : <BookmarkSvg />;
 
   return (
     <E.Wrapper>
@@ -38,8 +49,8 @@ export const CustomTwoButton = ({
           <E.IconBox>{renderIcon()}</E.IconBox>
         </E.LeftBtn>
 
-        <E.RightBtn onPress={onRightPress}>
-          <E.TextBox>{buttonText}</E.TextBox>
+        <E.RightBtn onPress={onRightPress} style={{ backgroundColor }}>
+          <E.TextBox style={{ color: textColor }}>{buttonText}</E.TextBox>
         </E.RightBtn>
       </E.Container>
     </E.Wrapper>
