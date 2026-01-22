@@ -1,7 +1,10 @@
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { CancelSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Pressable } from "react-native";
 import { RecentSearchItem } from "../types";
@@ -15,7 +18,13 @@ export const RecentSearchComponent = ({
   recentSearches,
   onRemove,
 }: RecentSearchComponentProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const hasRecentSearches = recentSearches.length > 0;
+
+  const handlePress = (publicCode: string) => {
+    navigation.navigate("StoreDetail", { publicCode });
+  };
 
   return (
     <E.Container style={{ gap: hasRecentSearches ? 16 : 40 }}>
@@ -24,13 +33,13 @@ export const RecentSearchComponent = ({
         <E.SearchList>
           {recentSearches.map((search) => (
             <E.SearchItem key={search.publicCode}>
-              <E.SearchKeyword>{search.name}</E.SearchKeyword>
-              {onRemove ? (
+              <Pressable onPress={() => handlePress(search.publicCode)}>
+                <E.SearchKeyword>{search.name}</E.SearchKeyword>
+              </Pressable>
+              {onRemove && (
                 <Pressable onPress={() => onRemove(search.publicCode)}>
                   <CancelSvg width={16} height={16} />
                 </Pressable>
-              ) : (
-                <CancelSvg width={16} height={16} />
               )}
             </E.SearchItem>
           ))}
