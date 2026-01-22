@@ -17,7 +17,7 @@ interface CustomTwoButtonProps {
 }
 
 export const CustomTwoButton = ({
-  isBookmark = false,
+  isBookmark,
   isActive,
   isWaiting,
   onLeftPress,
