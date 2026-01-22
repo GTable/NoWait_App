@@ -27,6 +27,7 @@ export const SvgIcons = {
 };
 
 export { CheckSvg } from "./images/ui/check/CheckSvg";
+export { ArrowLeftSvg } from "./images/ui/arrow/ArrowLeftSvg";
 export { ArrowRightSvg } from "./images/ui/arrow/ArrowRightSvg";
 export { AlertCircleSvg } from "./images/ui/alert/AlertCircleSvg";
 export { SearchSvg } from "./images/search/SearchSvg";

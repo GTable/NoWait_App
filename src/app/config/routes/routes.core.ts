@@ -48,11 +48,12 @@ export type BottomTabRouteName = "Main" | "Map" | "Search" | "MyPage";
 // 바텀 탭 ParamList
 export type BottomTabParamList = Pick<AppRouteMap, BottomTabRouteName>;
 
-// roote stack ParamList
+// 루트 스택 네비게이션 파라미터 목록
 export type RootStackParamList = {
   Splash: AppRouteMap["Splash"];
   Tabs: NavigatorScreenParams<BottomTabParamList>;
   StoreDetail: { publicCode: string };
+  NoticeDetail: { noticeTitle: string; noticeContent: string };
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];
 };

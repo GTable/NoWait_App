@@ -1,9 +1,12 @@
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import { ArrowRightSvg, ClockSvg, MapPinSvg } from "@/shared/assets/images";
 import { CustomBadge } from "@/shared/ui/CustomBadge";
 import { formatOpenTime } from "@/shared/utils/formatOpenTime";
 import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StoreDetail } from "../types";
 
 type StoreDetailInfoProps = Pick<
@@ -17,6 +20,7 @@ type StoreDetailInfoProps = Pick<
   | "openTime"
   | "description"
   | "noticeTitle"
+  | "noticeContent"
 >;
 
 export const StoreDetailInfoComponent = ({
@@ -29,7 +33,15 @@ export const StoreDetailInfoComponent = ({
   openTime,
   description,
   noticeTitle,
+  noticeContent,
 }: StoreDetailInfoProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const handleNoticePress = () => {
+    navigation.navigate("NoticeDetail", { noticeTitle, noticeContent });
+  };
+
   return (
     <E.Container>
       {/* 헤더: 학과, 주점명, 로고 */}
@@ -71,7 +83,7 @@ export const StoreDetailInfoComponent = ({
 
       {/* 공지 버튼 */}
       <E.NoticeWrapper>
-        <E.NoticeButton>
+        <E.NoticeButton onPress={handleNoticePress}>
           <E.NoticeContent>
             <E.NoticeLabel>공지</E.NoticeLabel>
             <E.NoticeText>{noticeTitle}</E.NoticeText>
