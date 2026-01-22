@@ -52,7 +52,7 @@ export type BottomTabParamList = Pick<AppRouteMap, BottomTabRouteName>;
 export type RootStackParamList = {
   Splash: AppRouteMap["Splash"];
   Tabs: NavigatorScreenParams<BottomTabParamList>;
-  StoreDetail: AppRouteMap["StoreDetail"];
+  StoreDetail: { publicCode: string };
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];
 };

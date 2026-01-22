@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const RECENT_SEARCHES_KEY = "recentSearches";
 
 export interface RecentSearchItem {
-  id: string;
+  publicCode: string;
   name: string;
 }
 
@@ -14,8 +14,8 @@ const isRecentSearchItem = (item: unknown): item is RecentSearchItem => {
     return false;
   }
 
-  const candidate = item as { id?: unknown; name?: unknown };
-  return typeof candidate.id === "string" && typeof candidate.name === "string";
+  const candidate = item as { publicCode?: unknown; name?: unknown };
+  return typeof candidate.publicCode === "string" && typeof candidate.name === "string";
 };
 
 // 최근 검색어 목록을 불러옴

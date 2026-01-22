@@ -4,7 +4,7 @@ import { StoreComponent } from "@/shared/ui/StoreComponent";
 import styled from "@emotion/native";
 
 interface Store {
-  id: string;
+  publicCode: string;
   name: string;
   departmentName: string;
   storeLogoUrl?: string;
@@ -16,7 +16,7 @@ interface SearchResultComponentProps {
   /** 검색 결과 주점 목록 */
   stores: Store[];
   /** 주점 카드 클릭 시 실행될 콜백 함수 */
-  onStorePress?: (storeId: string, storeName: string) => void;
+  onStorePress?: (publicCode: string, storeName: string) => void;
   /** 검색 완료 여부 (빈 결과 메시지 표시용) */
   hasSearched?: boolean;
 }
@@ -27,7 +27,6 @@ interface SearchResultComponentProps {
  */
 export const SearchResultComponent = ({
   stores,
-  onStorePress,
   hasSearched = true,
 }: SearchResultComponentProps) => {
   const showEmptyMessage = hasSearched && stores.length === 0;
@@ -40,13 +39,13 @@ export const SearchResultComponent = ({
       ) : (
         stores.map((store) => (
           <StoreComponent
-            key={store.id}
+            key={store.publicCode}
+            publicCode={store.publicCode}
             name={store.name}
             departmentName={store.departmentName}
             storeLogoUrl={store.storeLogoUrl}
             isActive={store.isActive}
             waitingCount={store.waitingCount}
-            onPress={() => onStorePress?.(store.id, store.name)}
           />
         ))
       )}

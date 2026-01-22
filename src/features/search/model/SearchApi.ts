@@ -7,6 +7,7 @@ interface StoreSearchResponse {
 
 interface StoreSearchApiItem {
   storeId: number;
+  publicCode: string;
   departmentName: string;
   name: string;
   waitingCount: number;
@@ -17,7 +18,8 @@ interface StoreSearchApiItem {
 }
 
 export interface SearchStore {
-  id: string;
+  storeId: string;
+  publicCode: string;
   name: string;
   departmentName: string;
   storeLogoUrl?: string;
@@ -35,7 +37,8 @@ export const searchStores = async (keyword: string): Promise<SearchStore[]> => {
   }
 
   return response.response.map((store) => ({
-    id: String(store.storeId),
+    storeId: String(store.storeId),
+    publicCode: store.publicCode,
     name: store.name,
     departmentName: store.departmentName,
     storeLogoUrl: store.profileImage?.imageUrl,

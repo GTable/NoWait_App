@@ -21,10 +21,10 @@ const SearchScreen = () => {
   const { recentSearches, addRecentSearch, removeRecentSearch } =
     useRecentSearches();
 
-  const handleStorePress = (storeId: string, storeName: string) => {
-    addRecentSearch({ id: storeId, name: storeName });
+  const handleStorePress = (publicCode: string, storeName: string) => {
+    addRecentSearch({ publicCode, name: storeName });
     // TODO: 주점 상세 페이지로 이동
-    console.log("Store pressed:", storeId);
+    console.log("Store pressed:", publicCode, storeName);
   };
 
   return (

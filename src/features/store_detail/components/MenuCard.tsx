@@ -1,15 +1,16 @@
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
+import { formatPrice } from "@/shared/utils/formatPrice";
 import styled from "@emotion/native";
 
 interface MenuCardProps {
   name: string;
-  price: string;
+  price: number;
   imageUrl?: string;
   onPress?: () => void;
 }
 
-export const MenuCard = ({ name, price, onPress }: MenuCardProps) => {
+export const MenuCard = ({ name, price, imageUrl, onPress }: MenuCardProps) => {
   return (
     <E.Container onPress={onPress}>
       {/* 메뉴명, 금액 영역 */}
@@ -17,11 +18,15 @@ export const MenuCard = ({ name, price, onPress }: MenuCardProps) => {
         <E.MenuName numberOfLines={2} ellipsizeMode="tail">
           {name}
         </E.MenuName>
-        <E.MenuPrice>{price}</E.MenuPrice>
+        <E.MenuPrice>{formatPrice(price)}</E.MenuPrice>
       </E.InfoBox>
 
       {/* 메뉴 이미지 */}
-      <E.ImageBox />
+      {imageUrl ? (
+        <E.MenuImage source={{ uri: imageUrl }} />
+      ) : (
+        <E.ImagePlaceholder />
+      )}
     </E.Container>
   );
 };
@@ -50,7 +55,12 @@ const E = {
     color: colors.black[80],
     ...typography["text-16-medium"],
   }),
-  ImageBox: styled.View({
+  MenuImage: styled.Image({
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  }),
+  ImagePlaceholder: styled.View({
     width: 80,
     height: 80,
     backgroundColor: "#F2F6F9",
