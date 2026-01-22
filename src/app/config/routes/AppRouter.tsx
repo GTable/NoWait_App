@@ -9,6 +9,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import SplashScreen from "@/screens/splash/SplashScreen";
 import LoginScreen from "@/screens/login/LoginScreen";
 import StoreDetailScreen from "@/screens/store_detail/StoreDetailScreen";
+import NoticeDetailScreen from "@/screens/store_detail/NoticeDetailScreen";
 import { View } from "react-native";
 import { CustomBottomTab } from "@/shared/ui/CustomBottomTab";
 
@@ -60,6 +61,11 @@ export function AppRouter() {
             name="StoreDetail"
             component={StoreDetailScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NoticeDetail"
+            component={NoticeDetailScreen}
+            options={{ headerShown: false, presentation: "modal" }}
           />
         </Stack.Navigator>
       </View>
