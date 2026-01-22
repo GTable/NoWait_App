@@ -4,6 +4,7 @@
 
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 import styled from "@emotion/native";
 import { CustomBadge } from "./CustomBadge";
 import Animated, {
@@ -13,6 +14,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
 import { Image, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 /**
  * 프레스 애니메이션 설정값
@@ -36,6 +39,8 @@ const BASE_PADDING_HORIZONTAL = 20;
 const PRESSED_PADDING_HORIZONTAL = 14;
 
 interface StoreComponentProps {
+  /** 주점 공개 코드 (상세 페이지 이동용) */
+  publicCode: string;
   /** 주점 이름 */
   name: string;
   /** 학과명 */
@@ -46,7 +51,7 @@ interface StoreComponentProps {
   isActive: boolean;
   /** 대기 팀 수 */
   waitingCount: number;
-  /** 카드 클릭 시 실행될 콜백 함수 */
+  /** 클릭 시 추가 동작 (네비게이션 전에 호출됨) */
   onPress?: () => void;
 }
 
@@ -56,8 +61,22 @@ interface StoreComponentProps {
  * - 클릭 가능한 카드 형태로 제공
  */
 export const StoreComponent = (props: StoreComponentProps) => {
-  const { name, departmentName, storeLogoUrl, onPress, isActive, waitingCount } =
-    props;
+  const {
+    publicCode,
+    name,
+    departmentName,
+    storeLogoUrl,
+    isActive,
+    waitingCount,
+    onPress,
+  } = props;
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const handlePress = () => {
+    onPress?.();
+    navigation.navigate("StoreDetail", { publicCode });
+  };
   // scale, opacity, dim 효과를 위한 애니메이션 훅
   const {
     dimStyle,
@@ -101,7 +120,7 @@ export const StoreComponent = (props: StoreComponentProps) => {
       {/* scale/opacity 애니메이션이 적용되는 영역 */}
       <Animated.View style={animatedStyle}>
         <Pressable
-          onPress={onPress}
+          onPress={handlePress}
           onPressIn={onPressIn}
           onPressOut={onPressOut}
         >

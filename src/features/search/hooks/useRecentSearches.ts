@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  loadRecentSearches,
-  RecentSearchItem,
-  saveRecentSearches,
-} from "../model/recentSearchStorage";
+import { loadRecentSearches, saveRecentSearches } from "../model/recentSearchStorage";
+import { RecentSearchItem } from "../types";
 
 const MAX_RECENT_SEARCHES = 10;
 
 interface UseRecentSearchesResult {
   recentSearches: RecentSearchItem[];
   addRecentSearch: (item: RecentSearchItem) => void;
-  removeRecentSearch: (id: string) => void;
+  removeRecentSearch: (publicCode: string) => void;
 }
 
 export const useRecentSearches = (): UseRecentSearchesResult => {
@@ -32,7 +29,7 @@ export const useRecentSearches = (): UseRecentSearchesResult => {
           const merged = [
             ...prev,
             ...loaded.filter(
-              (item) => !prev.some((entry) => entry.id === item.id),
+              (item) => !prev.some((entry) => entry.publicCode === item.publicCode),
             ),
           ].slice(0, MAX_RECENT_SEARCHES);
           saveRecentSearches(merged).catch((error) => {
@@ -54,7 +51,7 @@ export const useRecentSearches = (): UseRecentSearchesResult => {
     setRecentSearches((prev) => {
       const next = [
         item,
-        ...prev.filter((entry) => entry.id !== item.id),
+        ...prev.filter((entry) => entry.publicCode !== item.publicCode),
       ].slice(0, MAX_RECENT_SEARCHES);
       saveRecentSearches(next).catch((error) => {
         console.error("Save recent searches failed:", error);
@@ -63,9 +60,9 @@ export const useRecentSearches = (): UseRecentSearchesResult => {
     });
   };
 
-  const removeRecentSearch = (id: string) => {
+  const removeRecentSearch = (publicCode: string) => {
     setRecentSearches((prev) => {
-      const next = prev.filter((entry) => entry.id !== id);
+      const next = prev.filter((entry) => entry.publicCode !== publicCode);
       saveRecentSearches(next).catch((error) => {
         console.error("Save recent searches failed:", error);
       });

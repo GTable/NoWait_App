@@ -2,23 +2,52 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import { ArrowRightSvg, ClockSvg, MapPinSvg } from "@/shared/assets/images";
 import { CustomBadge } from "@/shared/ui/CustomBadge";
+import { formatOpenTime } from "@/shared/utils/formatOpenTime";
 import styled from "@emotion/native";
+import { StoreDetail } from "../types";
 
-export const StoreDetailInfoComponent = () => {
+type StoreDetailInfoProps = Pick<
+  StoreDetail,
+  | "departmentName"
+  | "name"
+  | "profileImageUrl"
+  | "isWaiting"
+  | "waitingCount"
+  | "location"
+  | "openTime"
+  | "description"
+  | "noticeTitle"
+>;
+
+export const StoreDetailInfoComponent = ({
+  departmentName,
+  name,
+  profileImageUrl,
+  isWaiting,
+  waitingCount,
+  location,
+  openTime,
+  description,
+  noticeTitle,
+}: StoreDetailInfoProps) => {
   return (
     <E.Container>
       {/* 헤더: 학과, 주점명, 로고 */}
       <E.Header>
         <E.HeaderInfo>
-          <E.Department>컴퓨터공학과</E.Department>
-          <E.StoreName>일이삼사오육칠팔구십일이삼사</E.StoreName>
+          <E.Department>{departmentName}</E.Department>
+          <E.StoreName>{name}</E.StoreName>
         </E.HeaderInfo>
-        <E.Logo />
+        {profileImageUrl ? (
+          <E.LogoImage source={{ uri: profileImageUrl }} />
+        ) : (
+          <E.LogoPlaceholder />
+        )}
       </E.Header>
 
       {/* 대기 상태 배지 */}
       <E.BadgeWrapper>
-        <CustomBadge isActive={false} waitingCount={0} />
+        <CustomBadge isActive={isWaiting} waitingCount={waitingCount} />
       </E.BadgeWrapper>
 
       <E.Divider />
@@ -27,23 +56,17 @@ export const StoreDetailInfoComponent = () => {
       <E.InfoList>
         <E.InfoRow>
           <MapPinSvg />
-          <E.InfoText>가천대학교 무한광장</E.InfoText>
+          <E.InfoText>{location}</E.InfoText>
         </E.InfoRow>
         <E.InfoRow>
           <ClockSvg />
-          <E.InfoText>18:00 - 24:00</E.InfoText>
+          <E.InfoText>{formatOpenTime(openTime)}</E.InfoText>
         </E.InfoRow>
       </E.InfoList>
 
       {/* 주점 소개 */}
       <E.DescriptionWrapper>
-        <E.Description>
-          안녕하세요! 컴공과가 버그 없이 준비한{"\n"}이스터에그가 가득 부스
-          스페이시스입니다 🚀 {"\n"}
-          {"\n"}남다른 디버깅 실력으로 굽는 츄러스,{"\n"}데이터 손실 없는
-          아이스티,{"\n"}그리고 메모리 오류 없는 넉넉한 양까지 {"\n"}완벽
-          구현했습니다.
-        </E.Description>
+        <E.Description>{description}</E.Description>
       </E.DescriptionWrapper>
 
       {/* 공지 버튼 */}
@@ -51,7 +74,7 @@ export const StoreDetailInfoComponent = () => {
         <E.NoticeButton>
           <E.NoticeContent>
             <E.NoticeLabel>공지</E.NoticeLabel>
-            <E.NoticeText>입장 시 신분증 검사 필수</E.NoticeText>
+            <E.NoticeText>{noticeTitle}</E.NoticeText>
           </E.NoticeContent>
           <ArrowRightSvg />
         </E.NoticeButton>
@@ -93,7 +116,13 @@ const E = {
     color: colors.black[100],
     ...typography["headline-22-bold"],
   }),
-  Logo: styled.View({
+  LogoImage: styled.Image({
+    width: 52,
+    height: 52,
+    flexShrink: 0,
+    borderRadius: 999,
+  }),
+  LogoPlaceholder: styled.View({
     width: 52,
     height: 52,
     flexShrink: 0,
