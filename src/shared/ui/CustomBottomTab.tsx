@@ -127,7 +127,6 @@ const blurStyle = {
   borderRadius: 999,
   borderWidth: 1,
   borderColor: colors.white[100],
-  overflow: "hidden" as const,
 };
 
 const E = {
