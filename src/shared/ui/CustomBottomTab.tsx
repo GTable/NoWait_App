@@ -4,7 +4,7 @@
  * - LinearGradient 배경과 BlurView 효과 적용
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import { TouchableOpacity } from "react-native";
 import styled from "@emotion/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
@@ -49,22 +49,19 @@ const GRADIENT_COLORS = ["#E8E8E800", "#E8E8E8CC"] as const;
 const GRADIENT_DIRECTION = { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } };
 
 export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
-  const handlePress = useCallback(
-    (name: string, key: string, isFocused: boolean) => {
-      // 검색 탭은 별도 스크린으로 이동
-      if (name === "Search") {
-        navigation.getParent()?.navigate("Search");
-        return;
-      }
-      const event = navigation.emit({
-        type: "tabPress",
-        target: key,
-        canPreventDefault: true,
-      });
-      if (!isFocused && !event.defaultPrevented) navigation.navigate(name);
-    },
-    [navigation],
-  );
+  const handlePress = (name: string, key: string, isFocused: boolean) => {
+    // 검색 탭은 별도 스크린으로 이동
+    if (name === "Search") {
+      navigation.getParent()?.navigate("Search");
+      return;
+    }
+    const event = navigation.emit({
+      type: "tabPress",
+      target: key,
+      canPreventDefault: true,
+    });
+    if (!isFocused && !event.defaultPrevented) navigation.navigate(name);
+  };
 
   const renderTab = (name: string, key: string, isFocused: boolean) => {
     const config = TAB_CONFIG[name];
