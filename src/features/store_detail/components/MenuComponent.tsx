@@ -2,10 +2,14 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import styled from "@emotion/native";
 import { MenuCard } from "./MenuCard";
-import { MenuItem } from "../types";
 
 interface MenuComponentProps {
-  menus: MenuItem[];
+  menus: {
+    menuId: number;
+    name: string;
+    price: number;
+    imageUrl?: string;
+  }[];
 }
 
 export const MenuComponent = ({ menus }: MenuComponentProps) => {

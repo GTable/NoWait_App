@@ -1,20 +1,39 @@
 import { storeApi } from "@/shared/api/storeApi";
-import { StoreDetail } from "../types";
+import { z } from "zod";
 
-// API 응답 타입
-interface StoreDetailApiResponse {
-  success: boolean;
-  response: StoreDetailApiItem;
-}
+const ImageSchema = z.object({
+  imageUrl: z.string(),
+});
 
-interface StoreDetailApiItem {
+const StoreDetailApiItemSchema = z.object({
+  storeId: z.number(),
+  publicCode: z.string(),
+  isBookmark: z.boolean(),
+  waitingCount: z.number(),
+  isWaiting: z.boolean(),
+  departmentName: z.string(),
+  name: z.string(),
+  location: z.string(),
+  description: z.string(),
+  noticeTitle: z.string(),
+  noticeContent: z.string(),
+  openTime: z.string(),
+  profileImage: ImageSchema.nullable(),
+  bannerImages: z.array(ImageSchema),
+  isActive: z.boolean(),
+});
+
+const StoreDetailApiResponseSchema = z.object({
+  success: z.boolean(),
+  response: StoreDetailApiItemSchema,
+});
+
+export interface StoreDetail {
   storeId: number;
   publicCode: string;
-  bookmarkId: number | null;
   isBookmark: boolean;
   waitingCount: number;
   isWaiting: boolean;
-  departmentId: number;
   departmentName: string;
   name: string;
   location: string;
@@ -22,31 +41,18 @@ interface StoreDetailApiItem {
   noticeTitle: string;
   noticeContent: string;
   openTime: string;
-  profileImage: {
-    id: number;
-    storeId: number;
-    imageUrl: string;
-    imageType: string;
-  } | null;
-  bannerImages: {
-    id: number;
-    storeId: number;
-    imageUrl: string;
-    imageType: string;
-  }[];
   isActive: boolean;
-  deleted: boolean;
-  createdAt: string;
+  profileImageUrl?: string;
+  bannerImageUrls: string[];
 }
 
 // 주점 상세 정보 조회 API
 export const getStoreDetail = async (
   publicCode: string
 ): Promise<StoreDetail> => {
-  const response = (await storeApi.get(
-    `/${publicCode}`
-  )) as StoreDetailApiResponse;
+  const rawResponse = await storeApi.get(`/${publicCode}`);
 
+  const response = StoreDetailApiResponseSchema.parse(rawResponse);
   const store = response.response;
 
   return {

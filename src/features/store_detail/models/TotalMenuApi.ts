@@ -1,36 +1,46 @@
 import { storeApi } from "@/shared/api/storeApi";
-import { MenuItem, TotalMenu } from "../types";
+import { z } from "zod";
 
-// API 응답 타입
-interface TotalMenuApiResponse {
-  success: boolean;
-  response: {
-    storeName: string;
-    menuReadDto: MenuApiItem[];
-  };
-}
+const MenuImageSchema = z.object({
+  imageUrl: z.string(),
+});
 
-interface MenuApiItem {
+const MenuApiItemSchema = z.object({
+  menuId: z.number(),
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  isSoldOut: z.boolean(),
+  images: z.array(MenuImageSchema),
+});
+
+const TotalMenuApiResponseSchema = z.object({
+  success: z.boolean(),
+  response: z.object({
+    storeName: z.string(),
+    menuReadDto: z.array(MenuApiItemSchema),
+  }),
+});
+
+export interface MenuItem {
   menuId: number;
-  storeId: number;
   name: string;
   description: string;
   price: number;
-  sortOrder: number;
   isSoldOut: boolean;
-  deleted: boolean;
-  images: {
-    id: number;
-    imageUrl: string;
-  }[];
+  imageUrl?: string;
+}
+
+export interface TotalMenu {
+  storeName: string;
+  menus: MenuItem[];
 }
 
 // 주점 메뉴 조회 API
 export const getTotalMenu = async (publicCode: string): Promise<TotalMenu> => {
-  const response = (await storeApi.get(
-    `/${publicCode}/menus`
-  )) as TotalMenuApiResponse;
+  const rawResponse = await storeApi.get(`/${publicCode}/menus`);
 
+  const response = TotalMenuApiResponseSchema.parse(rawResponse);
   const { storeName, menuReadDto } = response.response;
 
   return {
