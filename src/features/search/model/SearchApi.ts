@@ -1,31 +1,45 @@
 import { storeApi } from "@/shared/api/storeApi";
-import { SearchStore } from "../types";
+import { z } from "zod";
 
-// API 응답 타입
-interface StoreSearchResponse {
-  success: boolean;
-  response: StoreSearchApiItem[];
-}
+const StoreSearchApiItemSchema = z.object({
+  storeId: z.number(),
+  publicCode: z.string(),
+  departmentName: z.string(),
+  name: z.string(),
+  waitingCount: z.number(),
+  isActive: z.boolean(),
+  profileImage: z
+    .object({
+      imageUrl: z.string(),
+    })
+    .nullable()
+    .optional(),
+});
 
-interface StoreSearchApiItem {
-  storeId: number;
+const StoreSearchResponseSchema = z.object({
+  success: z.boolean(),
+  response: z.array(StoreSearchApiItemSchema).nullable().optional(),
+});
+
+export interface SearchStore {
+  storeId: string;
   publicCode: string;
-  departmentName: string;
   name: string;
-  waitingCount: number;
+  departmentName: string;
+  storeLogoUrl?: string;
   isActive: boolean;
-  profileImage?: {
-    imageUrl: string;
-  } | null;
+  waitingCount: number;
 }
 
 // 주점 검색 API
 export const searchStores = async (keyword: string): Promise<SearchStore[]> => {
-  const response = (await storeApi.get("/search", {
+  const rawResponse = await storeApi.get("/search", {
     params: { keyword },
-  })) as StoreSearchResponse;
+  });
 
-  if (!response?.success || response.response.length === 0) {
+  const response = StoreSearchResponseSchema.parse(rawResponse);
+
+  if (!response.success || !response.response || response.response.length === 0) {
     return [];
   }
 

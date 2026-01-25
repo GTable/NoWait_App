@@ -7,21 +7,19 @@ import { formatOpenTime } from "@/shared/utils/formatOpenTime";
 import styled from "@emotion/native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StoreDetail } from "../types";
 
-type StoreDetailInfoProps = Pick<
-  StoreDetail,
-  | "departmentName"
-  | "name"
-  | "profileImageUrl"
-  | "isWaiting"
-  | "waitingCount"
-  | "location"
-  | "openTime"
-  | "description"
-  | "noticeTitle"
-  | "noticeContent"
->;
+interface StoreDetailInfoProps {
+  departmentName: string;
+  name: string;
+  profileImageUrl?: string;
+  isWaiting: boolean;
+  waitingCount: number;
+  location: string;
+  openTime: string;
+  description: string;
+  noticeTitle: string;
+  noticeContent: string;
+}
 
 export const StoreDetailInfoComponent = ({
   departmentName,

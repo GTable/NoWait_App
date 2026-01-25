@@ -7,10 +7,12 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Pressable } from "react-native";
-import { RecentSearchItem } from "../types";
 
 interface RecentSearchComponentProps {
-  recentSearches: RecentSearchItem[];
+  recentSearches: {
+    publicCode: string;
+    name: string;
+  }[];
   onRemove?: (publicCode: string) => void;
 }
 

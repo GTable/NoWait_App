@@ -1,5 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { RecentSearchItem } from "../types";
+
+export interface RecentSearchItem {
+  publicCode: string;
+  name: string;
+}
 
 // 최근 검색어 저장 키
 const RECENT_SEARCHES_KEY = "recentSearches";

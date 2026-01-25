@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { loadRecentSearches, saveRecentSearches } from "../model/recentSearchStorage";
-import { RecentSearchItem } from "../types";
 
 const MAX_RECENT_SEARCHES = 10;
 
+interface RecentSearch {
+  publicCode: string;
+  name: string;
+}
+
 interface UseRecentSearchesResult {
-  recentSearches: RecentSearchItem[];
-  addRecentSearch: (item: RecentSearchItem) => void;
+  recentSearches: RecentSearch[];
+  addRecentSearch: (item: RecentSearch) => void;
   removeRecentSearch: (publicCode: string) => void;
 }
 
 export const useRecentSearches = (): UseRecentSearchesResult => {
-  const [recentSearches, setRecentSearches] = useState<RecentSearchItem[]>([]);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,7 +51,7 @@ export const useRecentSearches = (): UseRecentSearchesResult => {
     };
   }, []);
 
-  const addRecentSearch = (item: RecentSearchItem) => {
+  const addRecentSearch = (item: RecentSearch) => {
     setRecentSearches((prev) => {
       const next = [
         item,
