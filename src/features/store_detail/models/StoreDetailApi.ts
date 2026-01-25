@@ -25,7 +25,7 @@ const StoreDetailApiItemSchema = z.object({
 
 const StoreDetailApiResponseSchema = z.object({
   success: z.boolean(),
-  response: StoreDetailApiItemSchema,
+  response: StoreDetailApiItemSchema.nullable().optional(),
 });
 
 export interface StoreDetail {
@@ -49,10 +49,15 @@ export interface StoreDetail {
 // 주점 상세 정보 조회 API
 export const getStoreDetail = async (
   publicCode: string
-): Promise<StoreDetail> => {
+): Promise<StoreDetail | null> => {
   const rawResponse = await storeApi.get(`/${publicCode}`);
 
   const response = StoreDetailApiResponseSchema.parse(rawResponse);
+
+  if (!response.success || !response.response) {
+    return null;
+  }
+
   const store = response.response;
 
   return {

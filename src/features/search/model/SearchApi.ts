@@ -18,7 +18,7 @@ const StoreSearchApiItemSchema = z.object({
 
 const StoreSearchResponseSchema = z.object({
   success: z.boolean(),
-  response: z.array(StoreSearchApiItemSchema),
+  response: z.array(StoreSearchApiItemSchema).nullable().optional(),
 });
 
 export interface SearchStore {
@@ -39,7 +39,7 @@ export const searchStores = async (keyword: string): Promise<SearchStore[]> => {
 
   const response = StoreSearchResponseSchema.parse(rawResponse);
 
-  if (!response.success || response.response.length === 0) {
+  if (!response.success || !response.response || response.response.length === 0) {
     return [];
   }
 

@@ -16,10 +16,13 @@ const MenuApiItemSchema = z.object({
 
 const TotalMenuApiResponseSchema = z.object({
   success: z.boolean(),
-  response: z.object({
-    storeName: z.string(),
-    menuReadDto: z.array(MenuApiItemSchema),
-  }),
+  response: z
+    .object({
+      storeName: z.string(),
+      menuReadDto: z.array(MenuApiItemSchema),
+    })
+    .nullable()
+    .optional(),
 });
 
 export interface MenuItem {
@@ -37,10 +40,15 @@ export interface TotalMenu {
 }
 
 // 주점 메뉴 조회 API
-export const getTotalMenu = async (publicCode: string): Promise<TotalMenu> => {
+export const getTotalMenu = async (publicCode: string): Promise<TotalMenu | null> => {
   const rawResponse = await storeApi.get(`/${publicCode}/menus`);
 
   const response = TotalMenuApiResponseSchema.parse(rawResponse);
+
+  if (!response.success || !response.response) {
+    return null;
+  }
+
   const { storeName, menuReadDto } = response.response;
 
   return {
