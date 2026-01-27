@@ -15,5 +15,6 @@ declare module "./routes.core" {
     map: ReturnType<typeof MapScreen.useParams>;
     myPage: ReturnType<typeof MyPageScreen.useParams>;
     storeDetail: ReturnType<typeof StoreDetailScreen.useParams>;
+    phoneNumber: ReturnType<typeof PhoneNumberScreen.useParams>;
   }
 }
