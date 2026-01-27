@@ -24,7 +24,7 @@ type AnyRoute = RouteProp<Record<string, object | undefined>, string>;
  */
 export function createRoute<
   Name extends string,
-  Scheme extends ZodType<unknown>
+  Scheme extends ZodType<unknown>,
 >(name: Name, options: { path: string; params: Scheme }) {
   type Params = z.infer<Scheme>;
 
@@ -56,4 +56,5 @@ export type RootStackParamList = {
   NoticeDetail: { noticeTitle: string; noticeContent: string };
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];
+  PhoneNumber: AppRouteMap["phoneNumber"];
 };

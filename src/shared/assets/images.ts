@@ -37,3 +37,5 @@ export { BookmarkFilledSvg } from "./images/button/bookmark/BookmarkFilledSvg";
 export { LineShareSvg } from "./images/button/share/LineShareSvg";
 export { MapPinSvg } from "./images/storeDetail/MapPinSvg";
 export { ClockSvg } from "./images/storeDetail/ClockSvg";
+export { XCircleSvg } from "./images/ui/x_circle/XCircleSvg";
+export { SignupSvg } from "./images/ui/signup/SignupSvg";

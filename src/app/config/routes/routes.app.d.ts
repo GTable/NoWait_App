@@ -5,6 +5,7 @@ import MyPageScreen from "@/screens/mypage/MyPageScreen";
 import SearchScreen from "@/screens/search/SearchScreen";
 import SplashScreen from "@/screens/splash/SplashScreen";
 import StoreDetailScreen from "@/screens/store_detail/StoreDetailScreen";
+import PhoneNumberScreen from "@/screens/phone_number/PhoneNumberScreen";
 
 declare module "./routes.core" {
   interface AppRouteMap {
@@ -15,5 +16,6 @@ declare module "./routes.core" {
     map: ReturnType<typeof MapScreen.useParams>;
     myPage: ReturnType<typeof MyPageScreen.useParams>;
     storeDetail: ReturnType<typeof StoreDetailScreen.useParams>;
+    phoneNumber: ReturnType<typeof PhoneNumberScreen.useParams>;
   }
 }
