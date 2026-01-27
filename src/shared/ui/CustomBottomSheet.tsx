@@ -24,7 +24,8 @@ interface TermItem {
   id: string; // 고유 식별자
   text: string; // 약관 텍스트
   checked: boolean; // 체크 상태
-  onPress: () => void; // 클릭 핸들러
+  onPress: () => void; // 체크박스 클릭 핸들러
+  onDetailPress: () => void; // 약관 상세 페이지 이동 핸들러
 }
 
 /**
@@ -34,6 +35,8 @@ interface CustomBottomSheetProps {
   terms: TermItem[]; // 약관 목록
   allChecked: boolean; // 전체 동의 체크 상태
   onAllCheckPress: () => void; // 전체 동의 클릭 핸들러
+  onConfirm?: () => void; // 확인 버튼 클릭 핸들러
+  isConfirmEnabled?: boolean; // 확인 버튼 활성화 여부
 }
 
 /**
@@ -41,7 +44,7 @@ interface CustomBottomSheetProps {
  * - Press 시 scale: 0.96 애니메이션
  * - Press 시 해당 항목에만 dim 표시
  */
-const AnimatedTermItem = ({ term }: { term: TermItem }) => {
+const AnimatedTermItem = React.memo(({ term }: { term: TermItem }) => {
   // Press 인터랙션 애니메이션 훅 사용
   const { isPressed, dimStyle, animatedStyle, handlePressIn, handlePressOut } =
     usePressScaleAnimation(TERM_PRESS_ANIMATION);
@@ -51,23 +54,31 @@ const AnimatedTermItem = ({ term }: { term: TermItem }) => {
       {/* Press 시 해당 항목만 어두워짐 */}
       {isPressed && <E.ItemDim style={dimStyle} />}
       <Animated.View style={animatedStyle}>
-        <Pressable
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          onPress={term.onPress}
-        >
-          <E.TermContainerInner>
+        <E.TermContainerInner>
+          {/* 체크박스 영역 - 터치 시 체크 토글 */}
+          <Pressable
+            style={{ flex: 1 }}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={term.onPress}
+          >
             <E.TermRow>
               <CheckBox checked={term.checked} onPress={term.onPress} />
               <E.TermText>{term.text}</E.TermText>
             </E.TermRow>
+          </Pressable>
+          {/* 화살표 버튼 - 터치 시 상세 페이지 이동 */}
+          <Pressable
+            onPress={term.onDetailPress}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
             <ArrowRightSvg />
-          </E.TermContainerInner>
-        </Pressable>
+          </Pressable>
+        </E.TermContainerInner>
       </Animated.View>
     </E.ItemWrapper>
   );
-};
+});
 
 /**
  * 약관 동의 바텀시트 컴포넌트
@@ -80,6 +91,8 @@ export const CustomBottomSheet = ({
   terms,
   allChecked,
   onAllCheckPress,
+  onConfirm,
+  isConfirmEnabled = true,
 }: CustomBottomSheetProps) => {
   return (
     <E.Container>
@@ -92,7 +105,7 @@ export const CustomBottomSheet = ({
 
           <E.TermsSection>
             {/* 전체 동의 체크박스 */}
-            <E.AllCheckContainer>
+            <E.AllCheckContainer onPress={onAllCheckPress}>
               <E.TermRow>
                 <CheckBox checked={allChecked} onPress={onAllCheckPress} />
                 <E.AllCheckText>약관 전체동의</E.AllCheckText>
@@ -108,7 +121,7 @@ export const CustomBottomSheet = ({
       </E.MainSection>
       {/* 확인 버튼 */}
       <E.ButtonSection>
-        <CustomButton variant="rounded12" animated>
+        <CustomButton variant="rounded12" animated onPress={onConfirm}>
           확인하기
         </CustomButton>
       </E.ButtonSection>
@@ -122,8 +135,6 @@ export const CustomBottomSheet = ({
 const E = {
   // 바텀시트 최상위 컨테이너 - 화면 하단에 고정
   Container: styled.View({
-    position: "absolute",
-    bottom: 60,
     left: 0,
     right: 0,
     flexDirection: "column",
@@ -132,7 +143,6 @@ const E = {
     backgroundColor: colors.white[100],
     paddingTop: 12,
     paddingHorizontal: 20,
-    zIndex: 100,
   }),
 
   // 메인 콘텐츠 영역

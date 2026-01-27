@@ -12,6 +12,7 @@ import StoreDetailScreen from "@/screens/store_detail/StoreDetailScreen";
 import NoticeDetailScreen from "@/screens/store_detail/NoticeDetailScreen";
 import { View } from "react-native";
 import { CustomBottomTab } from "@/shared/ui/CustomBottomTab";
+import PhoneNumberScreen from "@/screens/phone_number/PhoneNumberScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -66,6 +67,11 @@ export function AppRouter() {
             name="NoticeDetail"
             component={NoticeDetailScreen}
             options={{ headerShown: false, presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="PhoneNumber"
+            component={PhoneNumberScreen}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </View>
