@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Keyboard } from "react-native";
 
 /**
@@ -17,6 +17,18 @@ export const useSignupFlow = () => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
+  // 타이머 ID를 추적하여 unmount 시 정리
+  const timeoutRef = useRef<number | null>(null);
+
+  // 컴포넌트 unmount 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleNext = useCallback(() => {
     Keyboard.dismiss();
     setIsBottomSheetVisible(true);
@@ -27,6 +39,11 @@ export const useSignupFlow = () => {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    // 기존 타이머가 있다면 정리
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     // 바텀시트 먼저 즉시 닫기
     setIsBottomSheetVisible(false);
 
@@ -38,12 +55,13 @@ export const useSignupFlow = () => {
     });
 
     // 3초 후 Main 화면으로 이동
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setIsSuccessModalVisible(false);
       navigation.reset({
         index: 0,
         routes: [{ name: "Tabs" }],
       });
+      timeoutRef.current = null;
     }, 3000);
   }, [navigation]);
 
