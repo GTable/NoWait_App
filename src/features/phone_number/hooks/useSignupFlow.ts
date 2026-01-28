@@ -54,7 +54,11 @@ export const useSignupFlow = ({ phoneNumber, consent }: UseSignupFlowParams) => 
     try {
       // 하이픈 제거 후 API 호출
       const cleanPhoneNumber = phoneNumber.replace(/-/g, "");
-      await updateOptionalInfo(cleanPhoneNumber, consent);
+      const success = await updateOptionalInfo(cleanPhoneNumber, consent);
+
+      if (!success) {
+        throw new Error("선택 정보 저장 실패");
+      }
 
       // 바텀시트 먼저 즉시 닫기
       setIsBottomSheetVisible(false);
