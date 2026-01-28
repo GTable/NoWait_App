@@ -4,10 +4,14 @@ import styled from "@emotion/native";
 import { CheckBox } from "./CustomCheckBox";
 import { ArrowRightSvg } from "../assets/images";
 import { CustomButton } from "./CustomButton";
-import React from "react";
+import React, { useState } from "react";
 import Animated from "react-native-reanimated";
-import { Pressable } from "react-native";
+import { Pressable, Modal } from "react-native";
 import { usePressScaleAnimation } from "../interaction/usePressScaleAnimation";
+import TermDetailScreen, {
+  TermType,
+} from "@/features/phone_number/components/TermDetailScreen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const TERM_PRESS_ANIMATION = {
   scale: 0.96,
@@ -44,39 +48,66 @@ interface CustomBottomSheetProps {
  * - Press 시 scale: 0.96 애니메이션
  * - Press 시 해당 항목에만 dim 표시
  */
+// term.id를 TermType으로 변환
+const getTermType = (id: string): TermType => {
+  const termTypeMap: Record<string, TermType> = {
+    service: "service",
+    privacy: "privacy",
+    marketing: "marketing",
+  };
+  return termTypeMap[id] || "service";
+};
+
 const AnimatedTermItem = React.memo(({ term }: { term: TermItem }) => {
   // Press 인터랙션 애니메이션 훅 사용
   const { isPressed, dimStyle, animatedStyle, handlePressIn, handlePressOut } =
     usePressScaleAnimation(TERM_PRESS_ANIMATION);
 
+  // 모달 상태 관리
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   return (
-    <E.ItemWrapper>
-      {/* Press 시 해당 항목만 어두워짐 */}
-      {isPressed && <E.ItemDim style={dimStyle} />}
-      <Animated.View style={animatedStyle}>
-        <E.TermContainerInner>
-          {/* 체크박스 영역 - 터치 시 체크 토글 */}
-          <Pressable
-            style={{ flex: 1 }}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-            onPress={term.onPress}
-          >
-            <E.TermRow>
-              <CheckBox checked={term.checked} onPress={term.onPress} />
-              <E.TermText>{term.text}</E.TermText>
-            </E.TermRow>
-          </Pressable>
-          {/* 화살표 버튼 - 터치 시 상세 페이지 이동 */}
-          <Pressable
-            onPress={term.onDetailPress}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <ArrowRightSvg />
-          </Pressable>
-        </E.TermContainerInner>
-      </Animated.View>
-    </E.ItemWrapper>
+    <>
+      <E.ItemWrapper>
+        {/* Press 시 해당 항목만 어두워짐 */}
+        {isPressed && <E.ItemDim style={dimStyle} />}
+        <Animated.View style={animatedStyle}>
+          <E.TermContainerInner>
+            {/* 체크박스 영역 - 터치 시 체크 토글 */}
+            <Pressable
+              style={{ flex: 1 }}
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+              onPress={term.onPress}
+            >
+              <E.TermRow>
+                <CheckBox checked={term.checked} onPress={term.onPress} />
+                <E.TermText>{term.text}</E.TermText>
+              </E.TermRow>
+            </Pressable>
+            {/* 화살표 버튼 - 터치 시 모달 띄우기 */}
+            <Pressable onPress={() => setIsModalVisible(true)}>
+              <ArrowRightSvg />
+            </Pressable>
+          </E.TermContainerInner>
+        </Animated.View>
+      </E.ItemWrapper>
+
+      {/* 약관 상세 모달 */}
+      <Modal
+        visible={isModalVisible}
+        animationType="none"
+        transparent={false}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <SafeAreaProvider>
+          <TermDetailScreen
+            type={getTermType(term.id)}
+            onClose={() => setIsModalVisible(false)}
+          />
+        </SafeAreaProvider>
+      </Modal>
+    </>
   );
 });
 
