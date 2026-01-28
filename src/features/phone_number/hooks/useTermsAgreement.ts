@@ -66,10 +66,14 @@ export const useTermsAgreement = () => {
   // 필수 약관(term1, term2)이 모두 체크되었는지 확인
   const isRequiredTermsChecked = termsChecked.term1 && termsChecked.term2;
 
+  // 마케팅 동의 여부 (선택 약관)
+  const isMarketingAgreed = termsChecked.term3;
+
   return {
     terms,
     allChecked,
     handleAllCheck,
     isRequiredTermsChecked,
+    isMarketingAgreed,
   };
 };
