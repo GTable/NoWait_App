@@ -2,6 +2,7 @@ import { colors } from "@/app/styles/colors";
 import { BackHeader } from "@/shared/ui/BackHeader";
 import styled from "@emotion/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native";
 import React from "react";
 
 // 약관 타입 정의
@@ -136,30 +137,31 @@ const TERM_DATA: Record<TermType, TermData> = {
 
 interface TermDetailScreenProps {
   type: TermType;
-  onClose?: () => void;
+  onClose: () => void;
 }
-
-const noop = () => {};
 
 const TermDetailScreen = ({ type, onClose }: TermDetailScreenProps) => {
   const { headerTitle, sections } = TERM_DATA[type];
 
   return (
     <E.ModalContainer>
-      <BackHeader title={headerTitle} onPress={onClose || noop} />
-      <E.Container>
-        {sections.map((section, index) => (
-          <E.Section key={index}>
-            {section.title && <E.Title>{section.title}</E.Title>}
-            {section.content && <E.Content>{section.content}</E.Content>}
-            {section.listItems?.map((item, itemIndex) => (
-              <E.ListItem key={itemIndex}>
-                <E.ListNumber>{item.marker}</E.ListNumber>
-                <E.ListContent>{item.text}</E.ListContent>
-              </E.ListItem>
-            ))}
-          </E.Section>
-        ))}
+      <BackHeader title={headerTitle} onPress={onClose} />
+      {/* 스크롤 가능한 약관 콘텐츠 */}
+      <E.Container showsVerticalScrollIndicator={false}>
+        <E.ContentWrapper>
+          {sections.map((section, index) => (
+            <E.Section key={index}>
+              {section.title && <E.Title>{section.title}</E.Title>}
+              {section.content && <E.Content>{section.content}</E.Content>}
+              {section.listItems?.map((item, itemIndex) => (
+                <E.ListItem key={itemIndex}>
+                  <E.ListNumber>{item.marker}</E.ListNumber>
+                  <E.ListContent>{item.text}</E.ListContent>
+                </E.ListItem>
+              ))}
+            </E.Section>
+          ))}
+        </E.ContentWrapper>
       </E.Container>
     </E.ModalContainer>
   );
@@ -184,15 +186,20 @@ const E = {
     backgroundColor: colors.white[100],
   }),
 
-  Container: styled.View({
+  // 스크롤 가능한 약관 콘텐츠 영역
+  Container: styled(ScrollView)({
     flex: 1,
     width: "100%",
-    flexDirection: "column",
     backgroundColor: colors.white[100],
-    alignItems: "flex-start",
-    gap: 10,
     paddingTop: 20,
     paddingHorizontal: 20,
+  }),
+
+  // 스크롤뷰 내부 콘텐츠 래퍼
+  ContentWrapper: styled.View({
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 10,
   }),
 
   Section: styled.View({
