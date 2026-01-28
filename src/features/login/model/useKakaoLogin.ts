@@ -21,13 +21,21 @@ export const useKakaoLogin = () => {
       setToken(kakaoAccessToken);
 
       // 서버에 로그인 요청 및 토큰 저장
-      await kakaoLogin(kakaoAccessToken);
+      const response = await kakaoLogin(kakaoAccessToken);
 
-      // 로그인 성공 시 메인 페이지로 이동
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Tabs" }],
-      });
+      // 신규 사용자: 전화번호 입력 페이지로 이동
+      // 기존 사용자: 메인 페이지로 이동
+      if (response.response.newUser) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "PhoneNumber" }],
+        });
+      } else {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Tabs" }],
+        });
+      }
     } catch (e: any) {
       console.error("Login Failed:", e.message);
     } finally {

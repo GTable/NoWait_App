@@ -3,14 +3,21 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Keyboard } from "react-native";
+import { updateOptionalInfo } from "../model/phoneNumberApi";
+
+interface UseSignupFlowParams {
+  phoneNumber: string;
+  consent: boolean;
+}
 
 /**
  * 회원가입 플로우 관리 훅
  * - 약관 동의 바텀시트 표시/숨김 처리
  * - 가입 완료 Success 모달 표시
+ * - 선택 정보(전화번호, 마케팅 동의) API 전송
  * - 가입 완료 후 3초 뒤 메인 화면으로 자동 이동
  */
-export const useSignupFlow = () => {
+export const useSignupFlow = ({ phoneNumber, consent }: UseSignupFlowParams) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -38,32 +45,44 @@ export const useSignupFlow = () => {
     setIsBottomSheetVisible(false);
   }, []);
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useCallback(async () => {
     // 기존 타이머가 있다면 정리
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // 바텀시트 먼저 즉시 닫기
-    setIsBottomSheetVisible(false);
+    try {
+      // 하이픈 제거 후 API 호출
+      const cleanPhoneNumber = phoneNumber.replace(/-/g, "");
+      const success = await updateOptionalInfo(cleanPhoneNumber, consent);
 
-    // 바텀시트가 화면에서 사라지도록 아주 짧은 딜레이 후 SuccessScreen 표시
-    requestAnimationFrame(() => {
+      if (!success) {
+        throw new Error("선택 정보 저장 실패");
+      }
+
+      // 바텀시트 먼저 즉시 닫기
+      setIsBottomSheetVisible(false);
+
+      // 바텀시트가 화면에서 사라지도록 아주 짧은 딜레이 후 SuccessScreen 표시
       requestAnimationFrame(() => {
-        setIsSuccessModalVisible(true);
+        requestAnimationFrame(() => {
+          setIsSuccessModalVisible(true);
+        });
       });
-    });
 
-    // 3초 후 Main 화면으로 이동
-    timeoutRef.current = setTimeout(() => {
-      setIsSuccessModalVisible(false);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Tabs" }],
-      });
-      timeoutRef.current = null;
-    }, 3000);
-  }, [navigation]);
+      // 3초 후 Main 화면으로 이동
+      timeoutRef.current = setTimeout(() => {
+        setIsSuccessModalVisible(false);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Tabs" }],
+        });
+        timeoutRef.current = null;
+      }, 3000);
+    } catch (error) {
+      console.error("선택 정보 저장 실패:", error);
+    }
+  }, [navigation, phoneNumber, consent]);
 
   return {
     isBottomSheetVisible,
