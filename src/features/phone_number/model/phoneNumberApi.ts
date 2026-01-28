@@ -26,13 +26,10 @@ export const updateOptionalInfo = async (
   const response = UpdateOptionalInfoResponseSchema.parse(rawResponse);
 
   // 새로운 토큰 저장
-  if (response.response.access_token) {
-    await SecureStore.setItemAsync("accessToken", response.response.access_token);
-  }
-
-  if (response.response.refresh_token) {
-    await SecureStore.setItemAsync("refreshToken", response.response.refresh_token);
-  }
+  await Promise.all([
+    SecureStore.setItemAsync("accessToken", response.response.access_token),
+    SecureStore.setItemAsync("refreshToken", response.response.refresh_token),
+  ]);
 
   return response.success;
 };
