@@ -13,7 +13,7 @@ const PhoneNumberScreen = () => {
     usePhoneNumberForm();
 
   // 약관 동의 상태 관리
-  const { terms, allChecked, handleAllCheck, isRequiredTermsChecked } =
+  const { terms, allChecked, handleAllCheck, isRequiredTermsChecked, isMarketingAgreed } =
     useTermsAgreement();
 
   // 회원가입 플로우 관리 (바텀시트, Success 모달, 네비게이션)
@@ -23,7 +23,7 @@ const PhoneNumberScreen = () => {
     handleNext,
     handleCloseBottomSheet,
     handleConfirm,
-  } = useSignupFlow();
+  } = useSignupFlow({ phoneNumber, consent: isMarketingAgreed });
 
   // 필수 약관 체크 후 확인 처리
   const onConfirm = () => {
