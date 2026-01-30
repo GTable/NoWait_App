@@ -6,6 +6,9 @@ import SearchScreen from "@/screens/search/SearchScreen";
 import SplashScreen from "@/screens/splash/SplashScreen";
 import StoreDetailScreen from "@/screens/store_detail/StoreDetailScreen";
 import PhoneNumberScreen from "@/screens/phone_number/PhoneNumberScreen";
+import EnterPersonScreen from "@/screens/waiting_register/EnterPersonScreen";
+import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScreen";
+import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
 
 declare module "./routes.core" {
   interface AppRouteMap {
@@ -17,5 +20,8 @@ declare module "./routes.core" {
     myPage: ReturnType<typeof MyPageScreen.useParams>;
     storeDetail: ReturnType<typeof StoreDetailScreen.useParams>;
     phoneNumber: ReturnType<typeof PhoneNumberScreen.useParams>;
+    enterPerson: ReturnType<typeof EnterPersonScreen.useParams>;
+    confirmWaiting: ReturnType<typeof ConfirmWaitingScreen.useParams>;
+    waitingSuccess: ReturnType<typeof WaitingSuccessScreen.useParams>;
   }
 }

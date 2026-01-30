@@ -4,19 +4,31 @@ import { MenuComponent } from "@/features/store_detail/components/MenuComponent"
 import { StoreDetailInfoComponent } from "@/features/store_detail/components/StoreDetailInfoComponent";
 import { useStoreDetail } from "@/features/store_detail/hooks/useStoreDetail";
 import { CustomTwoButton } from "@/shared/ui/CustomTwoButton";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
 import styled from "@emotion/native";
 import React from "react";
 import { ScrollView } from "react-native";
 
 type StoreDetailRouteProp = RouteProp<RootStackParamList, "StoreDetail">;
+type StoreDetailNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "StoreDetail"
+>;
 
 const StoreDetailScreen = () => {
   const route = useRoute<StoreDetailRouteProp>();
+  const navigation = useNavigation<StoreDetailNavigationProp>();
   const { publicCode } = route.params;
 
   const { storeDetail, menus } = useStoreDetail(publicCode);
+
+  const handleWaitingPress = () => {
+    if (storeDetail?.isActive && !storeDetail?.isWaiting) {
+      navigation.navigate("EnterPerson", { publicCode });
+    }
+  };
 
   return (
     <ScreenLayout>
@@ -43,6 +55,7 @@ const StoreDetailScreen = () => {
           isBookmark={storeDetail?.isBookmark}
           isActive={storeDetail?.isActive}
           isWaiting={storeDetail?.isWaiting}
+          onRightPress={handleWaitingPress}
         />
       </E.BottomButtonWrapper>
     </ScreenLayout>

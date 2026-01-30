@@ -1,0 +1,31 @@
+import React from "react";
+import Svg, { Rect, Mask, G, Path } from "react-native-svg";
+
+interface MinusSvgProps {
+  width?: number;
+  height?: number;
+}
+
+export const MinusSvg = ({ width = 34, height = 34 }: MinusSvgProps) => {
+  return (
+    <Svg width={width} height={height} viewBox="0 0 34 34" fill="none">
+      <Rect width="34" height="34" rx="8" fill="#F9F9F9" />
+      <Mask
+        id="mask0_7062_8913"
+        maskUnits="userSpaceOnUse"
+        x="5"
+        y="5"
+        width="24"
+        height="24"
+      >
+        <Rect x="5" y="5" width="24" height="24" fill="#D9D9D9" />
+      </Mask>
+      <G mask="url(#mask0_7062_8913)">
+        <Path
+          d="M11.1333 18.2667C10.8122 18.2667 10.5431 18.1581 10.3258 17.9408C10.1086 17.7236 10 17.4544 10 17.1333C10 16.8122 10.1086 16.5431 10.3258 16.3258C10.5431 16.1086 10.8122 16 11.1333 16H22.4667C22.7878 16 23.0569 16.1086 23.2742 16.3258C23.4914 16.5431 23.6 16.8122 23.6 17.1333C23.6 17.4544 23.4914 17.7236 23.2742 17.9408C23.0569 18.1581 22.7878 18.2667 22.4667 18.2667H11.1333Z"
+          fill="#E6E6E6"
+        />
+      </G>
+    </Svg>
+  );
+};
