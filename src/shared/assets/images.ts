@@ -39,3 +39,6 @@ export { MapPinSvg } from "./images/storeDetail/MapPinSvg";
 export { ClockSvg } from "./images/storeDetail/ClockSvg";
 export { XCircleSvg } from "./images/ui/x_circle/XCircleSvg";
 export { SignupSvg } from "./images/ui/signup/SignupSvg";
+export { PlusSvg } from "./images/ui/stepper/PlusSvg";
+export { MinusSvg } from "./images/ui/stepper/MinusSvg";
+export { WaitingSvg } from "./images/storeDetail/WaitingSvg";
