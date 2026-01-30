@@ -31,6 +31,7 @@ export const useConfirmWaiting = ({
   const navigation = useNavigation<ConfirmWaitingNavigationProp>();
   const [waitingInfo, setWaitingInfo] = useState<WaitingInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const getIdempotencyKey = useIdempotencyKey();
 
   // 화면 진입 시 최신 대기 정보 조회
@@ -54,6 +55,11 @@ export const useConfirmWaiting = ({
   };
 
   const handleRegister = async () => {
+    // 이미 요청 중이면 무시 (더블탭 방지)
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
       // 멱등성 키와 함께 대기 등록 API 호출
       const result = await registerWaiting(
@@ -67,12 +73,15 @@ export const useConfirmWaiting = ({
     } catch (error) {
       console.error("대기 등록 실패:", error);
       // TODO: 에러 처리 (토스트 메시지 등)
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return {
     waitingInfo,
     isLoading,
+    isSubmitting,
     handleBack,
     handleRegister,
   };
