@@ -36,18 +36,28 @@ export const useConfirmWaiting = ({
 
   // 화면 진입 시 최신 대기 정보 조회
   useEffect(() => {
+    let isMounted = true;
+
     const fetchWaitingInfo = async () => {
       try {
         const data = await getWaitingInfo(publicCode);
-        setWaitingInfo(data);
+        if (isMounted) {
+          setWaitingInfo(data);
+        }
       } catch (error) {
         console.error("대기 정보 조회 실패:", error);
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchWaitingInfo();
+
+    return () => {
+      isMounted = false;
+    };
   }, [publicCode]);
 
   const handleBack = () => {
