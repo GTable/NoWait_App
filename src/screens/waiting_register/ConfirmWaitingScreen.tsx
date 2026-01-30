@@ -11,11 +11,16 @@ import styled from "@emotion/native";
 
 const ConfirmWaitingScreen = () => {
   const { publicCode, personCount } = ConfirmWaitingRoute.useParams();
-  const { handleBack, handleRegister } = useConfirmWaiting({ publicCode });
+  const { waitingInfo, isLoading, handleBack, handleRegister } =
+    useConfirmWaiting({ publicCode, personCount });
 
-  // TODO: API로 실제 대기팀 수와 부스 정보 가져오기
-  const waitingTeamCount = 15; // 임시 데이터
-  const boothName = "스페이시스 / 컴퓨터공학과"; // 임시 데이터
+  if (isLoading || !waitingInfo) {
+    return (
+      <ScreenLayout>
+        <BackHeader onPress={handleBack} />
+      </ScreenLayout>
+    );
+  }
 
   return (
     <ScreenLayout>
@@ -24,8 +29,11 @@ const ConfirmWaitingScreen = () => {
       {/* 대기 정보 영역 */}
       <E.ContentWrapper>
         <E.InfoSection>
-          <WaitingTeamCount count={waitingTeamCount} />
-          <WaitingDetailInfo boothName={boothName} personCount={personCount} />
+          <WaitingTeamCount count={waitingInfo.waitingCount} />
+          <WaitingDetailInfo
+            boothName={waitingInfo.boothName}
+            personCount={personCount}
+          />
         </E.InfoSection>
 
         {/* 대기 등록 전 안내사항 */}
