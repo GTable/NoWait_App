@@ -48,6 +48,13 @@ export type BottomTabRouteName = "Main" | "Map" | "Search" | "MyPage";
 // 바텀 탭 ParamList
 export type BottomTabParamList = Pick<AppRouteMap, BottomTabRouteName>;
 
+// 대기 등록 플로우 ParamList
+export type WaitingRegisterParamList = {
+  EnterPerson: AppRouteMap["enterPerson"];
+  ConfirmWaiting: AppRouteMap["confirmWaiting"];
+  WaitingSuccess: AppRouteMap["waitingSuccess"];
+};
+
 // 루트 스택 네비게이션 파라미터 목록
 export type RootStackParamList = {
   Splash: AppRouteMap["Splash"];
@@ -57,4 +64,7 @@ export type RootStackParamList = {
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];
   PhoneNumber: AppRouteMap["phoneNumber"];
+  EnterPerson: WaitingRegisterParamList["EnterPerson"];
+  ConfirmWaiting: WaitingRegisterParamList["ConfirmWaiting"];
+  WaitingSuccess: WaitingRegisterParamList["WaitingSuccess"];
 };

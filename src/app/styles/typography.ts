@@ -125,6 +125,13 @@ export const typography = {
     fontWeight: "500" as const,
     fontFamily: "Pretendard-Medium",
   },
+  "text-14-regular": {
+    fontSize: 14,
+    lineHeight: 14 * 1.44,
+    letterSpacing: 0,
+    fontWeight: "400" as const,
+    fontFamily: "Pretendard-Regular",
+  },
   "text-13-regular": {
     fontSize: 13,
     lineHeight: 13 * 1.44,
