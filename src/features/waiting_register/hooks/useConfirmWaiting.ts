@@ -3,14 +3,14 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { useState, useEffect } from "react";
 import { getWaitingInfo, WaitingInfo } from "../model/WaitingApi";
-import { registerWaiting } from "../model/WaitingRegisterApi";
+import { registerWaitingTest } from "../test/WaitingRegisterApi.test";
 import { useIdempotencyKey } from "./useIdempotencyKey";
 
 interface UseConfirmWaitingProps {
   /** 주점 공개 코드 */
   publicCode: string;
   /** 입장 인원 수 */
-  personCount: number;
+  partySize: number;
 }
 
 type ConfirmWaitingNavigationProp = NativeStackNavigationProp<
@@ -26,7 +26,7 @@ type ConfirmWaitingNavigationProp = NativeStackNavigationProp<
  */
 export const useConfirmWaiting = ({
   publicCode,
-  personCount,
+  partySize,
 }: UseConfirmWaitingProps) => {
   const navigation = useNavigation<ConfirmWaitingNavigationProp>();
   const [waitingInfo, setWaitingInfo] = useState<WaitingInfo | null>(null);
@@ -71,10 +71,10 @@ export const useConfirmWaiting = ({
     setIsSubmitting(true);
 
     try {
-      // 멱등성 키와 함께 대기 등록 API 호출
-      const result = await registerWaiting(
+      // 멱등성 키와 함께 대기 등록 API 호출 (테스트용)
+      const result = await registerWaitingTest(
         publicCode,
-        personCount,
+        partySize,
         getIdempotencyKey(),
       );
       console.log("대기 등록 성공:", result);
