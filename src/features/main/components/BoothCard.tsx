@@ -120,6 +120,6 @@ const E = {
     fontFamily: "Pretendard",
     fontSize: 13,
     fontWeight: "500",
-    lineHeight: 19,
+    lineHeight: 13 * 1.44,
   }),
 };
