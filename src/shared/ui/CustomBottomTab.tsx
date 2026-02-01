@@ -127,6 +127,7 @@ const blurStyle = {
   borderRadius: 999,
   borderWidth: 1,
   borderColor: colors.white[100],
+  overflow: "hidden" as const,
 };
 
 const E = {
@@ -138,6 +139,7 @@ const E = {
     paddingHorizontal: 6,
     paddingVertical: 20,
     gap: 6,
+    borderRadius: 999,
   }),
 
   /** 검색 탭 그룹 (원형) */

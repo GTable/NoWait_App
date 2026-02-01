@@ -10,9 +10,9 @@ import React from "react";
 import styled from "@emotion/native";
 
 const ConfirmWaitingScreen = () => {
-  const { publicCode, personCount } = ConfirmWaitingRoute.useParams();
+  const { publicCode, partySize } = ConfirmWaitingRoute.useParams();
   const { waitingInfo, isLoading, handleBack, handleRegister } =
-    useConfirmWaiting({ publicCode, personCount });
+    useConfirmWaiting({ publicCode, partySize });
 
   if (isLoading || !waitingInfo) {
     return (
@@ -32,7 +32,7 @@ const ConfirmWaitingScreen = () => {
           <WaitingTeamCount count={waitingInfo.waitingCount} />
           <WaitingDetailInfo
             boothName={waitingInfo.boothName}
-            personCount={personCount}
+            partySize={partySize}
           />
         </E.InfoSection>
 

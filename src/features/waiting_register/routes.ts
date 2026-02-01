@@ -16,7 +16,7 @@ export const ConfirmWaitingRoute = createRoute("ConfirmWaiting", {
   path: "confirm-waiting",
   params: z.object({
     publicCode: z.string(),
-    personCount: z.number(),
+    partySize: z.number(),
   }),
 });
 
