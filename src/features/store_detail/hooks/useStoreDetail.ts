@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getStoreDetail, StoreDetail } from "../models/StoreDetailApi";
-import { getTotalMenu, MenuItem } from "../models/TotalMenuApi";
+import { getStoreDetail, StoreDetail } from "../model/StoreDetailApi";
+import { getTotalMenu, MenuItem } from "../model/TotalMenuApi";
 
 /**
  * 주점 상세 정보와 메뉴를 가져오는 훅
