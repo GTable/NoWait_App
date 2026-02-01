@@ -4,17 +4,13 @@ import { z } from "zod";
 const WaitingRegisterResponseSchema = z.object({
   success: z.boolean(),
   response: z.object({
-    reservationNumber: z.string(),
-    rank: z.number(),
-    reserved: z.boolean(),
+    waitingNumber: z.string(),
     partySize: z.number(),
   }),
 });
 
 export interface WaitingRegisterResult {
-  reservationNumber: string;
-  rank: number;
-  reserved: boolean;
+  waitingNumber: string;
   partySize: number;
 }
 

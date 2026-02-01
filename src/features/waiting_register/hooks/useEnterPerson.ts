@@ -16,7 +16,7 @@ export const useEnterPerson = ({ publicCode }: UseEnterPersonParams) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const [personCount, setPersonCount] = useState(1);
+  const [partySize, setPartySize] = useState(1);
 
   const handleBack = () => {
     navigation.goBack();
@@ -25,13 +25,13 @@ export const useEnterPerson = ({ publicCode }: UseEnterPersonParams) => {
   const handleNext = () => {
     navigation.navigate("ConfirmWaiting", {
       publicCode,
-      personCount,
+      partySize,
     });
   };
 
   return {
-    personCount,
-    setPersonCount,
+    partySize,
+    setPartySize,
     handleBack,
     handleNext,
   };

@@ -10,12 +10,12 @@ interface WaitingDetailInfoProps {
   /** 부스 이름 (ex: "스페이시스 / 컴퓨터공학과") */
   boothName: string;
   /** 입장 인원 수 */
-  personCount: number;
+  partySize: number;
 }
 
 export const WaitingDetailInfo = ({
   boothName,
-  personCount,
+  partySize,
 }: WaitingDetailInfoProps) => {
   return (
     <E.DetailContainer>
@@ -26,7 +26,7 @@ export const WaitingDetailInfo = ({
 
       <E.ContentContainer>
         <E.Label>입장 인원</E.Label>
-        <E.Content>{personCount}명</E.Content>
+        <E.Content>{partySize}명</E.Content>
       </E.ContentContainer>
     </E.DetailContainer>
   );

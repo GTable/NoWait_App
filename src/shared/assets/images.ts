@@ -42,3 +42,6 @@ export { SignupSvg } from "./images/ui/signup/SignupSvg";
 export { PlusSvg } from "./images/ui/stepper/PlusSvg";
 export { MinusSvg } from "./images/ui/stepper/MinusSvg";
 export { WaitingSvg } from "./images/storeDetail/WaitingSvg";
+export { Alert } from "./images/main/Alert";
+export { ArrowDown } from "./images/main/ArrowDown";
+export { Logo } from "./images/main/Logo";

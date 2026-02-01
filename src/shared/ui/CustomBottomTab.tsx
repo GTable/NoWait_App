@@ -252,6 +252,7 @@ const blurStyle = {
   borderRadius: 999,
   borderWidth: 1,
   borderColor: colors.white[100],
+  overflow: "hidden" as const,
 };
 
 const E = {
@@ -262,8 +263,8 @@ const E = {
     paddingHorizontal: MAIN_GROUP_PADDING_X,
     paddingVertical: 20,
     gap: MAIN_GROUP_GAP,
-    // ✅ absolute indicator가 보이도록
     position: "relative",
+    borderRadius: 999,
   }),
 
   SearchTabGroup: styled(BlurView)({

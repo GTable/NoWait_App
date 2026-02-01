@@ -12,8 +12,9 @@ import { useEnterPerson } from "@/features/waiting_register/hooks/useEnterPerson
 const EnterPersonScreen = () => {
   const { publicCode } = EnterPersonRoute.useParams();
 
-  const { personCount, setPersonCount, handleBack, handleNext } =
-    useEnterPerson({ publicCode });
+  const { partySize, setPartySize, handleBack, handleNext } = useEnterPerson({
+    publicCode,
+  });
 
   return (
     <ScreenLayout>
@@ -25,7 +26,7 @@ const EnterPersonScreen = () => {
         {/* 인원 입력 영역 */}
         <E.PersonInputSection>
           <E.SectionLabel>입장 인원</E.SectionLabel>
-          <PersonCountStepper value={personCount} onChange={setPersonCount} />
+          <PersonCountStepper value={partySize} onChange={setPartySize} />
         </E.PersonInputSection>
       </E.ContentWrapper>
 
