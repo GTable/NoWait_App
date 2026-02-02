@@ -22,7 +22,8 @@ const StoreDetailScreen = () => {
   const navigation = useNavigation<StoreDetailNavigationProp>();
   const { publicCode } = route.params;
 
-  const { storeDetail, menus } = useStoreDetail(publicCode);
+  const { storeDetail, menus, handleBookmarkToggle } =
+    useStoreDetail(publicCode);
 
   const handleWaitingPress = () => {
     if (storeDetail?.isActive && !storeDetail?.isWaiting) {
@@ -55,6 +56,7 @@ const StoreDetailScreen = () => {
           isBookmark={storeDetail?.isBookmark}
           isActive={storeDetail?.isActive}
           isWaiting={storeDetail?.isWaiting}
+          onLeftPress={handleBookmarkToggle}
           onRightPress={handleWaitingPress}
         />
       </E.BottomButtonWrapper>
