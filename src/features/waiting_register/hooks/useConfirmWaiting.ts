@@ -2,9 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { useState, useEffect } from "react";
-import { getWaitingInfo, WaitingInfo } from "../model/WaitingApi";
+import { getWaitingCountTest } from "../test/WaitingCountApi.test";
 import { registerWaitingTest } from "../test/WaitingRegisterApi.test";
 import { useIdempotencyKey } from "./useIdempotencyKey";
+
+interface WaitingInfo {
+  waitingCount: number;
+  boothName: string;
+}
 
 interface UseConfirmWaitingProps {
   /** 주점 공개 코드 */
@@ -40,9 +45,13 @@ export const useConfirmWaiting = ({
 
     const fetchWaitingInfo = async () => {
       try {
-        const data = await getWaitingInfo(publicCode);
+        // 백엔드 리팩토링 후 실제 API로 교체 필요
+        const data = await getWaitingCountTest(publicCode);
         if (isMounted) {
-          setWaitingInfo(data);
+          setWaitingInfo({
+            waitingCount: data.waitingCount,
+            boothName: `${data.storeName} / ${data.departmentName}`,
+          });
         }
       } catch (error) {
         console.error("대기 정보 조회 실패:", error);
