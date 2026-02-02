@@ -72,16 +72,19 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
       return;
     }
 
-    // 메인 탭 클릭 시 인디케이터 즉시 이동 (UX 향상)
-    moveIndicatorTo(name);
-
     const event = navigation.emit({
       type: "tabPress",
       target: key,
       canPreventDefault: true,
     });
 
-    if (!isFocused && !event.defaultPrevented) navigation.navigate(name);
+    // 네비게이션이 차단되지 않았을 때만 인디케이터 이동
+    if (!event.defaultPrevented) {
+      moveIndicatorTo(name);
+      if (!isFocused) {
+        navigation.navigate(name);
+      }
+    }
   };
 
   const renderTab = (name: string, key: string, isFocused: boolean) => {
