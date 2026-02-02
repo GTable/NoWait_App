@@ -27,7 +27,7 @@ export const getWaitingCountTest = async (
   publicCode: string,
 ): Promise<WaitingCountResult> => {
   const rawResponse = await usersApiTest.get(
-    `/v2/users/me/waitings/${publicCode}/waiting-count`,
+    `/waitings/${publicCode}/waiting-count`,
   );
 
   const response = WaitingCountResponseSchema.parse(rawResponse);
