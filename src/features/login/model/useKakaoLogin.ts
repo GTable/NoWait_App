@@ -7,6 +7,12 @@ import { kakaoLogin } from "./LoginApi";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
+/**
+ * 카카오 로그인 플로우 관리 훅
+ * - 카카오 네이티브 SDK로 액세스 토큰 획득
+ * - 서버 로그인 처리 및 토큰 저장
+ * - 신규 사용자는 전화번호 입력 화면으로, 기존 사용자는 메인 화면으로 이동
+ */
 export const useKakaoLogin = () => {
   const navigation = useNavigation<NavigationProp>();
   const [isLoading, setIsLoading] = useState(false);

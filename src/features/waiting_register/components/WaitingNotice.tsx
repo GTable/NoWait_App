@@ -3,9 +3,9 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 
 /**
- * 대기 등록 전 확인해야 할 안내사항을 표시하는 컴포넌트
- * - 10분 이내 입장 안내
- * - 신중한 등록 요청
+ * 대기 등록 안내사항 컴포넌트
+ * - 10분 이내 입장 요청
+ * - 신중한 등록 안내
  * - 취소 방법 안내
  */
 export const WaitingNotice = () => {

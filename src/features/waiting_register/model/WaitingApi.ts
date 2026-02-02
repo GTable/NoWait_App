@@ -6,9 +6,9 @@ export interface WaitingInfo {
 }
 
 /**
- * 대기 등록 확인 화면에 필요한 주점 정보 조회
- * - waitingCount: 현재 대기 중인 팀 수
- * - boothName: "주점명 / 학과명" 형태
+ * 대기 등록 확인용 주점 정보 조회
+ * @param publicCode - 주점 공개 코드
+ * @returns 현재 대기 팀 수 및 "주점명 / 학과명" 형태의 부스 이름
  */
 export const getWaitingInfo = async (
   publicCode: string,

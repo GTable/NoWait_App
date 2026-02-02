@@ -5,9 +5,14 @@ import { RadioButton } from "@/shared/ui/CustomRadioButton";
 import styled from "@emotion/native";
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-native";
-
 import { SortOption } from "@/screens/main/MainScreen";
 
+/**
+ * 주점 정렬 옵션 선택 모달
+ *
+ * - 대기 적은 순 / 인기 순 선택
+ * - 하단에서 슬라이드 업 애니메이션
+ */
 interface SortModalProps {
   visible: boolean;
   onClose: () => void;
@@ -24,20 +29,14 @@ export const SortModal = ({
   const [selectedSort, setSelectedSort] = useState<SortOption>(currentSort);
 
   useEffect(() => {
-    if (visible) {
-      setSelectedSort(currentSort);
-    }
-  }, [visible, currentSort]);
-
-  const handleConfirm = () => {
-    onConfirm(selectedSort);
-  };
+    setSelectedSort(currentSort);
+  }, [currentSort]);
 
   return (
     <Modal
       visible={visible}
       animationType="slide"
-      transparent={true}
+      transparent
       onRequestClose={onClose}
     >
       <E.Overlay onPress={onClose}>
@@ -46,26 +45,29 @@ export const SortModal = ({
             <E.Title>정렬</E.Title>
 
             <E.OptionList>
-              <E.OptionItem onPress={() => setSelectedSort("minWait")}>
+              <E.OptionItem onPress={() => setSelectedSort("asc")}>
                 <E.OptionText>대기 적은 순</E.OptionText>
                 <RadioButton
-                  checked={selectedSort === "minWait"}
-                  onPress={() => setSelectedSort("minWait")}
+                  checked={selectedSort === "asc"}
+                  onPress={() => setSelectedSort("asc")}
                 />
               </E.OptionItem>
 
-              <E.OptionItem onPress={() => setSelectedSort("popular")}>
+              <E.OptionItem onPress={() => setSelectedSort("desc")}>
                 <E.OptionText>인기 순</E.OptionText>
                 <RadioButton
-                  checked={selectedSort === "popular"}
-                  onPress={() => setSelectedSort("popular")}
+                  checked={selectedSort === "desc"}
+                  onPress={() => setSelectedSort("desc")}
                 />
               </E.OptionItem>
             </E.OptionList>
           </E.Header>
 
           <E.ButtonContainer>
-            <CustomButton variant="rounded12" onPress={handleConfirm}>
+            <CustomButton
+              variant="rounded12"
+              onPress={() => onConfirm(selectedSort)}
+            >
               확인
             </CustomButton>
           </E.ButtonContainer>

@@ -5,6 +5,11 @@ import { Animated, Dimensions, Modal, Pressable } from "react-native";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
+/**
+ * 약관 동의 바텀시트
+ * - 하단에서 슬라이드 업 애니메이션
+ * - 전체 동의 및 개별 약관 체크
+ */
 interface TermItem {
   id: string;
   text: string;

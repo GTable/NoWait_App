@@ -10,10 +10,15 @@ const UpdateOptionalInfoResponseSchema = z.object({
   }),
 });
 
-// 선택 정보 업데이트 API
+/**
+ * 선택 정보(전화번호, 마케팅 동의) 업데이트 API
+ * @param phoneNumber - 하이픈 제거된 전화번호
+ * @param consent - 마케팅 정보 수신 동의 여부
+ * @returns 성공 여부
+ */
 export const updateOptionalInfo = async (
   phoneNumber: string,
-  consent: boolean
+  consent: boolean,
 ): Promise<boolean> => {
   const accessToken = await SecureStore.getItemAsync("accessToken");
 

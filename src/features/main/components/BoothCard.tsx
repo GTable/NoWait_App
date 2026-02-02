@@ -3,6 +3,12 @@ import styled from "@emotion/native";
 import React from "react";
 import { Image } from "react-native";
 
+/**
+ * 가로 스크롤용 부스 카드 컴포넌트
+ *
+ * - 배너 이미지, 주점명, 학과, 대기 상태 표시
+ * - 정렬된 주점 섹션에서 사용
+ */
 interface BoothCardProps {
   name: string;
   departmentName: string;

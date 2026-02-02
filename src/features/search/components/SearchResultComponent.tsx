@@ -20,8 +20,9 @@ interface SearchResultComponentProps {
 }
 
 /**
- * 검색 결과를 표시하는 컴포넌트
+ * 검색 결과 표시 컴포넌트
  * - 검색된 주점 목록을 카드 형태로 표시
+ * - 검색 결과가 없을 때 "검색결과가 없습니다" 메시지 표시
  */
 export const SearchResultComponent = ({
   stores,

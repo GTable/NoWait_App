@@ -8,10 +8,19 @@ import styled from "@emotion/native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+/**
+ * 주점 상세 정보 컴포넌트
+ * - 주점명, 학과, 로고
+ * - 운영 상태 배지
+ * - 위치, 운영시간
+ * - 주점 소개
+ * - 공지사항 버튼
+ */
 interface StoreDetailInfoProps {
   departmentName: string;
   name: string;
   profileImageUrl?: string;
+  isActive: boolean;
   isWaiting: boolean;
   waitingCount: number;
   location: string;
@@ -25,6 +34,7 @@ export const StoreDetailInfoComponent = ({
   departmentName,
   name,
   profileImageUrl,
+  isActive,
   isWaiting,
   waitingCount,
   location,
@@ -57,7 +67,7 @@ export const StoreDetailInfoComponent = ({
 
       {/* 대기 상태 배지 */}
       <E.BadgeWrapper>
-        <CustomBadge isActive={isWaiting} waitingCount={waitingCount} />
+        <CustomBadge isActive={isActive} waitingCount={waitingCount} />
       </E.BadgeWrapper>
 
       <E.Divider />

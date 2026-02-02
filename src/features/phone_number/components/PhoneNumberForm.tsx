@@ -10,6 +10,11 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
+/**
+ * 전화번호 입력 폼 컴포넌트
+ * - 전화번호 입력 필드 및 다음 버튼 제공
+ * - 키보드 처리 (iOS padding, dismiss on background tap)
+ */
 interface PhoneNumberFormProps {
   phoneNumber: string;
   onChangeText: (text: string) => void;

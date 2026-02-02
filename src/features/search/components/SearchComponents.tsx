@@ -5,6 +5,11 @@ import styled from "@emotion/native";
 import React from "react";
 import { View } from "react-native";
 
+/**
+ * 검색 입력 컴포넌트
+ * - 검색어 입력 필드 (주점명, 메뉴, 학과 검색)
+ * - 닫기 버튼으로 검색 화면 종료
+ */
 interface SearchComponentsProps {
   /** 검색어 */
   searchText: string;
@@ -14,9 +19,6 @@ interface SearchComponentsProps {
   onClose?: () => void;
 }
 
-/**
- * 검색 입력 컴포넌트
- */
 export const SearchComponents = ({
   searchText,
   onSearchTextChange,
