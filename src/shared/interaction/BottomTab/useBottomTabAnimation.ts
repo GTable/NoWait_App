@@ -64,6 +64,7 @@ export const useBottomTabAnimation = (
       stiffness: 350, // 빠르고 부드러운 이동
       mass: 0.6, // 가벼운 느낌
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMainIndex, paddingX, tabGap, tabWidth]);
 
   // 탭 클릭 시 즉시 인디케이터 이동 (UX 즉시 반응)
