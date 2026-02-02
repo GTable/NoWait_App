@@ -19,6 +19,8 @@ const SplashScreen = () => {
   useEffect(() => {
     if (!fontsLoaded) return;
 
+    let isMounted = true;
+
     // 폰트 로드 완료 후 토큰 확인하여 화면 이동
     const checkAuthAndNavigate = async () => {
       try {
@@ -26,6 +28,9 @@ const SplashScreen = () => {
 
         // 2초 대기 (스플래시 화면 표시)
         await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        // unmount된 경우 navigation 실행하지 않음
+        if (!isMounted) return;
 
         if (accessToken) {
           // 토큰이 있으면 메인 화면으로
@@ -42,6 +47,9 @@ const SplashScreen = () => {
         }
       } catch (error) {
         console.error("토큰 확인 중 오류:", error);
+        // unmount된 경우 navigation 실행하지 않음
+        if (!isMounted) return;
+
         // 오류 발생 시 로그인 화면으로
         navigation.reset({
           index: 0,
@@ -51,6 +59,10 @@ const SplashScreen = () => {
     };
 
     checkAuthAndNavigate();
+
+    return () => {
+      isMounted = false;
+    };
   }, [fontsLoaded, navigation]);
 
   return (
