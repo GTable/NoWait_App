@@ -7,6 +7,10 @@ type WaitingSuccessNavigationProp = NativeStackNavigationProp<
   "WaitingSuccess"
 >;
 
+/**
+ * 대기 등록 성공 화면 로직 관리 훅
+ * - 확인 버튼 클릭 시 메인 탭으로 이동
+ */
 export const useWaitingSuccess = () => {
   const navigation = useNavigation<WaitingSuccessNavigationProp>();
 

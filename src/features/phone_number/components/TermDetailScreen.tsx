@@ -5,7 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import React from "react";
 
-// 약관 타입 정의
+/**
+ * 약관 상세 화면
+ * - 서비스 이용약관, 개인정보 처리방침, 마케팅 동의 전문 표시
+ */
 export type TermType = "service" | "privacy" | "marketing";
 
 // 섹션 콘텐츠 타입

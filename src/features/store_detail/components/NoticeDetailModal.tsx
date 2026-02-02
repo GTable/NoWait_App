@@ -5,6 +5,10 @@ import { formatNoticeContent } from "@/shared/utils/formatNoticeContent";
 import { BackHeader } from "@/shared/ui/BackHeader";
 import styled from "@emotion/native";
 
+/**
+ * 주점 공지사항 상세 모달
+ * - 공지사항 제목 및 내용 전문 표시
+ */
 interface NoticeDetailModalProps {
   /** 공지사항 제목 */
   noticeTitle: string;

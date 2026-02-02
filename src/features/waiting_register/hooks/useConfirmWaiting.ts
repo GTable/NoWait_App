@@ -24,10 +24,10 @@ type ConfirmWaitingNavigationProp = NativeStackNavigationProp<
 >;
 
 /**
- * 대기 등록 확인 화면 로직 관리 hook
+ * 대기 등록 확인 화면 로직 관리 훅
  * - 실시간 대기 정보 조회 (대기 팀 수, 부스 이름)
  * - 대기 등록 API 호출 (멱등성 키 포함)
- * - 네비게이션 핸들러
+ * - 더블탭 방지 처리
  */
 export const useConfirmWaiting = ({
   publicCode,
@@ -86,7 +86,6 @@ export const useConfirmWaiting = ({
         partySize,
         getIdempotencyKey(),
       );
-      console.log("대기 등록 성공:", result);
 
       navigation.navigate("WaitingSuccess", { publicCode });
     } catch (error) {

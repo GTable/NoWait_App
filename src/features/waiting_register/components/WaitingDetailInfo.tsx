@@ -3,8 +3,9 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 
 /**
- * 대기 등록 정보를 표시하는 컴포넌트
- * 부스 이름과 입장 인원을 보여줌
+ * 대기 등록 확인 정보 컴포넌트
+ * - 부스 이름 (주점명 / 학과명)
+ * - 입장 인원 수
  */
 interface WaitingDetailInfoProps {
   /** 부스 이름 (ex: "스페이시스 / 컴퓨터공학과") */

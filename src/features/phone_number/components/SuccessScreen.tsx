@@ -3,6 +3,10 @@ import { typography } from "@/app/styles/typography";
 import { SignupSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
 
+/**
+ * 회원가입 완료 축하 화면
+ * - 3초간 표시 후 자동으로 메인 화면으로 이동
+ */
 const SuccessScreen = () => {
   return (
     <E.Container>

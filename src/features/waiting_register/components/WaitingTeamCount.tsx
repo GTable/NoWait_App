@@ -3,7 +3,7 @@ import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 
 /**
- * 현재 대기 중인 팀 수를 표시하는 컴포넌트
+ * 현재 대기 팀 수 표시 컴포넌트
  * "현재 N팀이 대기하고 있어요" 형태로 표시
  */
 interface WaitingTeamCountProps {

@@ -5,9 +5,9 @@ import { typography } from "@/app/styles/typography";
 import { MinusSvg, PlusSvg } from "@/shared/assets/images";
 
 /**
- * 인원 수를 증감시키는 Stepper 컴포넌트
- * - 버튼으로 +/- 1씩 조절 가능
- * - min/max 범위 제한 기능
+ * 인원 수 증감 Stepper 컴포넌트
+ * - +/- 버튼으로 1씩 조절
+ * - min/max 범위 제한 (기본 1~99명)
  */
 interface PersonCountStepperProps {
   /** 현재 인원 수 */

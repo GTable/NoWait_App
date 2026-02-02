@@ -6,69 +6,37 @@ import React from "react";
 import { BoothCard } from "./BoothCard";
 import { SortModal } from "./SortModal";
 import { SortOption } from "@/screens/main/MainScreen";
+import { ActivityIndicator } from "react-native";
+import { useSortedStores } from "../hooks/useSortedStores";
 
-// 목업 데이터
-const MOCK_DATA = [
-  {
-    id: 1,
-    boothName: "술술 주점",
-    departmentName: "컴퓨터공학과",
-    waitingCount: 0,
-    bannerImages: undefined,
-    profileImage: undefined,
-  },
-  {
-    id: 2,
-    boothName: "신나는 포차",
-    departmentName: "경영학과",
-    waitingCount: 3,
-    bannerImages: undefined,
-    profileImage: undefined,
-  },
-  {
-    id: 3,
-    boothName: "달빛 주점",
-    departmentName: "디자인학과",
-    waitingCount: 0,
-    bannerImages: undefined,
-    profileImage: undefined,
-  },
-  {
-    id: 4,
-    boothName: "행복한 술집",
-    departmentName: "전자공학과",
-    waitingCount: 5,
-    bannerImages: undefined,
-    profileImage: undefined,
-  },
-  {
-    id: 5,
-    boothName: "별빛 포차",
-    departmentName: "건축학과",
-    waitingCount: 1,
-    bannerImages: undefined,
-    profileImage: undefined,
-  },
-];
-
-interface MinWaitSectionProps {
+/**
+ * 메인 화면의 정렬된 주점 섹션 컴포넌트
+ *
+ * - 대기 적은 순 / 인기 순 정렬 지원
+ * - 가로 스크롤 부스 카드 리스트
+ * - 실시간 데이터 갱신 (30초마다)
+ */
+interface SortedStoresSectionProps {
   isModalVisible: boolean;
   setIsModalVisible: (visible: boolean) => void;
   sortOption: SortOption;
   setSortOption: (option: SortOption) => void;
 }
 
-export const MinWaitSection = ({
+export const SortedStoresSection = ({
   isModalVisible,
   setIsModalVisible,
   sortOption,
   setSortOption,
-}: MinWaitSectionProps) => {
+}: SortedStoresSectionProps) => {
+  const { stores, isLoading } = useSortedStores(sortOption);
+
   const sectionTitle =
-    sortOption === "minWait" ? "대기가 가장 적어요" : "인기가 가장 많아요";
+    sortOption === "asc" ? "대기가 가장 적어요" : "인기가 가장 많아요";
 
   return (
     <E.Container>
+      {/* 정렬 옵션 선택 헤더 */}
       <E.TitleSection onPress={() => setIsModalVisible(true)}>
         <E.SectionTitle>{sectionTitle}</E.SectionTitle>
         <E.DropdownButton>
@@ -76,25 +44,33 @@ export const MinWaitSection = ({
         </E.DropdownButton>
       </E.TitleSection>
 
-      {/* 부스 카드 가로 스크롤 리스트 */}
+      {/* 가로 스크롤 부스 카드 리스트 */}
       <E.HorizontalCardList
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 20, gap: 6 }}
       >
-        {MOCK_DATA.map((item) => (
-          <BoothCard
-            key={item.id}
-            name={item.boothName}
-            departmentName={item.departmentName}
-            waitingCount={item.waitingCount}
-            bannerImages={item.bannerImages}
-            profileImage={item.profileImage}
-          />
-        ))}
+        {isLoading ? (
+          <E.LoadingContainer>
+            <ActivityIndicator size="large" color={colors.primary[50]} />
+          </E.LoadingContainer>
+        ) : (
+          stores.map((store) => (
+            <BoothCard
+              key={store.storeId}
+              name={store.name}
+              departmentName={store.departmentName}
+              waitingCount={store.waitingCount}
+              bannerImages={
+                store.bannerImageUrl ? [store.bannerImageUrl] : undefined
+              }
+              profileImage={undefined}
+            />
+          ))
+        )}
       </E.HorizontalCardList>
 
-      {/* 하단 모달 */}
+      {/* 정렬 옵션 선택 모달 */}
       <SortModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
@@ -132,5 +108,13 @@ const E = {
 
   HorizontalCardList: styled.ScrollView({
     marginHorizontal: -20,
+  }),
+
+  LoadingContainer: styled.View({
+    width: "100%",
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
   }),
 };

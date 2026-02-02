@@ -6,7 +6,14 @@ interface UseSearchStoresResult {
   hasSearched: boolean;
 }
 
-// 검색어 입력에 맞춰 검색 결과를 가져오는 훅
+/**
+ * 주점 검색 훅
+ * @param keyword - 검색어 (주점명, 메뉴, 학과)
+ * @returns 검색 결과 및 검색 완료 여부
+ *
+ * - 빈 검색어일 때는 API 호출하지 않음
+ * - 이전 요청 결과가 뒤늦게 도착해도 상태 갱신을 방지 (race condition 해결)
+ */
 export const useSearchStores = (keyword: string): UseSearchStoresResult => {
   const [results, setResults] = useState<SearchStore[]>([]);
   const [hasSearched, setHasSearched] = useState(false);

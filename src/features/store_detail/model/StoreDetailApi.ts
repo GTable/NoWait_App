@@ -46,9 +46,13 @@ export interface StoreDetail {
   bannerImageUrls: string[];
 }
 
-// 주점 상세 정보 조회 API
+/**
+ * 주점 상세 정보 조회 API
+ * @param publicCode - 주점 공개 코드
+ * @returns 주점 상세 정보 (배너, 프로필, 대기 상태 등)
+ */
 export const getStoreDetail = async (
-  publicCode: string
+  publicCode: string,
 ): Promise<StoreDetail | null> => {
   const rawResponse = await storeApi.get(`/${publicCode}`);
 

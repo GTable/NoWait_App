@@ -9,8 +9,8 @@ interface UseEnterPersonParams {
 
 /**
  * 인원 입력 화면 로직 관리 훅
- * - 인원수 상태 관리
- * - 뒤로가기 및 다음 단계 네비게이션 처리
+ * - 인원수 상태 관리 (기본값 1명)
+ * - 다음 단계 (대기 등록 확인) 네비게이션
  */
 export const useEnterPerson = ({ publicCode }: UseEnterPersonParams) => {
   const navigation =

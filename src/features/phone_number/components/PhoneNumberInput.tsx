@@ -3,6 +3,11 @@ import { XCircleSvg } from "@/shared/assets/images";
 import { formatPhoneNumber } from "@/shared/utils/formatPhoneNumber";
 import styled from "@emotion/native";
 
+/**
+ * 전화번호 입력 필드 컴포넌트
+ * - 자동 하이픈 포맷팅 (010-1234-5678)
+ * - 입력값 초기화 버튼
+ */
 interface PhoneNumberInputProps {
   value: string;
   onChangeText: (text: string) => void;
