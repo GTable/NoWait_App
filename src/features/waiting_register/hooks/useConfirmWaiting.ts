@@ -45,6 +45,7 @@ export const useConfirmWaiting = ({
 
     const fetchWaitingInfo = async () => {
       try {
+        // 백엔드 리팩토링 후 실제 API로 교체 필요
         const data = await getWaitingCountTest(publicCode);
         if (isMounted) {
           setWaitingInfo({
