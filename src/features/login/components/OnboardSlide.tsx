@@ -10,6 +10,11 @@ const ONBOARD_IMAGES = [
   Images["onboard-3"],
 ] as const;
 
+/**
+ * 온보딩 화면의 이미지 슬라이더 컴포넌트
+ * - 3개의 온보딩 이미지를 가로로 스와이프
+ * - 현재 페이지 인디케이터 표시
+ */
 export const OnboardSlide = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { width } = useWindowDimensions();
@@ -19,7 +24,7 @@ export const OnboardSlide = () => {
       if (viewableItems.length > 0 && viewableItems[0].index !== null) {
         setActiveIndex(viewableItems[0].index);
       }
-    }
+    },
   ).current;
 
   const viewabilityConfig = useRef({

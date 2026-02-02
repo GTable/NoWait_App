@@ -3,76 +3,44 @@ import { typography } from "@/app/styles/typography";
 import { StoreComponent } from "@/shared/ui/StoreComponent";
 import styled from "@emotion/native";
 import React from "react";
+import { ActivityIndicator, FlatList } from "react-native";
+import { useAllStores } from "../hooks/useAllStores";
 
-// 목업 데이터
-const MOCK_STORES = [
-  {
-    publicCode: "store1",
-    name: "술술 주점",
-    departmentName: "컴퓨터공학과",
-    storeLogoUrl: undefined,
-    isActive: true,
-    waitingCount: 0,
-  },
-  {
-    publicCode: "store2",
-    name: "신나는 포차",
-    departmentName: "경영학과",
-    storeLogoUrl: undefined,
-    isActive: true,
-    waitingCount: 3,
-  },
-  {
-    publicCode: "store3",
-    name: "달빛 주점",
-    departmentName: "디자인학과",
-    storeLogoUrl: undefined,
-    isActive: false,
-    waitingCount: 0,
-  },
-  {
-    publicCode: "store4",
-    name: "행복한 술집",
-    departmentName: "전자공학과",
-    storeLogoUrl: undefined,
-    isActive: true,
-    waitingCount: 5,
-  },
-  {
-    publicCode: "store5",
-    name: "별빛 포차",
-    departmentName: "건축학과",
-    storeLogoUrl: undefined,
-    isActive: true,
-    waitingCount: 1,
-  },
-  {
-    publicCode: "store6",
-    name: "동물의 숲 주점",
-    departmentName: "생명과학과",
-    storeLogoUrl: undefined,
-    isActive: true,
-    waitingCount: 2,
-  },
-];
-
+/**
+ * 메인 화면의 "모든 주점" 섹션 컴포넌트
+ *
+ * - 무한 스크롤 지원 (스크롤 끝에서 자동 로드)
+ * - 실시간 데이터 갱신 (30초마다)
+ */
 export const AllStoresSection = () => {
+  const { stores, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useAllStores();
+
   return (
     <E.Container>
       <E.SectionTitle>모든 주점</E.SectionTitle>
 
-      {/* 주점 목록 */}
-      {MOCK_STORES.map((store) => (
-        <StoreComponent
-          key={store.publicCode}
-          publicCode={store.publicCode}
-          name={store.name}
-          departmentName={store.departmentName}
-          storeLogoUrl={store.storeLogoUrl}
-          isActive={store.isActive}
-          waitingCount={store.waitingCount}
+      {isLoading ? (
+        <E.LoadingContainer>
+          <ActivityIndicator size="large" color={colors.primary[50]} />
+        </E.LoadingContainer>
+      ) : (
+        <FlatList
+          data={stores}
+          keyExtractor={(item) => `${item.storeId}`}
+          renderItem={({ item }) => <StoreComponent {...item} />}
+          onEndReached={() => hasNextPage && fetchNextPage()}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <E.LoadingMoreContainer>
+                <ActivityIndicator size="small" color={colors.primary[50]} />
+              </E.LoadingMoreContainer>
+            ) : null
+          }
+          scrollEnabled={false}
         />
-      ))}
+      )}
     </E.Container>
   );
 };
@@ -81,11 +49,27 @@ const E = {
   Container: styled.View({
     flex: 1,
     gap: 12,
+    // 하단에 붙어 있는 경우 클릭하기 어려워 보이는 문제 방지
+    paddingBottom: 90,
   }),
 
   SectionTitle: styled.Text({
     color: colors.black[90],
     ...typography["title-20-bold"],
     paddingHorizontal: 20,
+  }),
+
+  LoadingContainer: styled.View({
+    width: "100%",
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  }),
+
+  LoadingMoreContainer: styled.View({
+    width: "100%",
+    paddingVertical: 20,
+    justifyContent: "center",
+    alignItems: "center",
   }),
 };

@@ -20,7 +20,7 @@ export const useStoreDetail = (publicCode: string) => {
           getTotalMenu(publicCode),
         ]);
         setStoreDetail(detailData);
-        setMenus(menuData.menus);
+        setMenus(menuData?.menus ?? []);
       } catch (error) {
         console.error("Failed to fetch store detail:", error);
       }

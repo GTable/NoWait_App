@@ -39,8 +39,14 @@ export interface TotalMenu {
   menus: MenuItem[];
 }
 
-// 주점 메뉴 조회 API
-export const getTotalMenu = async (publicCode: string): Promise<TotalMenu | null> => {
+/**
+ * 주점 메뉴 조회 API
+ * @param publicCode - 주점 공개 코드
+ * @returns 메뉴 목록 (이름, 가격, 이미지, 품절 여부)
+ */
+export const getTotalMenu = async (
+  publicCode: string,
+): Promise<TotalMenu | null> => {
   const rawResponse = await storeApi.get(`/${publicCode}/menus`);
 
   const response = TotalMenuApiResponseSchema.parse(rawResponse);
@@ -53,13 +59,15 @@ export const getTotalMenu = async (publicCode: string): Promise<TotalMenu | null
 
   return {
     storeName,
-    menus: menuReadDto.map((menu): MenuItem => ({
-      menuId: menu.menuId,
-      name: menu.name,
-      description: menu.description,
-      price: menu.price,
-      isSoldOut: menu.isSoldOut,
-      imageUrl: menu.images[0]?.imageUrl,
-    })),
+    menus: menuReadDto.map(
+      (menu): MenuItem => ({
+        menuId: menu.menuId,
+        name: menu.name,
+        description: menu.description,
+        price: menu.price,
+        isSoldOut: menu.isSoldOut,
+        imageUrl: menu.images[0]?.imageUrl,
+      }),
+    ),
   };
 };

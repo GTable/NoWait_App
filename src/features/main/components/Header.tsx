@@ -3,6 +3,11 @@ import { Alert } from "@/shared/assets/images/main/Alert";
 import styled from "@emotion/native";
 import React from "react";
 
+/**
+ * 메인 화면 상단 헤더
+ *
+ * - 로고 및 알림 버튼 표시
+ */
 export const Header = () => {
   return (
     <E.Container>

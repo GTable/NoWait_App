@@ -8,6 +8,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Pressable } from "react-native";
 
+/**
+ * 최근 검색어 목록 컴포넌트
+ * - 최근 검색한 주점 목록 표시
+ * - 개별 삭제 기능
+ * - 클릭 시 해당 주점 상세로 이동
+ */
 interface RecentSearchComponentProps {
   recentSearches: {
     publicCode: string;

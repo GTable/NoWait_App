@@ -3,14 +3,14 @@ import styled from "@emotion/native";
 import React, { useState } from "react";
 import { colors } from "@/app/styles/colors";
 import { Header } from "../../features/main/components/Header";
-import { MinWaitSection } from "@/features/main/components/MinWaitSection";
+import { SortedStoresSection } from "@/features/main/components/SortedStoresSection";
 import { AllStoresSection } from "@/features/main/components/AllStoresSection";
 
-export type SortOption = "minWait" | "popular";
+export type SortOption = "asc" | "desc";
 
 const MainScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [sortOption, setSortOption] = useState<SortOption>("popular");
+  const [sortOption, setSortOption] = useState<SortOption>("desc");
 
   return (
     <ScreenLayout bottomSafeArea={false}>
@@ -27,7 +27,7 @@ const MainScreen = () => {
       >
         <E.BannerPlaceholder />
 
-        <MinWaitSection
+        <SortedStoresSection
           isModalVisible={isModalVisible}
           setIsModalVisible={setIsModalVisible}
           sortOption={sortOption}

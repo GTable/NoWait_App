@@ -18,8 +18,8 @@ export interface WaitingRegisterResult {
  * 대기 등록 API
  * @param publicCode - 주점 공개 코드
  * @param partySize - 입장 인원 수
- * @param idempotencyKey - 멱등성 키 (10분 동안 재사용)
- * @returns 대기 등록 결과 (예약번호, 대기 순위 등)
+ * @param idempotencyKey - 멱등성 키 (10분 TTL, 중복 방지)
+ * @returns 대기 등록 결과 (대기 번호, 인원 수)
  */
 export const registerWaiting = async (
   publicCode: string,

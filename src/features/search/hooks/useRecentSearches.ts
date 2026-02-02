@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { loadRecentSearches, saveRecentSearches } from "../model/recentSearchStorage";
+import {
+  loadRecentSearches,
+  saveRecentSearches,
+} from "../model/recentSearchStorage";
 
 const MAX_RECENT_SEARCHES = 10;
 
@@ -14,6 +17,12 @@ interface UseRecentSearchesResult {
   removeRecentSearch: (publicCode: string) => void;
 }
 
+/**
+ * 최근 검색어 관리 훅
+ * - AsyncStorage에서 최근 검색어 로드/저장
+ * - 최대 10개까지 저장
+ * - 중복 검색어는 맨 앞으로 이동
+ */
 export const useRecentSearches = (): UseRecentSearchesResult => {
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
 
@@ -33,7 +42,8 @@ export const useRecentSearches = (): UseRecentSearchesResult => {
           const merged = [
             ...prev,
             ...loaded.filter(
-              (item) => !prev.some((entry) => entry.publicCode === item.publicCode),
+              (item) =>
+                !prev.some((entry) => entry.publicCode === item.publicCode),
             ),
           ].slice(0, MAX_RECENT_SEARCHES);
           saveRecentSearches(merged).catch((error) => {
