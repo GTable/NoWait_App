@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getStoreDetail, StoreDetail } from "../model/StoreDetailApi";
 import { getTotalMenu, MenuItem } from "../model/TotalMenuApi";
 import { toggleBookmark } from "../model/BookmarkApi";
@@ -12,6 +12,7 @@ import { toggleBookmark } from "../model/BookmarkApi";
 export const useStoreDetail = (publicCode: string) => {
   const [storeDetail, setStoreDetail] = useState<StoreDetail | null>(null);
   const [menus, setMenus] = useState<MenuItem[]>([]);
+  const isTogglingRef = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,11 +34,13 @@ export const useStoreDetail = (publicCode: string) => {
   /**
    * 북마크 토글 핸들러
    * - 낙관적 업데이트로 즉각 반응
+   * - 첫 번째 요청 완료까지 추가 요청 차단
    */
   const handleBookmarkToggle = async () => {
-    if (!storeDetail) return;
+    if (!storeDetail || isTogglingRef.current) return;
 
     const previousState = storeDetail.isBookmark;
+    isTogglingRef.current = true;
 
     // UI 먼저 변경
     setStoreDetail({ ...storeDetail, isBookmark: !previousState });
@@ -46,8 +49,12 @@ export const useStoreDetail = (publicCode: string) => {
       await toggleBookmark(storeDetail.storeId, previousState);
     } catch (error) {
       // 실패 시 복구
-      setStoreDetail({ ...storeDetail, isBookmark: previousState });
+      setStoreDetail((prev) =>
+        prev ? { ...prev, isBookmark: previousState } : prev,
+      );
       console.error("북마크 변경에 실패했습니다:", error);
+    } finally {
+      isTogglingRef.current = false;
     }
   };
 
