@@ -16,47 +16,43 @@ export const AllStoresSection = () => {
   const { stores, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useAllStores();
 
-  return (
-    <E.Container>
-      <E.SectionTitle>모든 주점</E.SectionTitle>
+  if (isLoading) {
+    return (
+      <E.LoadingContainer>
+        <ActivityIndicator size="large" color={colors.primary[50]} />
+      </E.LoadingContainer>
+    );
+  }
 
-      {isLoading ? (
-        <E.LoadingContainer>
-          <ActivityIndicator size="large" color={colors.primary[50]} />
-        </E.LoadingContainer>
-      ) : (
-        <FlatList
-          data={stores}
-          keyExtractor={(item) => `${item.storeId}`}
-          renderItem={({ item }) => <StoreComponent {...item} />}
-          onEndReached={() => hasNextPage && fetchNextPage()}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            isFetchingNextPage ? (
-              <E.LoadingMoreContainer>
-                <ActivityIndicator size="small" color={colors.primary[50]} />
-              </E.LoadingMoreContainer>
-            ) : null
-          }
-          scrollEnabled={false}
-        />
-      )}
-    </E.Container>
+  return (
+    <FlatList
+      data={stores}
+      keyExtractor={(item) => `${item.storeId}`}
+      renderItem={({ item }) => <StoreComponent {...item} />}
+      onEndReached={() => hasNextPage && fetchNextPage()}
+      onEndReachedThreshold={0.5}
+      ListHeaderComponent={<E.SectionTitle>모든 주점</E.SectionTitle>}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <E.LoadingMoreContainer>
+            <ActivityIndicator size="small" color={colors.primary} />
+          </E.LoadingMoreContainer>
+        ) : (
+          <E.BottomPadding />
+        )
+      }
+      contentContainerStyle={{ gap: 12 }}
+      scrollEnabled={false}
+    />
   );
 };
 
 const E = {
-  Container: styled.View({
-    flex: 1,
-    gap: 12,
-    // 하단에 붙어 있는 경우 클릭하기 어려워 보이는 문제 방지
-    paddingBottom: 90,
-  }),
-
   SectionTitle: styled.Text({
     color: colors.black[90],
     ...typography["title-20-bold"],
     paddingHorizontal: 20,
+    marginBottom: 12,
   }),
 
   LoadingContainer: styled.View({
@@ -71,5 +67,9 @@ const E = {
     paddingVertical: 20,
     justifyContent: "center",
     alignItems: "center",
+  }),
+
+  BottomPadding: styled.View({
+    height: 70,
   }),
 };

@@ -16,7 +16,7 @@ const SortedStoresApiResponseSchema = z.object({
 });
 
 export interface SortedStore {
-  storeId: string;
+  storeId: number;
   publicCode: string;
   name: string;
   departmentName: string;
@@ -39,7 +39,7 @@ export const getSortedStores = async (
   const response = SortedStoresApiResponseSchema.parse(rawResponse);
 
   return response.response.map((store) => ({
-    storeId: store.storeId,
+    storeId: Number(store.storeId),
     publicCode: store.publicCode,
     name: store.storeName,
     departmentName: store.departmentName,
