@@ -51,7 +51,8 @@ export const useBottomTabAnimation = (
     focusedMainIndex >= 0 ? focusedMainIndex : lastMainIndexRef.current;
 
   // 인디케이터 X (메인 그룹 안에서만 이동)
-  const indicatorX = useSharedValue(paddingX);
+  const indicatorXRef = useRef(useSharedValue(paddingX));
+  const indicatorX = indicatorXRef.current;
 
   // 탭 변경 시 인디케이터 이동 (약간의 spring 효과)
   useEffect(() => {
@@ -64,8 +65,7 @@ export const useBottomTabAnimation = (
       stiffness: 350, // 빠르고 부드러운 이동
       mass: 0.6, // 가벼운 느낌
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentMainIndex, paddingX, tabGap, tabWidth]);
+  }, [currentMainIndex, paddingX, tabGap, tabWidth, indicatorX]);
 
   // 탭 클릭 시 즉시 인디케이터 이동 (UX 즉시 반응)
   const moveIndicatorTo = (routeName: string) => {
