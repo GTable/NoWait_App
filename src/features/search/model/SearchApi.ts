@@ -22,7 +22,7 @@ const StoreSearchResponseSchema = z.object({
 });
 
 export interface SearchStore {
-  storeId: string;
+  storeId: number;
   publicCode: string;
   name: string;
   departmentName: string;
@@ -52,7 +52,7 @@ export const searchStores = async (keyword: string): Promise<SearchStore[]> => {
   }
 
   return response.response.map((store) => ({
-    storeId: String(store.storeId),
+    storeId: store.storeId,
     publicCode: store.publicCode,
     name: store.name,
     departmentName: store.departmentName,

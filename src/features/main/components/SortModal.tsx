@@ -30,7 +30,7 @@ export const SortModal = ({
 
   useEffect(() => {
     setSelectedSort(currentSort);
-  }, [currentSort]);
+  }, [currentSort, visible]);
 
   return (
     <Modal
