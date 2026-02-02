@@ -8,6 +8,9 @@ import { SortModal } from "./SortModal";
 import { SortOption } from "@/screens/main/MainScreen";
 import { ActivityIndicator } from "react-native";
 import { useSortedStores } from "../hooks/useSortedStores";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 
 /**
  * 메인 화면의 정렬된 주점 섹션 컴포넌트
@@ -30,6 +33,8 @@ export const SortedStoresSection = ({
   setSortOption,
 }: SortedStoresSectionProps) => {
   const { stores, isLoading } = useSortedStores(sortOption);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const sectionTitle =
     sortOption === "asc" ? "대기가 가장 적어요" : "인기가 가장 많아요";
@@ -58,6 +63,7 @@ export const SortedStoresSection = ({
           stores.map((store) => (
             <BoothCard
               key={store.storeId}
+              publicCode={store.publicCode}
               name={store.name}
               departmentName={store.departmentName}
               waitingCount={store.waitingCount}
@@ -65,6 +71,11 @@ export const SortedStoresSection = ({
                 store.bannerImageUrl ? [store.bannerImageUrl] : undefined
               }
               profileImage={undefined}
+              onPress={() =>
+                navigation.navigate("StoreDetail", {
+                  publicCode: store.publicCode,
+                })
+              }
             />
           ))
         )}

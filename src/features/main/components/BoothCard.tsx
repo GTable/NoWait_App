@@ -10,25 +10,29 @@ import { Image } from "react-native";
  * - 정렬된 주점 섹션에서 사용
  */
 interface BoothCardProps {
+  publicCode: string;
   name: string;
   departmentName: string;
   waitingCount: number;
   bannerImages?: string[];
   profileImage?: string;
+  onPress?: () => void;
 }
 
 export const BoothCard = ({
+  publicCode,
   name,
   departmentName,
   waitingCount,
   bannerImages,
   profileImage,
+  onPress,
 }: BoothCardProps) => {
   const waitStatusText =
     waitingCount === 0 ? "바로 입장 가능" : `대기 ${waitingCount}팀`;
 
   return (
-    <E.Container>
+    <E.Container onPress={onPress}>
       <E.BoothImage>
         {bannerImages && bannerImages[0] && (
           <E.BannerImage source={{ uri: bannerImages[0] }} resizeMode="cover" />
