@@ -1,17 +1,20 @@
-import React, { useMemo, useRef, useEffect } from "react";
-import { Pressable } from "react-native";
+/**
+ * 커스텀 하단 탭 바 컴포넌트
+ * - 메인 탭 그룹 (홈, 지도, 마이페이지)과 검색 탭 그룹으로 분리
+ * - LinearGradient 배경과 BlurView 효과 적용
+ * - 선택된 탭에 따라 배경 인디케이터 애니메이션 이동
+ */
+
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import styled from "@emotion/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  type SharedValue,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import { SvgIcons } from "../assets/images";
 import { colors } from "@/app/styles/colors";
+import { useBottomTabAnimation } from "../interaction/useBottomTabAnimation";
 
 type TabIconKey = keyof typeof SvgIcons;
 
@@ -35,7 +38,12 @@ const TAB_CONFIG: Record<string, { active: TabIconKey; inactive: TabIconKey }> =
     },
   };
 
-const MAIN_TABS = new Set(["Main", "Map", "MyPage"]);
+/** 메인 탭 목록 */
+const MAIN_TAB_ORDER = ["Main", "Map", "MyPage"];
+
+/** 탭 레이아웃 상수 */
+const TAB_WIDTH = 62;
+const TAB_GAP = 6;
 
 const BLUR_PROPS = { intensity: 40, tint: "light" } as const;
 const GRADIENT_COLORS = ["#E8E8E800", "#E8E8E8CC"] as const;
@@ -119,38 +127,17 @@ function MainTabButton({
 }
 
 export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
-  // ✅ 메인 탭 route들(순서 고정)
-  const mainRoutes = useMemo(
-    () => state.routes.filter((r) => MAIN_TABS.has(r.name)),
-    [state.routes],
+  // 현재 선택된 메인 탭의 인덱스 찾기
+  const currentMainTabIndex = MAIN_TAB_ORDER.findIndex(
+    (tabName) => state.routes[state.index]?.name === tabName,
   );
 
-  // ✅ 현재 포커스된 route가 메인 탭인지 확인
-  const focusedRouteName = state.routes[state.index]?.name;
-  const focusedMainIndex = mainRoutes.findIndex(
-    (r) => r.name === focusedRouteName,
+  // 배경 인디케이터 애니메이션 스타일
+  const animatedIndicatorStyle = useBottomTabAnimation(
+    currentMainTabIndex,
+    TAB_WIDTH,
+    TAB_GAP,
   );
-
-  // Search 같은 비-메인 탭 포커스일 때, 마지막 메인 인덱스를 유지(원 위치 유지 UX)
-  const lastMainIndexRef = useRef(0);
-  useEffect(() => {
-    if (focusedMainIndex >= 0) lastMainIndexRef.current = focusedMainIndex;
-  }, [focusedMainIndex]);
-
-  const effectiveMainIndex =
-    focusedMainIndex >= 0 ? focusedMainIndex : lastMainIndexRef.current;
-
-  // ✅ 인디케이터 X (메인 그룹 안에서만 이동)
-  const indicatorX = useSharedValue(
-    MAIN_GROUP_PADDING_X + effectiveMainIndex * (TAB_BTN_W + MAIN_GROUP_GAP),
-  );
-
-  // 탭 변경 시 인디케이터 이동
-  useEffect(() => {
-    const target =
-      MAIN_GROUP_PADDING_X + effectiveMainIndex * (TAB_BTN_W + MAIN_GROUP_GAP);
-    indicatorX.value = withTiming(target, { duration: 220 });
-  }, [effectiveMainIndex]);
 
   const handlePress = (name: string, key: string, isFocused: boolean) => {
     // 검색 탭은 별도 스크린으로 이동
@@ -181,20 +168,6 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
     const config = TAB_CONFIG[name];
     if (!config) return null;
     const Icon = SvgIcons[isFocused ? config.active : config.inactive];
-
-    // 메인 탭은 아이콘만 scale 피드백
-    if (MAIN_TABS.has(name)) {
-      return (
-        <MainTabButton
-          key={key}
-          isFocused={isFocused}
-          Icon={Icon}
-          onPress={() => handlePress(name, key, isFocused)}
-        />
-      );
-    }
-
-    // Search는 기존 렌더 유지(원형 그룹)
     return (
       <E.TabButton key={key} onPress={() => handlePress(name, key, isFocused)}>
         <Icon width={24} height={24} />
@@ -210,24 +183,29 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
     >
       {/* 메인 탭 그룹 */}
       <E.MainTabGroup {...BLUR_PROPS}>
-        {/* ✅ 선택 배경(원/필) 단 하나 */}
-        <MovingIndicator x={indicatorX} />
+        {/* 애니메이션 배경 인디케이터 */}
+        <E.AnimatedIndicator style={animatedIndicatorStyle} />
 
-        {mainRoutes.map((r) =>
-          renderTab(
-            r.name,
-            r.key,
-            r.name === mainRoutes[effectiveMainIndex]?.name,
-          ),
-        )}
+        {/* 탭 버튼들 */}
+        {state.routes
+          .filter((r) => MAIN_TAB_ORDER.includes(r.name))
+          .map((r) => {
+            const isFocused = state.index === state.routes.indexOf(r);
+            return renderTab(r.name, r.key, isFocused);
+          })}
       </E.MainTabGroup>
 
       {/* 검색 탭 (원형) */}
       {state.routes
         .filter((r) => r.name === "Search")
-        .map((r) =>
-          renderTab(r.name, r.key, state.index === state.routes.indexOf(r)),
-        )}
+        .map((r) => {
+          const isFocused = state.index === state.routes.indexOf(r);
+          return (
+            <E.SearchTabGroup key={r.key} {...BLUR_PROPS}>
+              {renderTab(r.name, r.key, isFocused)}
+            </E.SearchTabGroup>
+          );
+        })}
     </LinearGradient>
   );
 };
@@ -258,6 +236,7 @@ const blurStyle = {
 const E = {
   MainTabGroup: styled(BlurView)({
     ...blurStyle,
+    position: "relative",
     flexDirection: "row",
     height: MAIN_GROUP_H,
     paddingHorizontal: MAIN_GROUP_PADDING_X,
@@ -267,6 +246,20 @@ const E = {
     borderRadius: 999,
   }),
 
+  /** 애니메이션 배경 인디케이터 */
+  AnimatedIndicator: styled(Animated.View)({
+    position: "absolute",
+    top: 5,
+    left: 6,
+    width: TAB_WIDTH,
+    height: 50,
+    borderRadius: 999,
+    borderWidth: 0.5,
+    borderColor: "#00000005",
+    backgroundColor: "#B6B6B61A",
+  }),
+
+  /** 검색 탭 그룹 (원형) */
   SearchTabGroup: styled(BlurView)({
     ...blurStyle,
     width: 60,
@@ -274,10 +267,10 @@ const E = {
     padding: 5,
   }),
 
-  // ✅ Pressable로 교체 (눌림 피드백은 아이콘만)
-  TabButton: styled(Pressable)({
-    width: TAB_BTN_W,
-    height: TAB_BTN_H,
+  /** 탭 버튼 */
+  TabButton: styled(TouchableOpacity)({
+    width: TAB_WIDTH,
+    height: 50,
     paddingHorizontal: 19,
     paddingVertical: 13,
     justifyContent: "center",
