@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { login as loginKakaoNative } from "modules/kakao-login";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -18,8 +18,13 @@ export const useKakaoLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleKakaoLogin = async () => {
+    // 이전 토스트 타이머 초기화
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setShowToast(false);
+
     try {
       // 카카오 네이티브 로그인으로 accessToken 받기
       const kakaoAccessToken = await loginKakaoNative();
@@ -50,7 +55,7 @@ export const useKakaoLogin = () => {
         setShowToast(true);
 
         // 3초 후 Toast 숨기기
-        setTimeout(() => {
+        toastTimer.current = setTimeout(() => {
           setShowToast(false);
         }, 3000);
       } finally {
