@@ -29,6 +29,11 @@ interface KakaoLoginResponse {
     kakaoAccessToken,
   })) as KakaoLoginResponse;
 
+  // 로그인 실패 시 에러 발생
+  if (!response.success) {
+    throw new Error("서버 로그인 실패");
+  }
+
   // 토큰 저장
   if (response.response.accessToken) {
     await SecureStore.setItemAsync(
