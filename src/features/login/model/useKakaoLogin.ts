@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { login as loginKakaoNative } from "modules/kakao-login";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -17,35 +17,58 @@ export const useKakaoLogin = () => {
   const navigation = useNavigation<NavigationProp>();
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
+  }, []);
 
   const handleKakaoLogin = async () => {
-    try {
-      setIsLoading(true);
+    // 이전 토스트 타이머 초기화
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setShowToast(false);
 
+    try {
       // 카카오 네이티브 로그인으로 accessToken 받기
       const kakaoAccessToken = await loginKakaoNative();
       setToken(kakaoAccessToken);
 
-      // 서버에 로그인 요청 및 토큰 저장
-      const response = await kakaoLogin(kakaoAccessToken);
+      // API 호출 시작 시점에 로딩 표시
+      setIsLoading(true);
 
-      // 신규 사용자: 전화번호 입력 페이지로 이동
-      // 기존 사용자: 메인 페이지로 이동
-      if (response.response.newUser) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "PhoneNumber" }],
-        });
-      } else {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Tabs" }],
-        });
+      try {
+        // 서버에 로그인 요청 및 토큰 저장
+        const response = await kakaoLogin(kakaoAccessToken);
+
+        // 신규 사용자: 전화번호 입력 페이지로 이동
+        // 기존 사용자: 메인 페이지로 이동
+        if (response.response.newUser) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "PhoneNumber" }],
+          });
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Tabs" }],
+          });
+        }
+      } catch (apiError: any) {
+        // 서버 API 실패 시에만 Toast 표시
+        setShowToast(true);
+
+        // 3초 후 Toast 숨기기
+        toastTimer.current = setTimeout(() => {
+          setShowToast(false);
+        }, 3000);
+      } finally {
+        setIsLoading(false);
       }
     } catch (e: any) {
-      console.error("Login Failed:", e.message);
-    } finally {
-      setIsLoading(false);
+      // 카카오 로그인 자체 실패 (사용자가 취소하거나 카카오 앱 문제)
     }
   };
 
@@ -53,5 +76,6 @@ export const useKakaoLogin = () => {
     handleKakaoLogin,
     isLoading,
     token,
+    showToast,
   };
 };

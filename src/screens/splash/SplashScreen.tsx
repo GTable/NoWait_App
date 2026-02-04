@@ -26,8 +26,8 @@ const SplashScreen = () => {
       try {
         const accessToken = await SecureStore.getItemAsync("accessToken");
 
-        // 2초 대기 (스플래시 화면 표시)
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // 1초 대기 (스플래시 화면 표시)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // unmount된 경우 navigation 실행하지 않음
         if (!isMounted) return;
