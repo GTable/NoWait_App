@@ -174,9 +174,10 @@ yarn expo run:android           # Android 앱 실행
 ### 색상 팔레트
 
 - **Primary**: `#FF4103` (오렌지)
-- **Black Scale**: 100 → 5 (10단계)
-- **Navy Scale**: 100 → 5 (10단계)
-- **White Scale**: 100 → 5 (10단계)
+- **Black Scale**: 100 → 5 (20단계, #000000 → #FAFAFA)
+- **Navy Scale**: 100 → 5 (20단계, #16191E → #F1F2F5)
+- **White**: `#FFFFFF` (100만 존재)
+- **Cool Black**: `#16191E` (100만 존재)
 
 ### 타이포그래피
 
