@@ -1,36 +1,89 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+**주점 웨이팅 관리 모바일 앱** — React Native (Expo 54), 카카오 OAuth, TypeScript strict 모드
 
-주점 웨이팅 관리를 위한 React Native(Expo 54) 모바일 앱. 카카오 OAuth, TanStack React Query, Emotion Native, TypeScript strict 모드.
+## 프로젝트 구조
 
-## 명령어
-
-```bash
-yarn install              # 의존성 설치 (Yarn 4, node-modules 링커)
-yarn expo start                # Expo 개발 서버 실행
-yarn expo run:ios                  # iOS 시뮬레이터 실행
-yarn expo run:android              # Android 에뮬레이터 실행
+```
+src/
+├── screens/     # 라우트 단위 화면 (반드시 ScreenLayout으로 감싸기)
+├── features/    # 기능 모듈 (components/, hooks/, model/)
+└── shared/      # 공통 요소 (ui/, api/, interaction/, utils/, assets/)
 ```
 
-테스트 러너, 린터, 포매터는 설정되어 있지 않습니다.
+**아키텍처 규칙:**
 
-## 아키텍처
+- `screens/` ↔ `features/` 1:1 대응
+- `features/[name]/model/` — API 함수 + Zod 스키마 (훅 금지)
+- `features/[name]/hooks/` — 커스텀 훅 (`use~` 파일)
+- 임포트: `@/` 절대경로 사용 (같은 feature 내부만 `../` 허용)
 
-`src/` 하위 3계층 구조:
+## 필수 명령어
 
-- **`screens/`** — 라우트 단위 화면. 반드시 `ScreenLayout`으로 감싸야 함. feature 컴포넌트를 조합하되 최소한의 로직만 포함.
-- **`features/`** — `screens/`와 1:1 대응하는 기능 모듈. `components/`, `hooks/`, `model/`(API 함수 + Zod 스키마) 구조.
-- **`shared/`** — 공통 요소: UI(`ui/`), axios 인스턴스(`api/`), 애니메이션 훅(`interaction/`), 유틸(`utils/`), 이미지(`assets/`).
+```bash
+yarn install                    # 의존성 설치
+yarn expo start                 # Expo 개발 서버
+yarn ios                        # iOS 시뮬레이터
+yarn android                    # Android 에뮬레이터
+```
 
-네비게이션: Splash → Login → Tabs(Main, Search, Map, MyPage) + 탭바 없는 스택 화면들. 라우트 타입은 `routes.app.d.ts`에서 선언 병합으로 `AppRouteMap`에 추가.
+## 코드 스타일 (필수 준수)
 
-API 계층: `shared/api/`에 `api`, `storeApi`, `usersApi` 3개 axios 인스턴스. React Query 커스텀 훅이 `useQuery`/`useMutation` 래핑, Zod로 응답 검증.
+@import [.claude/rules/code-style.md]
+@import [.claude/rules/architecture.md]
+@import [.claude/rules/animation.md]
 
-경로 별칭: `@/*` → `./src/*`. 항상 `@/` 임포트 사용.
+**핵심 규칙:**
 
-## 주의 사항
+- 컴포넌트: `const Component = (props: Props) =>` (React.FC 금지)
+- 타입: `interface` 우선, `any` 금지, `as` 캐스팅 금지
+- API 응답: 반드시 Zod `.parse()` 검증
+- 폴더명: snake_case, 파일명: PascalCase
+- 주석: 최소화 (JSDoc은 공유 유틸만)
 
-- IMPORTANT: axios 응답 인터셉터가 `response.data`를 자동 추출하므로, API 함수에서 `response.data.data`처럼 이중 접근하지 말 것.
-- 환경변수는 `.env.local`에 정의하고 `babel-plugin-inline-dotenv`로 빌드 시 주입. `process.env.SERVER_URI`, `process.env.KAKAO_NATIVE_APP_KEY`로 접근.
-- 토큰은 `expo-secure-store`에 저장. 모든 API 요청에 인터셉터로 자동 부착됨.
+## 중요 주의 사항
+
+**🚨 axios 이중 접근 금지:**
+
+```typescript
+// ❌ 잘못된 예
+const data = response.data.data;
+
+// ✅ 올바른 예 (인터셉터가 이미 response.data 추출)
+const data = ResponseSchema.parse(response);
+```
+
+**🔐 인증:**
+
+- 토큰: `expo-secure-store`에 자동 저장
+- 모든 API 요청에 인터셉터로 자동 부착
+
+**🌐 환경변수:**
+
+- `.env.local`에 정의
+- `process.env.SERVER_URI`, `process.env.KAKAO_NATIVE_APP_KEY`로 접근
+
+**📱 네비게이션:**
+
+- Splash → Login → Tabs (Main/Search/Map/MyPage)
+- 라우트 타입: `routes.app.d.ts`에 `AppRouteMap` 선언 병합
+
+## 테스트 / 빌드 / 배포
+
+현재 설정 없음:
+
+- 테스트 러너: 미설정
+- 린터: 미설정
+- 포매터: 미설정
+- CI/CD: 미설정
+
+## 문제 해결
+
+**빌드 오류:**
+
+- iOS: `cd ios && pod install && cd ..`
+- Android: `cd android && ./gradlew clean && cd ..`
+
+---
+
+**최종 업데이트:** 2026-02-05
