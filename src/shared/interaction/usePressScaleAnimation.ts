@@ -13,24 +13,19 @@ type PressScaleAnimationOptions = {
   stiffness?: number;
 };
 
-export const usePressScaleAnimation = (
-  {
-    scale: pressedScale = 0.96,
-    opacity: pressedOpacity = 1,
-    dimColor = "#0000001A",
-    damping = 55,
-    stiffness = 1000,
-  }: PressScaleAnimationOptions = {},
-) => {
-  // Scale 애니메이션 값 (1 = 100%)
+export const usePressScaleAnimation = ({
+  scale: pressedScale = 0.96,
+  opacity: pressedOpacity = 1,
+  dimColor = "#0000001A",
+  damping = 55,
+  stiffness = 1000,
+}: PressScaleAnimationOptions = {}) => {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
   const dimOpacity = useSharedValue(0);
 
-  // Press 상태 (dim 효과 표시용)
   const [isPressed, setIsPressed] = useState(false);
 
-  // Scale 애니메이션 스타일
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
     opacity: opacity.value,
@@ -42,7 +37,6 @@ export const usePressScaleAnimation = (
 
   const springConfig = { damping, stiffness };
 
-  // Press In: scale/opacity 변경 + dim 표시
   const handlePressIn = () => {
     setIsPressed(true);
     scale.value = withSpring(pressedScale, springConfig);
@@ -50,7 +44,6 @@ export const usePressScaleAnimation = (
     dimOpacity.value = withSpring(1, springConfig);
   };
 
-  // Press Out: scale/opacity 복원 + dim 제거
   const handlePressOut = () => {
     setIsPressed(false);
     scale.value = withSpring(1, springConfig);
@@ -59,11 +52,11 @@ export const usePressScaleAnimation = (
   };
 
   return {
-    isPressed, // dim 효과 표시 여부
+    isPressed,
     dimStyle: { backgroundColor: dimColor },
     dimAnimatedStyle,
-    animatedStyle, // scale/opacity 애니메이션 스타일
-    handlePressIn, // Pressable onPressIn
-    handlePressOut, // Pressable onPressOut
+    animatedStyle,
+    handlePressIn,
+    handlePressOut,
   };
 };

@@ -1,11 +1,11 @@
-import BottomTabHomeActive from "./images/bottomTab/home/active.svg";
-import BottomTabHomeInactive from "./images/bottomTab/home/inactive.svg";
-import BottomTabSearchActive from "./images/bottomTab/search/active.svg";
-import BottomTabSearchInactive from "./images/bottomTab/search/inactive.svg";
-import BottomTabMapActive from "./images/bottomTab/map/active.svg";
-import BottomTabMapInactive from "./images/bottomTab/map/inactive.svg";
-import BottomTabMyPageActive from "./images/bottomTab/mypage/active.svg";
-import BottomTabMyPageInactive from "./images/bottomTab/mypage/inactive.svg";
+import BottomTabHomeActive from "./images/bottom_tab/home/active.svg";
+import BottomTabHomeInactive from "./images/bottom_tab/home/inactive.svg";
+import BottomTabSearchActive from "./images/bottom_tab/search/active.svg";
+import BottomTabSearchInactive from "./images/bottom_tab/search/inactive.svg";
+import BottomTabMapActive from "./images/bottom_tab/map/active.svg";
+import BottomTabMapInactive from "./images/bottom_tab/map/inactive.svg";
+import BottomTabMyPageActive from "./images/bottom_tab/mypage/active.svg";
+import BottomTabMyPageInactive from "./images/bottom_tab/mypage/inactive.svg";
 
 export const Images = {
   "splash-logo": require("./images/splash/splash-logo.png"),
@@ -35,13 +35,13 @@ export { CancelSvg } from "./images/search/CancelSvg";
 export { BookmarkSvg } from "./images/button/bookmark/BookmarkSvg";
 export { BookmarkFilledSvg } from "./images/button/bookmark/BookmarkFilledSvg";
 export { LineShareSvg } from "./images/button/share/LineShareSvg";
-export { MapPinSvg } from "./images/storeDetail/MapPinSvg";
-export { ClockSvg } from "./images/storeDetail/ClockSvg";
+export { MapPinSvg } from "./images/store_detail/MapPinSvg";
+export { ClockSvg } from "./images/store_detail/ClockSvg";
 export { XCircleSvg } from "./images/ui/x_circle/XCircleSvg";
 export { SignupSvg } from "./images/ui/signup/SignupSvg";
 export { PlusSvg } from "./images/ui/stepper/PlusSvg";
 export { MinusSvg } from "./images/ui/stepper/MinusSvg";
-export { WaitingSvg } from "./images/storeDetail/WaitingSvg";
+export { WaitingSvg } from "./images/store_detail/WaitingSvg";
 export { Alert } from "./images/main/Alert";
 export { ArrowDown } from "./images/main/ArrowDown";
 export { Logo } from "./images/main/Logo";

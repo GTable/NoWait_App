@@ -23,17 +23,13 @@ export const CustomTwoButton = ({
   onLeftPress,
   onRightPress,
 }: CustomTwoButtonProps) => {
-  // 웨이팅 중인 상태
   const isWaitingState = Boolean(isWaiting);
-  // 비활성 상태지만 웨이팅 중이 아닌 경우
   const isInactive = isActive === false && !isWaitingState;
-  // 상태에 따라 버튼 문구 결정
   const buttonText = isWaitingState
     ? "대기 중이에요"
     : isInactive
       ? "지금은 대기할 수 없어요"
       : "대기하기";
-  // 웨이팅 중/비활성 상태는 톤다운 색상 사용
   const backgroundColor =
     isWaitingState || isInactive ? colors.black[15] : colors.coolBlack[100];
   const textColor =

@@ -6,7 +6,7 @@ interface AlertProps {
   height?: number;
 }
 
-export const Alert: React.FC<AlertProps> = ({ width = 24, height = 24 }) => {
+export const Alert = ({ width = 24, height = 24 }: AlertProps) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
       <Path

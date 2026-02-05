@@ -17,8 +17,7 @@ export const CustomBadge = (props: CustomBadgeProps) => {
   const isBeforeOpen = props.isActive === false;
   const text = isBeforeOpen ? "오픈 전" : `대기 ${props.waitingCount}팀`;
 
-  // 오픈 전: 회색 배경, 대기 중: 주황색 배경
-  const containerBgColor = isBeforeOpen ? colors.black[15] : "#FFE1D799"; // 60%투명도 = 99
+  const containerBgColor = isBeforeOpen ? colors.black[15] : "#FFE1D799";
   const textColor = isBeforeOpen ? colors.black[50] : colors.primary;
 
   return (
@@ -46,6 +45,5 @@ const E = {
     fontSize: 12,
     fontStyle: "normal",
     fontWeight: "700",
-    // lineHeight
   }),
 };

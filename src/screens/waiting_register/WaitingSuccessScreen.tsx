@@ -3,7 +3,7 @@ import { CustomButton } from "@/shared/ui/CustomButton";
 import { useWaitingSuccess } from "@/features/waiting_register/hooks/useWaitingSuccess";
 import React from "react";
 import styled from "@emotion/native";
-import { WaitingSvg } from "@/shared/assets/images/storeDetail/WaitingSvg";
+import { WaitingSvg } from "@/shared/assets/images/store_detail/WaitingSvg";
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 

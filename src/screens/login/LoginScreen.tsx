@@ -1,6 +1,6 @@
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import { OnboardSlide } from "@/features/login/components/OnboardSlide";
-import { useKakaoLogin } from "@/features/login/model/useKakaoLogin";
+import { useKakaoLogin } from "@/features/login/hooks/useKakaoLogin";
 import { CustomButton } from "@/shared/ui/CustomButton";
 import { CustomToast } from "@/shared/ui/CustomToast";
 import { LoginLoadingOverlay } from "./LoginLoadingOverlay";
@@ -46,7 +46,7 @@ const E = {
 
   ToastContainer: styled.View({
     position: "absolute",
-    bottom: 144, // 버튼 위로 14px (버튼 높이 + padding + 14)
+    bottom: 144,
     left: 0,
     right: 0,
     alignItems: "center",

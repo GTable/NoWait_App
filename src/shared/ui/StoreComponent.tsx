@@ -77,7 +77,7 @@ export const StoreComponent = (props: StoreComponentProps) => {
     onPress?.();
     navigation.navigate("StoreDetail", { publicCode });
   };
-  // scale, opacity, dim 효과를 위한 애니메이션 훅
+
   const {
     dimStyle,
     dimAnimatedStyle,
@@ -86,15 +86,12 @@ export const StoreComponent = (props: StoreComponentProps) => {
     handlePressOut,
   } = usePressScaleAnimation(STORE_PRESS_ANIMATION);
 
-  // 수평 패딩 애니메이션을 위한 shared value (20에서 시작)
   const paddingH = useSharedValue(BASE_PADDING_HORIZONTAL);
 
-  // 패딩 값이 변할 때 적용되는 애니메이션 스타일
   const paddingAnimatedStyle = useAnimatedStyle(() => ({
     paddingHorizontal: paddingH.value,
   }));
 
-  // 누를 때: scale/dim 효과 + 패딩 줄어듦 (20 → 14)
   const onPressIn = () => {
     handlePressIn();
     paddingH.value = withSpring(PRESSED_PADDING_HORIZONTAL, {
@@ -103,7 +100,6 @@ export const StoreComponent = (props: StoreComponentProps) => {
     });
   };
 
-  // 뗄 때: scale/dim 효과 + 패딩 복원 (14 → 20)
   const onPressOut = () => {
     handlePressOut();
     paddingH.value = withSpring(BASE_PADDING_HORIZONTAL, {
@@ -114,10 +110,7 @@ export const StoreComponent = (props: StoreComponentProps) => {
 
   return (
     <E.Wrapper>
-      {/* 눌렀을 때 나타나는 dim 오버레이 */}
       <E.Dim pointerEvents="none" style={[dimStyle, dimAnimatedStyle]} />
-
-      {/* scale/opacity 애니메이션이 적용되는 영역 */}
       <Animated.View style={animatedStyle}>
         <Pressable
           onPress={handlePress}
@@ -171,7 +164,6 @@ const E = {
     zIndex: 1,
   }),
 
-  /** 전체 카드 컨테이너 */
   Container: styled(Animated.View)({
     width: "100%",
     paddingVertical: 12,
@@ -180,7 +172,6 @@ const E = {
     gap: 10,
   }),
 
-  /** 로고와 정보 섹션을 감싸는 래퍼 */
   ContentWrapper: styled.View({
     width: "100%",
     flexDirection: "row",
@@ -188,7 +179,6 @@ const E = {
     gap: 12,
   }),
 
-  /** 주점 로고 (원형) */
   StoreLogo: styled.View({
     width: 44,
     height: 44,
@@ -204,7 +194,6 @@ const E = {
     height: "100%",
   }),
 
-  /** 주점 정보(이름, 학과, 배지) 영역 */
   InfoSection: styled.View({
     flex: 1,
     flexDirection: "column",
@@ -212,7 +201,6 @@ const E = {
     alignItems: "flex-start",
   }),
 
-  /** 주점 이름과 배지를 포함하는 상단 행 */
   TopRow: styled.View({
     width: "100%",
     flexDirection: "row",
@@ -221,7 +209,6 @@ const E = {
     paddingRight: 10,
   }),
 
-  /** 주점 이름 텍스트 */
   StoreName: styled.Text({
     flexShrink: 1,
     color: colors.black[90],
@@ -232,7 +219,6 @@ const E = {
     lineHeight: 16 * 1.44,
   }),
 
-  /** 학과명 텍스트 */
   Department: styled.Text({
     color: colors.black[70],
     ...typography["text-13-regular"],

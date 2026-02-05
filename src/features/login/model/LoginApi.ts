@@ -1,40 +1,42 @@
 import { api } from "@/shared/api/axios";
 import * as SecureStore from "expo-secure-store";
+import { z } from "zod";
 
-/**
- * 카카오 로그인 API 응답 타입
- */
-interface KakaoLoginResponse {
-  success: boolean;
-  response: {
-    accessToken: string;
-    refreshToken: string;
-    userId: number;
-    email: string;
-    nickName: string;
-    profileImage: string;
-    phoneEntered: boolean;
-    marketingAgree: boolean;
-    newUser: boolean;
-  };
-}
+const KakaoLoginResponseSchema = z.object({
+  success: z.boolean(),
+  response: z.object({
+    accessToken: z.string(),
+    refreshToken: z.string(),
+    userId: z.number(),
+    email: z.string(),
+    nickName: z.string(),
+    profileImage: z.string(),
+    phoneEntered: z.boolean(),
+    marketingAgree: z.boolean(),
+    newUser: z.boolean(),
+  }),
+});
+
+type KakaoLoginResponse = z.infer<typeof KakaoLoginResponseSchema>;
+
 /**
  * 카카오 로그인 처리
  * @param kakaoAccessToken - 카카오 SDK에서 받은 액세스 토큰
  * @returns 서버 로그인 응답 (사용자 정보, 토큰, 신규 사용자 여부 포함)
- */ export const kakaoLogin = async (
+ */
+export const kakaoLogin = async (
   kakaoAccessToken: string,
 ): Promise<KakaoLoginResponse> => {
-  const response = (await api.post("/auth/app/kakao/login", {
+  const rawResponse = await api.post("/auth/app/kakao/login", {
     kakaoAccessToken,
-  })) as KakaoLoginResponse;
+  });
 
-  // 로그인 실패 시 에러 발생
+  const response = KakaoLoginResponseSchema.parse(rawResponse);
+
   if (!response.success) {
     throw new Error("서버 로그인 실패");
   }
 
-  // 토큰 저장
   if (response.response.accessToken) {
     await SecureStore.setItemAsync(
       "accessToken",

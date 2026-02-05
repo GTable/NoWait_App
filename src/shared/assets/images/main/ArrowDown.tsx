@@ -6,10 +6,7 @@ interface ArrowDownProps {
   height?: number;
 }
 
-export const ArrowDown: React.FC<ArrowDownProps> = ({
-  width = 24,
-  height = 24,
-}) => {
+export const ArrowDown = ({ width = 24, height = 24 }: ArrowDownProps) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
       <Rect width="24" height="24" rx="12" fill="#F7F7F7" />

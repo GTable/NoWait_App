@@ -4,6 +4,8 @@ import styled from "@emotion/native";
 import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 import * as SecureStore from "expo-secure-store";
 
 const SplashScreen = () => {
@@ -14,46 +16,40 @@ const SplashScreen = () => {
     "Pretendard-Regular": require("../../../assets/fonts/Pretendard-Regular.otf"),
   });
 
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     if (!fontsLoaded) return;
 
     let isMounted = true;
 
-    // 폰트 로드 완료 후 토큰 확인하여 화면 이동
     const checkAuthAndNavigate = async () => {
       try {
         const accessToken = await SecureStore.getItemAsync("accessToken");
 
-        // 1초 대기 (스플래시 화면 표시)
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // unmount된 경우 navigation 실행하지 않음
         if (!isMounted) return;
 
         if (accessToken) {
-          // 토큰이 있으면 메인 화면으로
           navigation.reset({
             index: 0,
-            routes: [{ name: "Tabs" as never }],
+            routes: [{ name: "Tabs" }],
           });
         } else {
-          // 토큰이 없으면 로그인 화면으로
           navigation.reset({
             index: 0,
-            routes: [{ name: "Login" as never }],
+            routes: [{ name: "Login" }],
           });
         }
       } catch (error) {
         console.error("토큰 확인 중 오류:", error);
-        // unmount된 경우 navigation 실행하지 않음
         if (!isMounted) return;
 
-        // 오류 발생 시 로그인 화면으로
         navigation.reset({
           index: 0,
-          routes: [{ name: "Login" as never }],
+          routes: [{ name: "Login" }],
         });
       }
     };
@@ -85,7 +81,6 @@ const E = {
   Image: styled.Image({
     width: "35%",
     height: undefined,
-    // 너비가 변해도 자동으로 비율에 맞춘 높이를 계산해줌!
     aspectRatio: 2.5,
     resizeMode: "cover",
   }),

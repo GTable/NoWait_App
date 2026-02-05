@@ -6,7 +6,7 @@ interface LogoProps {
   height?: number;
 }
 
-export const Logo: React.FC<LogoProps> = ({ width = 58, height = 24 }) => {
+export const Logo = ({ width = 58, height = 24 }: LogoProps) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 58 24" fill="none">
       <Path

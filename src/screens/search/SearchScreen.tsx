@@ -15,20 +15,16 @@ import { useRecentSearches } from "@/features/search/hooks/useRecentSearches";
  */
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
-  // 검색어 입력을 기반으로 결과를 가져오는 훅
   const { results: searchResults, hasSearched } = useSearchStores(searchText);
-  // 최근 검색어 목록을 관리하는 훅
   const { recentSearches, addRecentSearch, removeRecentSearch } =
     useRecentSearches();
 
-  // 주점 클릭 시 최근 검색어에 추가
   const handleStorePress = (publicCode: string, name: string) => {
     addRecentSearch({ publicCode, name });
   };
 
   return (
     <ScreenLayout>
-      {/* 전체 화면을 누르면 키보드가 내려가도록 설정 */}
       <Pressable
         style={{ flex: 1 }}
         onPress={Keyboard.dismiss}
@@ -41,7 +37,6 @@ const SearchScreen = () => {
             onClose={() => setSearchText("")}
           />
 
-          {/* 검색어 입력 중일 때는 검색 결과, 아닐 때는 최근 검색어 표시 */}
           {searchText.trim() ? (
             <SearchResultComponent
               stores={searchResults}

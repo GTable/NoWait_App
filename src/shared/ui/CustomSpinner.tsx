@@ -21,7 +21,6 @@ export const CustomSpinner = ({
 }: CustomSpinnerProps) => {
   const rotation = useSharedValue(0);
 
-  // 1초에 360도 무한 회전 애니메이션
   useEffect(() => {
     rotation.value = withRepeat(
       withTiming(360, { duration: 1000, easing: Easing.linear }),

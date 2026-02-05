@@ -13,11 +13,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { SvgIcons } from "../assets/images";
 import { colors } from "@/app/styles/colors";
-import { useBottomTabAnimation } from "../interaction/BottomTab/useBottomTabAnimation";
+import { useBottomTabAnimation } from "../interaction/bottom_tab/useBottomTabAnimation";
 import {
   MovingIndicator,
   MainTabButton,
-} from "../interaction/BottomTab/components";
+} from "../interaction/bottom_tab/components";
 
 type TabIconKey = keyof typeof SvgIcons;
 
@@ -47,7 +47,6 @@ const BLUR_PROPS = { intensity: 40, tint: "light" } as const;
 const GRADIENT_COLORS = ["#E8E8E800", "#E8E8E8CC"] as const;
 const GRADIENT_DIRECTION = { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } };
 
-// ✅ 상수(고정 레이아웃 기반)
 const TAB_BTN_W = 62;
 const TAB_BTN_H = 50;
 const MAIN_GROUP_H = 60;
@@ -55,7 +54,6 @@ const MAIN_GROUP_PADDING_X = 6;
 const MAIN_GROUP_GAP = 6;
 
 export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
-  // 애니메이션 훅으로 인디케이터 관리
   const { indicatorX, mainRoutes, moveIndicatorTo } = useBottomTabAnimation(
     state.routes,
     state.index,
@@ -66,7 +64,6 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
   );
 
   const handlePress = (name: string, key: string, isFocused: boolean) => {
-    // 검색 탭은 별도 스크린으로 이동
     if (name === "Search") {
       navigation.getParent()?.navigate("Search");
       return;
@@ -78,7 +75,6 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
       canPreventDefault: true,
     });
 
-    // 네비게이션이 차단되지 않았을 때만 인디케이터 이동
     if (!event.defaultPrevented) {
       moveIndicatorTo(name);
       if (!isFocused) {
@@ -92,7 +88,6 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
     if (!config) return null;
     const Icon = SvgIcons[isFocused ? config.active : config.inactive];
 
-    // 메인 탭은 아이콘만 scale 피드백
     if (MAIN_TABS.has(name)) {
       return (
         <MainTabButton
@@ -104,7 +99,6 @@ export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
       );
     }
 
-    // Search는 기존 렌더 유지(원형 그룹)
     return (
       <E.TabButton key={key} onPress={() => handlePress(name, key, isFocused)}>
         <Icon width={24} height={24} />
@@ -174,7 +168,6 @@ const E = {
     paddingHorizontal: MAIN_GROUP_PADDING_X,
     paddingVertical: 20,
     gap: MAIN_GROUP_GAP,
-    // ✅ absolute indicator가 보이도록
     position: "relative",
   }),
 
@@ -185,7 +178,6 @@ const E = {
     padding: 5,
   }),
 
-  // ✅ Pressable로 교체 (눌림 피드백은 아이콘만)
   TabButton: styled(Pressable)({
     width: TAB_BTN_W,
     height: TAB_BTN_H,

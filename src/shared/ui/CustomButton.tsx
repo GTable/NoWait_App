@@ -1,7 +1,7 @@
 import styled from "@emotion/native";
 import { Images } from "../assets/images";
 import React from "react";
-import { typography } from "../../app/styles/typography";
+import { typography } from "@/app/styles/typography";
 import { colors } from "@/app/styles/colors";
 import { ImageSourcePropType, Pressable } from "react-native";
 import Animated from "react-native-reanimated";
@@ -70,15 +70,17 @@ export const CustomButton = ({
   const iconSource = icon || (style.icon && Images[style.icon]);
   const hasText = children || style.text;
 
-  // 애니메이션이 활성화된 경우
   if (animated) {
-    // Press 인터랙션 애니메이션 훅 사용
-    const { isPressed, dimStyle, animatedStyle, handlePressIn, handlePressOut } =
-      usePressScaleAnimation(BUTTON_PRESS_ANIMATION);
+    const {
+      isPressed,
+      dimStyle,
+      animatedStyle,
+      handlePressIn,
+      handlePressOut,
+    } = usePressScaleAnimation(BUTTON_PRESS_ANIMATION);
 
     return (
       <E.AnimatedWrapper>
-        {/* Press 시 dim 효과 표시 */}
         {isPressed && (
           <E.Dim style={[{ borderRadius: style.borderRadius }, dimStyle]} />
         )}
@@ -109,7 +111,6 @@ export const CustomButton = ({
     );
   }
 
-  // 애니메이션이 비활성화된 경우 (기본)
   return (
     <E.Container
       onPress={onPress}

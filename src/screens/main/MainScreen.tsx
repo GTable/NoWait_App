@@ -2,7 +2,7 @@ import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import styled from "@emotion/native";
 import React, { useState } from "react";
 import { colors } from "@/app/styles/colors";
-import { Header } from "../../features/main/components/Header";
+import { Header } from "@/features/main/components/Header";
 import { SortedStoresSection } from "@/features/main/components/SortedStoresSection";
 import { AllStoresSection } from "@/features/main/components/AllStoresSection";
 
