@@ -6,6 +6,11 @@ interface RadioButtonProps {
   onPress: () => void;
 }
 
+/**
+ * 라디오 버튼 컴포넌트 — checked 상태에 따라 활성/비활성 스타일 전환
+ * @param checked - 선택 여부
+ * @param onPress - 클릭 핸들러
+ */
 export const RadioButton = ({ checked, onPress }: RadioButtonProps) => {
   const Container = checked ? E.ActiveContainer : E.Container;
 

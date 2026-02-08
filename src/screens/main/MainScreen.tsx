@@ -5,18 +5,16 @@ import { colors } from "@/app/styles/colors";
 import { Header } from "@/features/main/components/Header";
 import { SortedStoresSection } from "@/features/main/components/SortedStoresSection";
 import { AllStoresSection } from "@/features/main/components/AllStoresSection";
+import { useModal } from "@/shared/contexts/ModalContext";
 
 export type SortOption = "asc" | "desc";
 
 const MainScreen = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { isModalVisible, showModal, hideModal } = useModal();
   const [sortOption, setSortOption] = useState<SortOption>("desc");
 
   return (
     <ScreenLayout bottomSafeArea={false}>
-      {/* 배경 오버레이 */}
-      {isModalVisible && <E.BackgroundOverlay />}
-
       {/* 상단 헤더 */}
       <Header />
 
@@ -29,7 +27,8 @@ const MainScreen = () => {
 
         <SortedStoresSection
           isModalVisible={isModalVisible}
-          setIsModalVisible={setIsModalVisible}
+          showModal={showModal}
+          hideModal={hideModal}
           sortOption={sortOption}
           setSortOption={setSortOption}
         />
@@ -43,16 +42,6 @@ const MainScreen = () => {
 export default MainScreen;
 
 const E = {
-  BackgroundOverlay: styled.View({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    zIndex: 1,
-  }),
-
   ScrollContainer: styled.ScrollView({
     flex: 1,
   }),

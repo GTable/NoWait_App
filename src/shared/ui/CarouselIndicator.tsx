@@ -9,6 +9,11 @@ interface CarouselIndicatorProps {
   activeIndex: number;
 }
 
+/**
+ * 캐러셀 페이지 인디케이터 — 활성 도트를 넓게 표시
+ * @param total - 전체 도트 개수
+ * @param activeIndex - 현재 활성 인덱스
+ */
 export const CarouselIndicator = ({
   total,
   activeIndex,

@@ -139,6 +139,6 @@ const E = {
 ## 주석 원칙
 
 - 최소화 (코드가 자명해야 함)
-- JSDoc: 공유 유틸만 (`@param`, `@returns`)
+- JSDoc: `shared/` 내 export 함수·훅·컴포넌트 (`@param`, `@returns`)
 - 스타일 주석 금지
 - Props: 외부 노출 interface만

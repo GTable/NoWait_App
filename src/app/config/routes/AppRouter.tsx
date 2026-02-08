@@ -16,25 +16,28 @@ import PhoneNumberScreen from "@/screens/phone_number/PhoneNumberScreen";
 import EnterPersonScreen from "@/screens/waiting_register/EnterPersonScreen";
 import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScreen";
 import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
+import { ModalProvider } from "@/shared/contexts/ModalContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-function BottomTabNavigator() {
+const BottomTabNavigator = () => {
   return (
-    <BottomTab.Navigator
-      tabBar={(props) => <CustomBottomTab {...props} />}
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <BottomTab.Screen name="Main" component={MainScreen} />
-      <BottomTab.Screen name="Search" component={SearchScreen} />
-      <BottomTab.Screen name="Map" component={MapScreen} />
-      <BottomTab.Screen name="MyPage" component={MyPageScreen} />
-    </BottomTab.Navigator>
+    <ModalProvider>
+      <BottomTab.Navigator
+        tabBar={(props) => <CustomBottomTab {...props} />}
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <BottomTab.Screen name="Main" component={MainScreen} />
+        <BottomTab.Screen name="Search" component={SearchScreen} />
+        <BottomTab.Screen name="Map" component={MapScreen} />
+        <BottomTab.Screen name="MyPage" component={MyPageScreen} />
+      </BottomTab.Navigator>
+    </ModalProvider>
   );
-}
+};
 
 export function AppRouter() {
   return (
@@ -71,11 +74,11 @@ export function AppRouter() {
             component={StoreDetailScreen}
             options={{ headerShown: false }}
           />
-          {/* 공지사항 상세 모달 */}
+          {/* 공지사항 상세 화면 */}
           <Stack.Screen
             name="NoticeDetail"
             component={NoticeDetailScreen}
-            options={{ headerShown: false, presentation: "modal" }}
+            options={{ headerShown: false }}
           />
           {/* 전화번호 입력 화면 */}
           <Stack.Screen

@@ -8,6 +8,11 @@ interface BackHeaderProps {
   onPress?: () => void;
 }
 
+/**
+ * 뒤로가기 헤더 — 좌측 화살표 + 중앙 타이틀
+ * @param title - 헤더 타이틀 (선택)
+ * @param onPress - 뒤로가기 클릭 핸들러
+ */
 export const BackHeader = ({ title, onPress }: BackHeaderProps) => {
   return (
     <E.Header>

@@ -59,6 +59,11 @@ const BUTTON_STYLES: Record<
   },
 };
 
+/**
+ * variant 기반 공통 버튼 컴포넌트
+ * @param variant - 버튼 스타일 종류 (kakaoLogin, rounded12)
+ * @param animated - 프레스 애니메이션 활성화 여부
+ */
 export const CustomButton = ({
   variant,
   onPress,
