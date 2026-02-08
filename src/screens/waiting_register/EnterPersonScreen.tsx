@@ -31,7 +31,7 @@ const EnterPersonScreen = () => {
       </E.ContentWrapper>
 
       <E.ButtonWrapper>
-        <CustomButton variant="rounded12" onPress={handleNext}>
+        <CustomButton variant="rounded16" onPress={handleNext}>
           다음
         </CustomButton>
       </E.ButtonWrapper>

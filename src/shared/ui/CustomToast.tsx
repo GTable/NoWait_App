@@ -2,6 +2,9 @@ import styled from "@emotion/native";
 import { AlertCircleSvg } from "../assets/images";
 import { colors } from "@/app/styles/colors";
 
+/**
+ * 로그인 실패 토스트 알림 컴포넌트
+ */
 export const CustomToast = () => {
   return (
     <E.Wrapper>

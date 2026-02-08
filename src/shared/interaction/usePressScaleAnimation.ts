@@ -13,6 +13,11 @@ type PressScaleAnimationOptions = {
   stiffness?: number;
 };
 
+/**
+ * 프레스 시 scale/opacity/dim 애니메이션을 제공하는 훅
+ * @param options - scale, opacity, dimColor, damping, stiffness 설정
+ * @returns animatedStyle, dimAnimatedStyle, handlePressIn, handlePressOut 등
+ */
 export const usePressScaleAnimation = ({
   scale: pressedScale = 0.96,
   opacity: pressedOpacity = 1,

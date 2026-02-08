@@ -7,13 +7,13 @@ import { SearchResultComponent } from "@/features/search/components/SearchResult
 import { Keyboard, Pressable } from "react-native";
 import { useSearchStores } from "@/features/search/hooks/useSearchStores";
 import { useRecentSearches } from "@/features/search/hooks/useRecentSearches";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
 
-/**
- * 검색 화면
- * - 검색어 입력 시: 검색 결과 표시
- * - 검색어 없을 때: 최근 검색어 표시
- */
 const SearchScreen = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [searchText, setSearchText] = useState("");
   const { results: searchResults, hasSearched } = useSearchStores(searchText);
   const { recentSearches, addRecentSearch, removeRecentSearch } =
@@ -34,7 +34,7 @@ const SearchScreen = () => {
           <SearchComponents
             searchText={searchText}
             onSearchTextChange={setSearchText}
-            onClose={() => setSearchText("")}
+            onClose={() => navigation.goBack()}
           />
 
           {searchText.trim() ? (

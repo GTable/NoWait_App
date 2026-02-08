@@ -15,6 +15,11 @@ interface CustomSpinnerProps {
   color?: string;
 }
 
+/**
+ * 로딩 스피너 컴포넌트 — 무한 회전 애니메이션
+ * @param size - 스피너 크기 (기본값 28)
+ * @param color - 스피너 색상
+ */
 export const CustomSpinner = ({
   size = 28,
   color = colors.black[100],

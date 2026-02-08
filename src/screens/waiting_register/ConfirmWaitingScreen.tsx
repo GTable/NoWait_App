@@ -42,7 +42,7 @@ const ConfirmWaitingScreen = () => {
 
       {/* 등록 버튼 */}
       <E.ButtonWrapper>
-        <CustomButton variant="rounded12" onPress={handleRegister}>
+        <CustomButton variant="rounded16" onPress={handleRegister}>
           등록하기
         </CustomButton>
       </E.ButtonWrapper>

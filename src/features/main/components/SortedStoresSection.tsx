@@ -21,14 +21,16 @@ import { RootStackParamList } from "@/app/config/routes/routes.core";
  */
 interface SortedStoresSectionProps {
   isModalVisible: boolean;
-  setIsModalVisible: (visible: boolean) => void;
+  showModal: () => void;
+  hideModal: () => void;
   sortOption: SortOption;
   setSortOption: (option: SortOption) => void;
 }
 
 export const SortedStoresSection = ({
   isModalVisible,
-  setIsModalVisible,
+  showModal,
+  hideModal,
   sortOption,
   setSortOption,
 }: SortedStoresSectionProps) => {
@@ -42,7 +44,7 @@ export const SortedStoresSection = ({
   return (
     <E.Container>
       {/* 정렬 옵션 선택 헤더 */}
-      <E.TitleSection onPress={() => setIsModalVisible(true)}>
+      <E.TitleSection onPress={showModal}>
         <E.SectionTitle>{sectionTitle}</E.SectionTitle>
         <E.DropdownButton>
           <ArrowDown />
@@ -84,11 +86,10 @@ export const SortedStoresSection = ({
       {/* 정렬 옵션 선택 모달 */}
       <SortModal
         visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
         currentSort={sortOption}
         onConfirm={(option) => {
           setSortOption(option);
-          setIsModalVisible(false);
+          hideModal();
         }}
       />
     </E.Container>

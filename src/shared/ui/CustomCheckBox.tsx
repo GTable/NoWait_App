@@ -7,6 +7,11 @@ interface CheckBoxProps {
   onPress: () => void;
 }
 
+/**
+ * 체크박스 컴포넌트 — checked 상태에 따라 활성/비활성 스타일 전환
+ * @param checked - 체크 여부
+ * @param onPress - 클릭 핸들러
+ */
 export const CheckBox = ({ checked, onPress }: CheckBoxProps) => {
   const Container = checked ? E.ActiveContainer : E.Container;
 

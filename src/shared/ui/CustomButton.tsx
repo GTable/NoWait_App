@@ -17,8 +17,8 @@ const BUTTON_PRESS_ANIMATION = {
 
 // 새로운 버튼 스타일 정의 시 여기에 타입을 추가합니다.
 // kakaoLogin: 카카오톡 로그인 버튼
-// rounded12: 모서리가 12인 기본 스타일의 버튼
-type ButtonVariant = "kakaoLogin" | "rounded12";
+// rounded16: 모서리가 16인 기본 스타일의 버튼
+type ButtonVariant = "kakaoLogin" | "rounded16";
 
 interface ButtonProps {
   variant: ButtonVariant;
@@ -43,22 +43,27 @@ const BUTTON_STYLES: Record<
   kakaoLogin: {
     backgroundColor: "#FEE500",
     textColor: "#262200",
-    borderRadius: 12,
+    borderRadius: 16,
     gap: 10,
     icon: "kakao-logo",
     text: "카카오톡으로 시작하기",
   },
 
-  // 모서리가 12인 기본 스타일의 버튼입니다.
-  rounded12: {
+  // 모서리가 16인 기본 스타일의 버튼입니다.
+  rounded16: {
     backgroundColor: colors.coolBlack[100],
     textColor: colors.white[100],
-    borderRadius: 12,
+    borderRadius: 16,
     gap: 4,
     text: "호출",
   },
 };
 
+/**
+ * variant 기반 공통 버튼 컴포넌트
+ * @param variant - 버튼 스타일 종류 (kakaoLogin, rounded16)
+ * @param animated - 프레스 애니메이션 활성화 여부
+ */
 export const CustomButton = ({
   variant,
   onPress,

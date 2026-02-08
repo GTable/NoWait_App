@@ -1,10 +1,3 @@
-/**
- * 커스텀 하단 탭 바 컴포넌트
- * - 메인 탭 그룹 (홈, 지도, 마이페이지)과 검색 탭 그룹으로 분리
- * - LinearGradient 배경과 BlurView 효과 적용
- * - 선택된 탭에 따라 배경 인디케이터 애니메이션 이동
- */
-
 import React from "react";
 import { Pressable } from "react-native";
 import styled from "@emotion/native";
@@ -48,11 +41,14 @@ const GRADIENT_COLORS = ["#E8E8E800", "#E8E8E8CC"] as const;
 const GRADIENT_DIRECTION = { start: { x: 0.5, y: 0 }, end: { x: 0.5, y: 1 } };
 
 const TAB_BTN_W = 62;
-const TAB_BTN_H = 50;
-const MAIN_GROUP_H = 60;
 const MAIN_GROUP_PADDING_X = 6;
 const MAIN_GROUP_GAP = 6;
 
+/**
+ * 커스텀 하단 탭 바 — 메인 탭 그룹과 검색 탭을 분리하여 렌더링
+ * @param state - 탭 네비게이터 상태
+ * @param navigation - 탭 네비게이터 네비게이션 객체
+ */
 export const CustomBottomTab = ({ state, navigation }: BottomTabBarProps) => {
   const { indicatorX, mainRoutes, moveIndicatorTo } = useBottomTabAnimation(
     state.routes,
@@ -143,12 +139,12 @@ const containerStyle = {
   left: 0,
   right: 0,
   flexDirection: "row" as const,
-  justifyContent: "center" as const,
+  justifyContent: "space-between" as const,
   alignItems: "flex-start" as const,
   paddingTop: 65,
-  paddingHorizontal: 20,
+  paddingHorizontal: 18,
   paddingBottom: 20,
-  gap: 65,
+  zIndex: 1,
 };
 
 const blurStyle = {
@@ -158,17 +154,18 @@ const blurStyle = {
   borderWidth: 1,
   borderColor: colors.white[100],
   overflow: "hidden" as const,
+  backgroundColor: "rgba(255, 255, 255, 0.7)",
 };
 
 const E = {
   MainTabGroup: styled(BlurView)({
     ...blurStyle,
     flexDirection: "row",
-    height: MAIN_GROUP_H,
-    paddingHorizontal: MAIN_GROUP_PADDING_X,
-    paddingVertical: 20,
+    padding: 5,
     gap: MAIN_GROUP_GAP,
     position: "relative",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    alignItems: "center",
   }),
 
   SearchTabGroup: styled(BlurView)({
@@ -179,12 +176,11 @@ const E = {
   }),
 
   TabButton: styled(Pressable)({
-    width: TAB_BTN_W,
-    height: TAB_BTN_H,
     paddingHorizontal: 19,
     paddingVertical: 13,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 999,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
   }),
 };

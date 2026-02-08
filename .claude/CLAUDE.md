@@ -8,7 +8,7 @@
 src/
 ├── screens/     # 라우트 단위 화면 (반드시 ScreenLayout으로 감싸기)
 ├── features/    # 기능 모듈 (components/, hooks/, model/)
-└── shared/      # 공통 요소 (ui/, api/, interaction/, utils/, assets/)
+└── shared/      # 공통 요소 (ui/, api/, contexts/, interaction/, utils/, assets/)
 ```
 
 **아키텍처 규칙:**
@@ -32,6 +32,7 @@ yarn android                    # Android 에뮬레이터
 @import [.claude/rules/code-style.md]
 @import [.claude/rules/architecture.md]
 @import [.claude/rules/animation.md]
+@import [.claude/rules/modal.md]
 
 **핵심 규칙:**
 
@@ -39,7 +40,7 @@ yarn android                    # Android 에뮬레이터
 - 타입: `interface` 우선, `any` 금지, `as` 캐스팅 금지
 - API 응답: 반드시 Zod `.parse()` 검증
 - 폴더명: snake_case, 파일명: PascalCase
-- 주석: 최소화 (JSDoc은 공유 유틸만)
+- 주석: 최소화 (JSDoc은 `shared/` 내 export 함수·훅·컴포넌트)
 
 ## 중요 주의 사항
 
@@ -86,4 +87,4 @@ const data = ResponseSchema.parse(response);
 
 ---
 
-**최종 업데이트:** 2026-02-05
+**최종 업데이트:** 2026-02-08

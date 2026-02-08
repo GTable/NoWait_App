@@ -152,7 +152,7 @@ export const CustomBottomSheet = ({
       </E.MainSection>
       {/* 확인 버튼 */}
       <E.ButtonSection>
-        <CustomButton variant="rounded12" animated onPress={onConfirm}>
+        <CustomButton variant="rounded16" animated onPress={onConfirm}>
           확인하기
         </CustomButton>
       </E.ButtonSection>

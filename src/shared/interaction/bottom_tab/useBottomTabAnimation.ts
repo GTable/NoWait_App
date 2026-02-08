@@ -56,9 +56,9 @@ export const useBottomTabAnimation = (
     }
     const targetX = paddingX + currentMainIndex * (tabWidth + tabGap);
     indicatorX.value = withSpring(targetX, {
-      damping: 25,
-      stiffness: 350,
-      mass: 0.6,
+      damping: 150,
+      stiffness: 1500,
+      mass: 0.4,
     });
   }, [currentMainIndex, paddingX, tabGap, tabWidth, indicatorX]);
 
@@ -67,7 +67,7 @@ export const useBottomTabAnimation = (
     if (pressedMainIndex >= 0) {
       const targetX = paddingX + pressedMainIndex * (tabWidth + tabGap);
       indicatorX.value = withSpring(targetX, {
-        damping: 25,
+        damping: 55,
         stiffness: 350,
         mass: 0.6,
       });

@@ -24,7 +24,7 @@ const WaitingSuccessScreen = () => {
 
       {/* 확인 버튼 */}
       <E.ButtonWrapper>
-        <CustomButton variant="rounded12" onPress={handleConfirm}>
+        <CustomButton variant="rounded16" onPress={handleConfirm}>
           확인
         </CustomButton>
       </E.ButtonWrapper>

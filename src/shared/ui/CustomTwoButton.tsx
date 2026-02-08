@@ -16,6 +16,12 @@ interface CustomTwoButtonProps {
   onRightPress?: () => void;
 }
 
+/**
+ * 주점 상세 하단 2버튼 — 북마크(좌) + 대기하기(우) 구성
+ * @param isBookmark - 북마크 활성화 상태
+ * @param isActive - 주점 운영 상태
+ * @param isWaiting - 대기 중 여부
+ */
 export const CustomTwoButton = ({
   isBookmark,
   isActive,
@@ -77,7 +83,7 @@ const E = {
     paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 12,
+    borderRadius: 16,
     borderColor: colors.black[25],
     borderWidth: 1,
     backgroundColor: colors.white[100],
@@ -96,7 +102,7 @@ const E = {
     justifyContent: "center",
     alignItems: "center",
     gap: 4,
-    borderRadius: 12,
+    borderRadius: 16,
     backgroundColor: colors.coolBlack[100],
   }),
 

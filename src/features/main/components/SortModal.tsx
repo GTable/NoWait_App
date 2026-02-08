@@ -4,8 +4,17 @@ import { CustomButton } from "@/shared/ui/CustomButton";
 import { RadioButton } from "@/shared/ui/CustomRadioButton";
 import styled from "@emotion/native";
 import React, { useState, useEffect } from "react";
-import { Modal } from "react-native";
+import { Dimensions } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 import { SortOption } from "@/screens/main/MainScreen";
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SPRING_CONFIG = { damping: 20, stiffness: 150 };
+const UNMOUNT_DELAY = 300;
 
 /**
  * 주점 정렬 옵션 선택 모달
@@ -15,32 +24,44 @@ import { SortOption } from "@/screens/main/MainScreen";
  */
 interface SortModalProps {
   visible: boolean;
-  onClose: () => void;
   currentSort: SortOption;
   onConfirm: (option: SortOption) => void;
 }
 
 export const SortModal = ({
   visible,
-  onClose,
   currentSort,
   onConfirm,
 }: SortModalProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [selectedSort, setSelectedSort] = useState<SortOption>(currentSort);
+  const translateY = useSharedValue(SCREEN_HEIGHT);
+
+  const slideStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   useEffect(() => {
     setSelectedSort(currentSort);
   }, [currentSort, visible]);
 
+  useEffect(() => {
+    if (visible) {
+      setIsMounted(true);
+      translateY.value = withSpring(0, SPRING_CONFIG);
+    } else {
+      translateY.value = withSpring(SCREEN_HEIGHT, SPRING_CONFIG);
+      const timer = setTimeout(() => setIsMounted(false), UNMOUNT_DELAY);
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
+
+  if (!isMounted) return null;
+
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      onRequestClose={onClose}
-    >
-      <E.Overlay onPress={onClose}>
-        <E.Content onPress={(e) => e.stopPropagation()}>
+    <E.Wrapper pointerEvents="box-none">
+      <Animated.View style={[CONTENT_WRAPPER_STYLE, slideStyle]}>
+        <E.Content>
           <E.Header>
             <E.Title>정렬</E.Title>
 
@@ -65,26 +86,38 @@ export const SortModal = ({
 
           <E.ButtonContainer>
             <CustomButton
-              variant="rounded12"
+              variant="rounded16"
               onPress={() => onConfirm(selectedSort)}
             >
               확인
             </CustomButton>
           </E.ButtonContainer>
         </E.Content>
-      </E.Overlay>
-    </Modal>
+      </Animated.View>
+    </E.Wrapper>
   );
 };
 
+const CONTENT_WRAPPER_STYLE = {
+  position: "absolute" as const,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  zIndex: 10001,
+};
+
 const E = {
-  Overlay: styled.Pressable({
-    flex: 1,
-    backgroundColor: "transparent",
+  Wrapper: styled.View({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10001,
     justifyContent: "flex-end",
   }),
 
-  Content: styled.Pressable({
+  Content: styled.View({
     backgroundColor: colors.white[100],
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
