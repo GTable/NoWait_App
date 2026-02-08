@@ -14,6 +14,7 @@ import { SortOption } from "@/screens/main/MainScreen";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SPRING_CONFIG = { damping: 20, stiffness: 150 };
+const UNMOUNT_DELAY = 300;
 
 /**
  * 주점 정렬 옵션 선택 모달
@@ -32,6 +33,7 @@ export const SortModal = ({
   currentSort,
   onConfirm,
 }: SortModalProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [selectedSort, setSelectedSort] = useState<SortOption>(currentSort);
   const translateY = useSharedValue(SCREEN_HEIGHT);
 
@@ -44,12 +46,17 @@ export const SortModal = ({
   }, [currentSort, visible]);
 
   useEffect(() => {
-    translateY.value = visible
-      ? withSpring(0, SPRING_CONFIG)
-      : withSpring(SCREEN_HEIGHT, SPRING_CONFIG);
+    if (visible) {
+      setIsMounted(true);
+      translateY.value = withSpring(0, SPRING_CONFIG);
+    } else {
+      translateY.value = withSpring(SCREEN_HEIGHT, SPRING_CONFIG);
+      const timer = setTimeout(() => setIsMounted(false), UNMOUNT_DELAY);
+      return () => clearTimeout(timer);
+    }
   }, [visible]);
 
-  if (!visible) return null;
+  if (!isMounted) return null;
 
   return (
     <E.Wrapper pointerEvents="box-none">

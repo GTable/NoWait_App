@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  ReactNode,
+} from "react";
 import { Pressable } from "react-native";
 import Animated, {
   useSharedValue,
@@ -26,12 +32,17 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOverlayMounted, setIsOverlayMounted] = useState(false);
   const overlayOpacity = useSharedValue(0);
+  const unmountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const overlayAnimatedStyle = useAnimatedStyle(() => ({
     opacity: overlayOpacity.value,
   }));
 
   const showModal = () => {
+    if (unmountTimerRef.current) {
+      clearTimeout(unmountTimerRef.current);
+      unmountTimerRef.current = null;
+    }
     setIsOverlayMounted(true);
     setIsModalVisible(true);
     overlayOpacity.value = withTiming(1, { duration: FADE_DURATION });
@@ -40,7 +51,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const hideModal = () => {
     setIsModalVisible(false);
     overlayOpacity.value = withTiming(0, { duration: FADE_DURATION });
-    setTimeout(() => setIsOverlayMounted(false), FADE_DURATION);
+    unmountTimerRef.current = setTimeout(() => {
+      setIsOverlayMounted(false);
+      unmountTimerRef.current = null;
+    }, FADE_DURATION);
   };
 
   return (

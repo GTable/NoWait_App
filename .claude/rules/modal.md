@@ -55,6 +55,7 @@ import { Dimensions } from "react-native";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SPRING_CONFIG = { damping: 20, stiffness: 150 };
+const UNMOUNT_DELAY = 300;
 
 interface ExampleModalProps {
   visible: boolean;
@@ -62,6 +63,7 @@ interface ExampleModalProps {
 }
 
 export const ExampleModal = ({ visible, onConfirm }: ExampleModalProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const translateY = useSharedValue(SCREEN_HEIGHT);
 
   const slideStyle = useAnimatedStyle(() => ({
@@ -69,12 +71,17 @@ export const ExampleModal = ({ visible, onConfirm }: ExampleModalProps) => {
   }));
 
   useEffect(() => {
-    translateY.value = visible
-      ? withSpring(0, SPRING_CONFIG)
-      : withSpring(SCREEN_HEIGHT, SPRING_CONFIG);
+    if (visible) {
+      setIsMounted(true);
+      translateY.value = withSpring(0, SPRING_CONFIG);
+    } else {
+      translateY.value = withSpring(SCREEN_HEIGHT, SPRING_CONFIG);
+      const timer = setTimeout(() => setIsMounted(false), UNMOUNT_DELAY);
+      return () => clearTimeout(timer);
+    }
   }, [visible]);
 
-  if (!visible) return null;
+  if (!isMounted) return null;
 
   return (
     <E.Wrapper pointerEvents="box-none">
@@ -120,7 +127,8 @@ const E = {
 
 1. **`onClose` prop 불필요** — 배경 터치 닫기는 ModalContext가 처리
 2. **`visible` prop 필수** — `isModalVisible`을 전달받아 슬라이드 애니메이션 제어
-3. **`pointerEvents="box-none"`** — Wrapper가 터치를 가로채지 않도록
+3. **`isMounted` 상태 분리** — `visible`이 false가 되어도 닫기 애니메이션이 끝날 때까지 마운트 유지 (`UNMOUNT_DELAY` 후 언마운트)
+4. **`pointerEvents="box-none"`** — Wrapper가 터치를 가로채지 않도록
 
 ## zIndex 규칙
 
@@ -144,5 +152,6 @@ const E = {
 - [ ] RN `Modal` 사용하지 않음
 - [ ] `useModal`의 `showModal` / `hideModal`로 열고 닫기
 - [ ] 모달 콘텐츠에 `visible` prop 전달
+- [ ] `isMounted` 상태로 닫기 애니메이션 완료 후 언마운트
 - [ ] Wrapper에 `pointerEvents="box-none"` 적용
 - [ ] zIndex: 오버레이 `10000`, 콘텐츠 `10001`
