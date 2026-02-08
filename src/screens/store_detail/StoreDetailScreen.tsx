@@ -3,6 +3,7 @@ import { colors } from "@/app/styles/colors";
 import { MenuComponent } from "@/features/store_detail/components/MenuComponent";
 import { StoreDetailInfoComponent } from "@/features/store_detail/components/StoreDetailInfoComponent";
 import { useStoreDetail } from "@/features/store_detail/hooks/useStoreDetail";
+import { BackHeader } from "@/shared/ui/BackHeader";
 import { CustomTwoButton } from "@/shared/ui/CustomTwoButton";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -33,6 +34,7 @@ const StoreDetailScreen = () => {
 
   return (
     <ScreenLayout>
+      <BackHeader onPress={() => navigation.goBack()} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* 메인 이미지 영역 */}
         {storeDetail?.bannerImageUrls[0] ? (

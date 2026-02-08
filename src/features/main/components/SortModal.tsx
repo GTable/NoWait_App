@@ -86,7 +86,7 @@ export const SortModal = ({
 
           <E.ButtonContainer>
             <CustomButton
-              variant="rounded12"
+              variant="rounded16"
               onPress={() => onConfirm(selectedSort)}
             >
               확인

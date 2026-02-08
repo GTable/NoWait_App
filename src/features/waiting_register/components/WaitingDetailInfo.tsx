@@ -22,7 +22,7 @@ export const WaitingDetailInfo = ({
     <E.DetailContainer>
       <E.ContentContainer>
         <E.Label>부스</E.Label>
-        <E.Content>{boothName}</E.Content>
+        <E.Content numberOfLines={1}>{boothName}</E.Content>
       </E.ContentContainer>
 
       <E.ContentContainer>
@@ -61,6 +61,7 @@ const E = {
   }),
 
   Content: styled.Text({
+    width: 194,
     color: colors.black[90],
     textAlign: "right",
     ...typography["text-16-medium"],

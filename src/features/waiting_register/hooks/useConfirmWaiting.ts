@@ -50,7 +50,7 @@ export const useConfirmWaiting = ({
         if (isMounted) {
           setWaitingInfo({
             waitingCount: data.waitingCount,
-            boothName: `${data.storeName} / ${data.departmentName}`,
+            boothName: `${data.departmentName} / ${data.storeName}`,
           });
         }
       } catch (error) {

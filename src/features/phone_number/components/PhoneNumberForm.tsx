@@ -52,7 +52,7 @@ export const PhoneNumberForm = ({
 
       {isComplete && (
         <E.CtaContainer>
-          <CustomButton variant="rounded12" onPress={onNext}>
+          <CustomButton variant="rounded16" onPress={onNext}>
             다음으로
           </CustomButton>
         </E.CtaContainer>
