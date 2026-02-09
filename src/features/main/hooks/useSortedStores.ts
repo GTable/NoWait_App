@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSortedStores } from "../model/SortedStoresApi";
-import { SortOption } from "@/screens/main/MainScreen";
+import { SortOption } from "../model/SortedStoresApi";
 
 /**
  * 정렬된 주점 목록 조회 커스텀 훅 (상위 5개)

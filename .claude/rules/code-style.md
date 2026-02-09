@@ -138,7 +138,56 @@ const E = {
 
 ## 주석 원칙
 
-- 최소화 (코드가 자명해야 함)
-- JSDoc: `shared/` 내 export 함수·훅·컴포넌트 (`@param`, `@returns`)
+- 기본 원칙: 최소화 (코드가 자명해야 함)
 - 스타일 주석 금지
+
+**JSDoc 필수 대상:**
+
+- `shared/` 내 export 함수·훅·컴포넌트 (`@param`, `@returns`)
+- `features/*/hooks/` 내 커스텀 훅 — 역할·동작을 명시하여 다른 개발자가 빠르게 이해할 수 있도록
 - Props: 외부 노출 interface만
+
+**JSX 섹션 주석 허용:**
+
+- `screens/` 및 `features/*/components/`의 JSX 내 섹션 구분 주석 허용
+- 비개발자도 코드의 기능·역할을 파악할 수 있도록 `{/* 섹션명 */}` 사용
+- UI 구조가 복잡한 컴포넌트에서는 각 영역이 어떤 역할인지 명시
+
+```tsx
+// ✅ 스크린 — 섹션 구분 주석 허용
+const MainScreen = () => (
+  <ScreenLayout>
+    {/* 상단 헤더 */}
+    <Header />
+    {/* 정렬된 주점 리스트 */}
+    <SortedStoresSection />
+  </ScreenLayout>
+);
+
+// ✅ feature 컴포넌트 — UI 영역 구분 주석 허용
+const SortedStoresSection = () => (
+  <E.Container>
+    {/* 정렬 옵션 선택 버튼 */}
+    <SortButton onPress={showModal} />
+    {/* 가로 스크롤 부스 카드 리스트 */}
+    <E.HorizontalCardList horizontal>
+      {stores.map((store) => (
+        <StoreCard key={store.id} store={store} />
+      ))}
+    </E.HorizontalCardList>
+  </E.Container>
+);
+
+// ✅ 훅 — JSDoc으로 역할 명시
+/**
+ * 정렬 옵션에 따른 주점 목록 조회
+ * - 30초마다 자동 갱신
+ */
+export const useSortedStores = (sortOption: SortOption) => { ... };
+
+// ❌ 자명한 곳에 불필요한 주석
+const E = {
+  // 컨테이너 스타일  ← 금지
+  Container: styled.View({ ... }),
+};
+```

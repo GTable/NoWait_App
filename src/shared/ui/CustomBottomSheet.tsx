@@ -48,7 +48,6 @@ interface CustomBottomSheetProps {
  * - Press 시 scale: 0.96 애니메이션
  * - Press 시 해당 항목에만 dim 표시
  */
-// term.id를 TermType으로 변환
 const getTermType = (id: string): TermType => {
   const termTypeMap: Record<string, TermType> = {
     service: "service",
@@ -59,21 +58,17 @@ const getTermType = (id: string): TermType => {
 };
 
 const AnimatedTermItem = React.memo(({ term }: { term: TermItem }) => {
-  // Press 인터랙션 애니메이션 훅 사용
   const { isPressed, dimStyle, animatedStyle, handlePressIn, handlePressOut } =
     usePressScaleAnimation(TERM_PRESS_ANIMATION);
 
-  // 모달 상태 관리
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <>
       <E.ItemWrapper>
-        {/* Press 시 해당 항목만 어두워짐 */}
         {isPressed && <E.ItemDim style={dimStyle} />}
         <Animated.View style={animatedStyle}>
           <E.TermContainerInner>
-            {/* 체크박스 영역 - 터치 시 체크 토글 */}
             <Pressable
               style={{ flex: 1 }}
               onPressIn={handlePressIn}
@@ -85,7 +80,6 @@ const AnimatedTermItem = React.memo(({ term }: { term: TermItem }) => {
                 <E.TermText>{term.text}</E.TermText>
               </E.TermRow>
             </Pressable>
-            {/* 화살표 버튼 - 터치 시 모달 띄우기 */}
             <Pressable onPress={() => setIsModalVisible(true)}>
               <ArrowRightSvg />
             </Pressable>
@@ -93,7 +87,6 @@ const AnimatedTermItem = React.memo(({ term }: { term: TermItem }) => {
         </Animated.View>
       </E.ItemWrapper>
 
-      {/* 약관 상세 모달 */}
       <Modal
         visible={isModalVisible}
         animationType="none"

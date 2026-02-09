@@ -13,6 +13,7 @@ export const Images = {
   "onboard-2": require("./images/onboard/onboard_2.png"),
   "onboard-3": require("./images/onboard/onboard_3.png"),
   "kakao-logo": require("./images/onboard/kakao-logo.png"),
+  "bg-shadow": require("./images/main/bg-shadow.png"),
 };
 
 export const SvgIcons = {
