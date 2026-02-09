@@ -1,6 +1,8 @@
 import { storeApi } from "@/shared/api/storeApi";
 import { z } from "zod";
 
+export type SortOption = "asc" | "desc";
+
 const SortedStoresApiItemSchema = z.object({
   bannerImageUrl: z.string().optional(),
   departmentName: z.string(),

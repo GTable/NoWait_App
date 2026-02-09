@@ -1,17 +1,26 @@
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import styled from "@emotion/native";
 import React, { useState } from "react";
-import { colors } from "@/app/styles/colors";
 import { Header } from "@/features/main/components/Header";
 import { SortedStoresSection } from "@/features/main/components/SortedStoresSection";
 import { AllStoresSection } from "@/features/main/components/AllStoresSection";
 import { useModal } from "@/shared/contexts/ModalContext";
-
-export type SortOption = "asc" | "desc";
+import { SortOption } from "@/features/main/model/SortedStoresApi";
 
 const MainScreen = () => {
-  const { isModalVisible, showModal, hideModal } = useModal();
+  const { showModal, hideModal } = useModal();
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>("desc");
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+    showModal();
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    hideModal();
+  };
 
   return (
     <ScreenLayout bottomSafeArea={false}>
@@ -23,12 +32,10 @@ const MainScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ gap: 50 }}
       >
-        <E.BannerPlaceholder />
-
         <SortedStoresSection
           isModalVisible={isModalVisible}
-          showModal={showModal}
-          hideModal={hideModal}
+          onOpenModal={handleOpenModal}
+          onCloseModal={handleCloseModal}
           sortOption={sortOption}
           setSortOption={setSortOption}
         />
@@ -44,10 +51,6 @@ export default MainScreen;
 const E = {
   ScrollContainer: styled.ScrollView({
     flex: 1,
-  }),
-
-  BannerPlaceholder: styled.View({
-    height: 150,
-    backgroundColor: colors.black[60],
+    paddingTop: 20,
   }),
 };

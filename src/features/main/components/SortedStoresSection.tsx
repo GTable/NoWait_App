@@ -5,7 +5,7 @@ import styled from "@emotion/native";
 import React from "react";
 import { BoothCard } from "./BoothCard";
 import { SortModal } from "./SortModal";
-import { SortOption } from "@/screens/main/MainScreen";
+import { SortOption } from "../model/SortedStoresApi";
 import { ActivityIndicator } from "react-native";
 import { useSortedStores } from "../hooks/useSortedStores";
 import { useNavigation } from "@react-navigation/native";
@@ -21,16 +21,16 @@ import { RootStackParamList } from "@/app/config/routes/routes.core";
  */
 interface SortedStoresSectionProps {
   isModalVisible: boolean;
-  showModal: () => void;
-  hideModal: () => void;
+  onOpenModal: () => void;
+  onCloseModal: () => void;
   sortOption: SortOption;
   setSortOption: (option: SortOption) => void;
 }
 
 export const SortedStoresSection = ({
   isModalVisible,
-  showModal,
-  hideModal,
+  onOpenModal,
+  onCloseModal,
   sortOption,
   setSortOption,
 }: SortedStoresSectionProps) => {
@@ -44,7 +44,7 @@ export const SortedStoresSection = ({
   return (
     <E.Container>
       {/* 정렬 옵션 선택 헤더 */}
-      <E.TitleSection onPress={showModal}>
+      <E.TitleSection onPress={onOpenModal}>
         <E.SectionTitle>{sectionTitle}</E.SectionTitle>
         <E.DropdownButton>
           <ArrowDown />
@@ -86,10 +86,11 @@ export const SortedStoresSection = ({
       {/* 정렬 옵션 선택 모달 */}
       <SortModal
         visible={isModalVisible}
+        onClose={onCloseModal}
         currentSort={sortOption}
         onConfirm={(option) => {
           setSortOption(option);
-          hideModal();
+          onCloseModal();
         }}
       />
     </E.Container>
