@@ -80,6 +80,7 @@ export const MyWaitingSection = ({
             <E.Carousel
               ref={scrollRef}
               showsVerticalScrollIndicator={false}
+              nestedScrollEnabled
               pagingEnabled
               snapToInterval={CARD_HEIGHT}
               decelerationRate="fast"
