@@ -46,3 +46,5 @@ export { WaitingSvg } from "./images/store_detail/WaitingSvg";
 export { Alert } from "./images/main/Alert";
 export { ArrowDown } from "./images/main/ArrowDown";
 export { Logo } from "./images/main/Logo";
+export { NormalPlus } from "./images/main/NormalPlus";
+export { ReloadSvg } from "./images/main/ReloadSvg";

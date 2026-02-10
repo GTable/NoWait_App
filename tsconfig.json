@@ -6,10 +6,7 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "target": "ESNext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -18,16 +15,10 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "declarations.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "declarations.d.ts"],
   "exclude": [
     "node_modules",
     "babel.config.js",
@@ -36,4 +27,5 @@
     "android",
     "ios"
   ],
+  "extends": "expo/tsconfig.base"
 }
