@@ -143,8 +143,9 @@ const E = {
 
 **JSDoc 필수 대상:**
 
-- `shared/` 내 export 함수·훅·컴포넌트 (`@param`, `@returns`)
+- `shared/` 내 export 함수·훅·컴포넌트 (`@param`, `@returns`) — 단, SVG 아이콘 컴포넌트(`shared/assets/images/`)는 제외
 - `features/*/hooks/` 내 커스텀 훅 — 역할·동작을 명시하여 다른 개발자가 빠르게 이해할 수 있도록
+- `features/*/components/` 내 export 컴포넌트 — 역할·동작을 간결하게 명시
 - Props: 외부 노출 interface만
 
 **JSX 섹션 주석 허용:**
