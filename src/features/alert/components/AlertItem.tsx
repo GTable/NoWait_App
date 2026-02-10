@@ -10,6 +10,12 @@ interface AlertItemProps {
   onPress?: () => void;
 }
 
+/**
+ * 알림 목록 아이템
+ *
+ * - 주점 프로필, 알림 시간, 메시지 표시
+ * - 읽지 않은 알림은 배경색으로 구분
+ */
 export const AlertItem = ({
   storeName,
   timeLeft,
@@ -19,18 +25,20 @@ export const AlertItem = ({
 }: AlertItemProps) => {
   return (
     <E.Container onPress={onPress} style={!isRead ? E.UnreadBackground : undefined}>
-      <E.Top>
-        <E.TopLeft>
+      {/* 주점 프로필 및 알림 시간 */}
+      <E.InfoRow>
+        <E.StoreProfile>
           <E.ProfileImg />
           <E.StoreName>{storeName}</E.StoreName>
-        </E.TopLeft>
+        </E.StoreProfile>
 
         <E.TimeLeft>{timeLeft}</E.TimeLeft>
-      </E.Top>
+      </E.InfoRow>
 
-      <E.Bottom>
+      {/* 알림 메시지 */}
+      <E.MessageSection>
         <E.Message>{message}</E.Message>
-      </E.Bottom>
+      </E.MessageSection>
     </E.Container>
   );
 };
@@ -48,14 +56,14 @@ const E = {
     backgroundColor: "#FFF3F0",
   },
 
-  Top: styled.View({
+  InfoRow: styled.View({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
     alignSelf: "stretch",
   }),
 
-  TopLeft: styled.View({
+  StoreProfile: styled.View({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
@@ -78,7 +86,7 @@ const E = {
     ...typography["text-14-regular"],
   }),
 
-  Bottom: styled.View({
+  MessageSection: styled.View({
     flexDirection: "column",
     alignItems: "flex-start",
     gap: 2,

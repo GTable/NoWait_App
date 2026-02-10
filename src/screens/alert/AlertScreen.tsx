@@ -82,7 +82,6 @@ const E = {
     paddingBottom: 10,
     color: colors.black[90],
     ...typography["headline-22-bold"],
-    fontWeight: "600",
   }),
 
   NoticeSection: styled.View({
