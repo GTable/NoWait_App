@@ -30,7 +30,7 @@ export const NoneWaitingSection = ({
 };
 
 const E = {
-  Container: styled.TouchableOpacity({
+  Container: styled.View({
     width: "100%",
     paddingTop: 14,
     paddingRight: 14,

@@ -45,20 +45,19 @@ export const useWaitingCarousel = <T,>(
       const total = items.length;
 
       if (total > 1) {
+        let targetY: number | null = null;
+
         if (nextIndex <= total - 1) {
-          const targetY = (nextIndex + total) * cardHeight;
-          scrollY.setValue(targetY);
-          scrollRef.current?.scrollTo({
-            y: targetY,
-            animated: false,
-          });
+          targetY = (nextIndex + total) * cardHeight;
         } else if (nextIndex >= total * 2) {
-          const targetY = (nextIndex - total) * cardHeight;
+          targetY = (nextIndex - total) * cardHeight;
+        }
+
+        if (targetY !== null) {
           scrollY.setValue(targetY);
-          scrollRef.current?.scrollTo({
-            y: targetY,
-            animated: false,
-          });
+          scrollRef.current?.scrollTo({ y: targetY, animated: false });
+          const normalizedIndex = ((nextIndex % total) + total) % total;
+          setActiveIndex(normalizedIndex);
         }
       }
     },
