@@ -7,6 +7,8 @@ interface CarouselIndicatorProps {
   total: number;
   /** 현재 활성화된 인덱스 (0부터 시작) */
   activeIndex: number;
+  /** 도트 방향 */
+  direction?: "row" | "column";
 }
 
 /**
@@ -17,16 +19,24 @@ interface CarouselIndicatorProps {
 export const CarouselIndicator = ({
   total,
   activeIndex,
+  direction = "row",
 }: CarouselIndicatorProps) => {
   return (
-    <E.Container>
+    <E.Container style={{ flexDirection: direction }}>
       {Array.from({ length: total }).map((_, index) => {
         const isActive = index === activeIndex;
-        return isActive ? (
-          <E.ActiveDot key={index} />
-        ) : (
-          <E.NormalDot key={index} />
-        );
+        if (direction === "column") {
+          return (
+            <E.VerticalDot
+              key={index}
+              style={{
+                backgroundColor: isActive ? "#FF7649" : "rgba(0, 0, 0, 0.15)",
+              }}
+            />
+          );
+        }
+
+        return isActive ? <E.ActiveDot key={index} /> : <E.NormalDot key={index} />;
       })}
     </E.Container>
   );
@@ -47,9 +57,13 @@ const E = {
     borderRadius: 999,
     backgroundColor: colors.black[100],
   }),
+  VerticalDot: styled.View({
+    width: 4,
+    height: 4,
+    borderRadius: 999,
+  }),
 
   Container: styled.View({
-    flexDirection: "row",
     gap: 5,
     alignItems: "center",
     justifyContent: "center",
