@@ -17,14 +17,14 @@ export const NoneWaitingSection = ({
       : "아직 대기 중인 부스가 없어요";
   return (
     <E.Container>
-      <E.Text>{message}</E.Text>
+      <E.Message>{message}</E.Message>
 
-      <E.Button onPress={onPressFind}>
-        <E.ButtonText numberOfLines={1}>부스 찾기</E.ButtonText>
-        <E.Plus>
+      <E.FindButton onPress={onPressFind}>
+        <E.FindButtonText numberOfLines={1}>부스 찾기</E.FindButtonText>
+        <E.PlusIcon>
           <NormalPlus />
-        </E.Plus>
-      </E.Button>
+        </E.PlusIcon>
+      </E.FindButton>
     </E.Container>
   );
 };
@@ -49,7 +49,7 @@ const E = {
     backgroundColor: colors.black[15],
   }),
 
-  Text: styled.Text({
+  Message: styled.Text({
     color: colors.black[70],
     textAlign: "center",
     fontFamily: "Pretendard",
@@ -59,7 +59,7 @@ const E = {
     lineHeight: 20.16,
   }),
 
-  Button: styled.TouchableOpacity({
+  FindButton: styled.TouchableOpacity({
     paddingVertical: 8,
     paddingLeft: 14,
     paddingRight: 12,
@@ -73,7 +73,7 @@ const E = {
     backgroundColor: "rgba(0, 0, 0, 0.04)",
   }),
 
-  ButtonText: styled.Text({
+  FindButtonText: styled.Text({
     overflow: "hidden",
     color: colors.black[70],
     textAlign: "center",
@@ -84,7 +84,7 @@ const E = {
     lineHeight: 21,
   }),
 
-  Plus: styled.View({
+  PlusIcon: styled.View({
     width: 14,
     height: 14,
     alignItems: "center",

@@ -1,18 +1,22 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "@/app/styles/colors";
 import { ReloadSvg } from "@/shared/assets/images";
 import styled from "@emotion/native";
-import { LinearGradient } from "expo-linear-gradient";
 
 interface WaitingCardProps {
   storeName: string;
   teamsAhead: number;
   profileImageUrl: string;
+  onRefresh: () => void;
+  onPress?: () => void;
 }
 
 export const WaitingCard = ({
   storeName,
   teamsAhead,
   profileImageUrl,
+  onRefresh,
+  onPress,
 }: WaitingCardProps) => {
   return (
     <E.Container
@@ -20,11 +24,11 @@ export const WaitingCard = ({
       start={{ x: 0.1292, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <E.Touchable activeOpacity={0.8}>
+      <E.ContentArea onPress={onPress}>
         {/* 상단: 나의 대기 + 부스 아이콘 */}
         <E.TopRow>
-          <E.Label>나의 대기</E.Label>
-          <E.BoothIcon>{profileImageUrl}</E.BoothIcon>
+          <E.SectionLabel>나의 대기</E.SectionLabel>
+          <E.BoothIcon source={{ uri: profileImageUrl }} />
         </E.TopRow>
 
         {/* 하단: 주점명 + 대기 팀 수 */}
@@ -36,10 +40,12 @@ export const WaitingCard = ({
               내 앞 <E.TeamCount>{teamsAhead}팀</E.TeamCount>
             </E.TeamText>
 
-            <ReloadSvg />
+            <E.ReloadButton onPress={onRefresh} hitSlop={8}>
+              <ReloadSvg />
+            </E.ReloadButton>
           </E.TeamInfo>
         </E.BottomRow>
-      </E.Touchable>
+      </E.ContentArea>
     </E.Container>
   );
 };
@@ -58,7 +64,7 @@ const E = {
     height: 145,
   }),
 
-  Touchable: styled.TouchableOpacity({
+  ContentArea: styled.Pressable({
     width: "100%",
     flexDirection: "column",
     alignItems: "flex-start",
@@ -73,7 +79,7 @@ const E = {
     alignSelf: "stretch",
   }),
 
-  Label: styled.Text({
+  SectionLabel: styled.Text({
     color: "rgba(255, 255, 255, 0.90)",
     fontFamily: "Pretendard",
     fontSize: 15,
@@ -82,15 +88,12 @@ const E = {
     lineHeight: 21.6,
   }),
 
-  BoothIcon: styled.View({
+  BoothIcon: styled.Image({
     width: 30,
     height: 30,
     borderRadius: 999,
     borderWidth: 2,
-    borderStyle: "solid",
     borderColor: colors.white[100],
-    justifyContent: "center",
-    alignItems: "center",
   }),
 
   BottomRow: styled.View({
@@ -122,6 +125,11 @@ const E = {
     fontStyle: "normal",
     fontWeight: "700",
     lineHeight: 28.6,
+  }),
+
+  ReloadButton: styled.Pressable({
+    alignItems: "center",
+    justifyContent: "center",
   }),
 
   TeamCount: styled.Text({

@@ -4,7 +4,7 @@ import { z } from "zod";
 export type SortOption = "asc" | "desc";
 
 const SortedStoresApiItemSchema = z.object({
-  bannerImageUrl: z.string().optional(),
+  bannerImageUrl: z.string().nullable(),
   departmentName: z.string(),
   storeId: z.string(),
   publicCode: z.string(),
@@ -23,7 +23,7 @@ export interface SortedStore {
   name: string;
   departmentName: string;
   waitingCount: number;
-  bannerImageUrl?: string;
+  bannerImageUrl: string | null;
 }
 
 /**
@@ -34,18 +34,22 @@ export interface SortedStore {
 export const getSortedStores = async (
   order: "asc" | "desc",
 ): Promise<SortedStore[]> => {
-  const rawResponse = await storeApi.get("/waiting-count", {
-    params: { order },
-  });
+  try {
+    const raw = await storeApi.get("/waiting-count", {
+      params: { order },
+    });
 
-  const response = SortedStoresApiResponseSchema.parse(rawResponse);
+    const validated = SortedStoresApiResponseSchema.parse(raw);
 
-  return response.response.map((store) => ({
-    storeId: Number(store.storeId),
-    publicCode: store.publicCode,
-    name: store.storeName,
-    departmentName: store.departmentName,
-    waitingCount: store.waitingCount,
-    bannerImageUrl: store.bannerImageUrl,
-  }));
+    return validated.response.map((store) => ({
+      storeId: Number(store.storeId),
+      publicCode: store.publicCode,
+      name: store.storeName,
+      departmentName: store.departmentName,
+      waitingCount: store.waitingCount,
+      bannerImageUrl: store.bannerImageUrl,
+    }));
+  } catch {
+    return [];
+  }
 };

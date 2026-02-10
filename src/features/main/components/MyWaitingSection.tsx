@@ -2,10 +2,11 @@ import { useMemo } from "react";
 import { Animated, Dimensions, ScrollView } from "react-native";
 import { Images } from "@/shared/assets/images";
 import { CarouselIndicator } from "@/shared/ui/CarouselIndicator";
+import { useMyWaitings } from "../hooks/useMyWaitings";
 import { useWaitingCarousel } from "../hooks/useWaitingCarousel";
-import { NoneWaitingSection } from "../components/NoneWaiting";
-import { GlassCard } from "../components/GlassCard";
-import { WaitingCard } from "../components/WaitingCard";
+import { NoneWaitingSection } from "./NoneWaiting";
+import { GlassCard } from "./GlassCard";
+import { WaitingCard } from "./WaitingCard";
 import styled from "@emotion/native";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -17,47 +18,30 @@ const CAROUSEL_CONTENT_STYLE = {
 };
 
 interface MyWaitingSectionProps {
-  isEmpty?: boolean;
   onPressFind?: () => void;
 }
 
-type WaitingItem = {
+interface WaitingItem {
   type: "waiting";
   storeName: string;
   teamsAhead: number;
   profileImageUrl: string;
-};
+}
 
 type NoneItem = { type: "none" };
 
 export const MyWaitingSection = ({
-  isEmpty = false,
   onPressFind,
 }: MyWaitingSectionProps) => {
-  const waitingItems = useMemo<WaitingItem[]>(
-    () => [
-      {
-        type: "waiting",
-        storeName: "스페이시스",
-        teamsAhead: 5,
-        profileImageUrl: "",
-      },
-      {
-        type: "waiting",
-        storeName: "라운지 7",
-        teamsAhead: 8,
-        profileImageUrl: "",
-      },
-    ],
-    [],
+  const { waitings, refetch } = useMyWaitings();
+
+  const reservations = useMemo<WaitingItem[]>(
+    () =>
+      waitings.slice(0, 3).map((w) => ({ ...w, type: "waiting" })),
+    [waitings],
   );
 
-  const reservations = useMemo(() => waitingItems.slice(0, 3), [waitingItems]);
-
   const carouselItems = useMemo<(WaitingItem | NoneItem)[]>(() => {
-    if (reservations.length === 0) {
-      return [];
-    }
     if (reservations.length < 3) {
       return [...reservations, { type: "none" }];
     }
@@ -73,24 +57,19 @@ export const MyWaitingSection = ({
     onScroll,
   } = useWaitingCarousel(carouselItems, CARD_HEIGHT);
 
-  const indicatorIndex =
-    reservations.length === 0
-      ? 0
-      : Math.min(activeIndex, reservations.length - 1);
+  const indicatorIndex = Math.min(activeIndex, reservations.length - 1);
 
   const isNoneActive =
-    reservations.length > 0 &&
-    reservations.length < 3 &&
-    activeIndex === reservations.length;
+    reservations.length < 3 && activeIndex === reservations.length;
 
   return (
     <E.Section>
       {/* 배경 그림자 이미지 */}
-      {!isEmpty && reservations.length > 0 && !isNoneActive && (
+      {reservations.length > 0 && !isNoneActive && (
         <E.BgShadow source={Images["bg-shadow"]} resizeMode="stretch" />
       )}
 
-      {isEmpty || reservations.length === 0 ? (
+      {reservations.length === 0 ? (
         <GlassCard>
           <NoneWaitingSection variant="empty" onPressFind={onPressFind} />
         </GlassCard>
@@ -135,6 +114,7 @@ export const MyWaitingSection = ({
                           storeName={item.storeName}
                           teamsAhead={item.teamsAhead}
                           profileImageUrl={item.profileImageUrl}
+                          onRefresh={refetch}
                         />
                       )}
                     </Animated.View>
@@ -145,15 +125,13 @@ export const MyWaitingSection = ({
           </GlassCard>
 
           {/* 캐러셀 인디케이터 */}
-          {reservations.length > 0 && (
-            <E.IndicatorContainer pointerEvents="none">
-              <CarouselIndicator
-                total={reservations.length}
-                activeIndex={indicatorIndex}
-                direction="column"
-              />
-            </E.IndicatorContainer>
-          )}
+          <E.IndicatorContainer pointerEvents="none">
+            <CarouselIndicator
+              total={reservations.length}
+              activeIndex={indicatorIndex}
+              direction="column"
+            />
+          </E.IndicatorContainer>
         </E.RowContainer>
       )}
     </E.Section>
