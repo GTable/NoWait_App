@@ -17,6 +17,7 @@ import EnterPersonScreen from "@/screens/waiting_register/EnterPersonScreen";
 import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScreen";
 import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
 import { ModalProvider } from "@/shared/contexts/ModalContext";
+import AlertScreen from "@/screens/alert/AlertScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -78,6 +79,12 @@ export function AppRouter() {
           <Stack.Screen
             name="NoticeDetail"
             component={NoticeDetailScreen}
+            options={{ headerShown: false }}
+          />
+          {/* 알림 화면 */}
+          <Stack.Screen
+            name="Alert"
+            component={AlertScreen}
             options={{ headerShown: false }}
           />
           {/* 전화번호 입력 화면 */}

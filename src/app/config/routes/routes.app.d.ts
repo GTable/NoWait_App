@@ -9,6 +9,7 @@ import PhoneNumberScreen from "@/screens/phone_number/PhoneNumberScreen";
 import EnterPersonScreen from "@/screens/waiting_register/EnterPersonScreen";
 import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScreen";
 import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
+import AlertScreen from "@/screens/alert/AlertScreen";
 
 declare module "./routes.core" {
   interface AppRouteMap {
@@ -19,6 +20,7 @@ declare module "./routes.core" {
     map: ReturnType<typeof MapScreen.useParams>;
     myPage: ReturnType<typeof MyPageScreen.useParams>;
     storeDetail: ReturnType<typeof StoreDetailScreen.useParams>;
+    alert: ReturnType<typeof AlertScreen.useParams>;
     phoneNumber: ReturnType<typeof PhoneNumberScreen.useParams>;
     enterPerson: ReturnType<typeof EnterPersonScreen.useParams>;
     confirmWaiting: ReturnType<typeof ConfirmWaitingScreen.useParams>;
