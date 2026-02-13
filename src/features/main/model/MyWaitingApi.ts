@@ -1,4 +1,4 @@
-import { usersApi } from "@/shared/api/usersApi";
+import { usersApiTest } from "@/shared/api/usersApiTest";
 import { z } from "zod";
 
 const MyWaitingItemSchema = z.object({
@@ -13,7 +13,7 @@ const MyWaitingItemSchema = z.object({
   registeredAt: z.string(),
   location: z.string(),
   profileImageUrl: z.string(),
-  bannerImageUrl: z.array(z.string()),
+  bannerImageUrl: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
 const MyWaitingResponseSchema = z.object({
@@ -33,7 +33,7 @@ export interface MyWaiting {
  */
 export const getMyWaitings = async (): Promise<MyWaiting[]> => {
   try {
-    const raw = await usersApi.get("/waitings");
+    const raw = await usersApiTest.get("/waitings");
     const validated = MyWaitingResponseSchema.parse(raw);
 
     return validated.response.map((item) => ({

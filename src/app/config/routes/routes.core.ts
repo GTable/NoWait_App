@@ -61,6 +61,7 @@ export type RootStackParamList = {
   Tabs: NavigatorScreenParams<BottomTabParamList>;
   StoreDetail: { publicCode: string };
   NoticeDetail: { noticeTitle: string; noticeContent: string };
+  WaitingDetail: AppRouteMap["WaitingDetail"];
   Alert: AppRouteMap["Alert"];
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];

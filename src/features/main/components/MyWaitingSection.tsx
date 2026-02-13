@@ -2,6 +2,9 @@ import { useMemo } from "react";
 import { Animated, Dimensions, ScrollView } from "react-native";
 import { Images } from "@/shared/assets/images";
 import { CarouselIndicator } from "@/shared/ui/CarouselIndicator";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMyWaitings } from "../hooks/useMyWaitings";
 import { useWaitingCarousel } from "../hooks/useWaitingCarousel";
 import { NoneWaitingSection } from "./NoneWaiting";
@@ -33,6 +36,8 @@ type NoneItem = { type: "none" };
 export const MyWaitingSection = ({
   onPressFind,
 }: MyWaitingSectionProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { waitings, refetch } = useMyWaitings();
 
   const reservations = useMemo<WaitingItem[]>(
@@ -116,6 +121,7 @@ export const MyWaitingSection = ({
                           teamsAhead={item.teamsAhead}
                           profileImageUrl={item.profileImageUrl}
                           onRefresh={refetch}
+                          onPress={() => navigation.navigate("WaitingDetail")}
                         />
                       )}
                     </Animated.View>
