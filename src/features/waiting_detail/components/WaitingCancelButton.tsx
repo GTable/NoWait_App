@@ -16,12 +16,16 @@ const CANCEL_PRESS_ANIMATION = {
 
 interface WaitingCancelButtonProps {
   onPress: () => void;
+  disabled?: boolean;
 }
 
 /**
  * 대기 취소 액션 버튼.
  */
-export const WaitingCancelButton = ({ onPress }: WaitingCancelButtonProps) => {
+export const WaitingCancelButton = ({
+  onPress,
+  disabled = false,
+}: WaitingCancelButtonProps) => {
   const {
     dimStyle,
     dimAnimatedStyle,
@@ -36,8 +40,9 @@ export const WaitingCancelButton = ({ onPress }: WaitingCancelButtonProps) => {
       <E.Dim pointerEvents="none" style={[dimStyle, dimAnimatedStyle]} />
 
       {/* 프레스 스케일 애니메이션 레이어 */}
-      <Reanimated.View style={animatedStyle}>
+      <E.AnimatedWrapper style={animatedStyle}>
         <E.Pressable
+          disabled={disabled}
           onPress={onPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
@@ -47,7 +52,7 @@ export const WaitingCancelButton = ({ onPress }: WaitingCancelButtonProps) => {
             <E.Text numberOfLines={1}>대기 취소</E.Text>
           </E.Row>
         </E.Pressable>
-      </Reanimated.View>
+      </E.AnimatedWrapper>
     </E.Wrapper>
   );
 };
@@ -55,8 +60,13 @@ export const WaitingCancelButton = ({ onPress }: WaitingCancelButtonProps) => {
 const E = {
   Wrapper: styled.View({
     position: "relative",
+    alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
+  }),
+
+  AnimatedWrapper: styled(Reanimated.View)({
+    alignSelf: "center",
   }),
 
   Dim: styled(Reanimated.View)({
@@ -71,10 +81,10 @@ const E = {
 
   Pressable: styled(Pressable)({
     zIndex: 2,
+    alignSelf: "center",
   }),
 
   Row: styled.View({
-    width: "100%",
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center",

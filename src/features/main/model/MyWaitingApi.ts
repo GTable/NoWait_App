@@ -1,9 +1,12 @@
-import { usersApiTest } from "@/shared/api/usersApiTest";
 import { z } from "zod";
+import { usersApiTest } from "@/shared/api/usersApiTest";
+import { formatDateTime } from "@/shared/utils/formatDateTime";
+import { formatWaitingNumber } from "@/shared/utils/formatWaitingNumber";
 
 const MyWaitingItemSchema = z.object({
   reservationId: z.string(),
   storeId: z.number(),
+  publicCode: z.string(),
   storeName: z.string(),
   departmentName: z.string(),
   rank: z.number(),
@@ -22,8 +25,14 @@ const MyWaitingResponseSchema = z.object({
 });
 
 export interface MyWaiting {
+  waitingNumber: string;
+  publicCode: string;
   storeName: string;
+  departmentName: string;
   teamsAhead: number;
+  partySize: number;
+  registeredAt: string;
+  location: string;
   profileImageUrl: string;
 }
 
@@ -37,8 +46,14 @@ export const getMyWaitings = async (): Promise<MyWaiting[]> => {
     const validated = MyWaitingResponseSchema.parse(raw);
 
     return validated.response.map((item) => ({
+      waitingNumber: formatWaitingNumber(item.reservationId),
+      publicCode: item.publicCode,
       storeName: item.storeName,
+      departmentName: item.departmentName,
       teamsAhead: item.teamsAhead,
+      partySize: item.partySize,
+      registeredAt: formatDateTime(item.registeredAt),
+      location: item.location,
       profileImageUrl: item.profileImageUrl,
     }));
   } catch {

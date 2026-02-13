@@ -1,14 +1,15 @@
-import { useMemo } from "react";
-import { Animated, Dimensions, ScrollView } from "react-native";
-import { Images } from "@/shared/assets/images";
-import { CarouselIndicator } from "@/shared/ui/CarouselIndicator";
-import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useMemo } from "react";
+import { Animated, Dimensions, ScrollView } from "react-native";
+import { RootStackParamList } from "@/app/config/routes/routes.core";
+import { WaitingDetailRouteItem } from "@/app/config/routes/routes.types";
+import { Images } from "@/shared/assets/images";
+import { CarouselIndicator } from "@/shared/ui/CarouselIndicator";
 import { useMyWaitings } from "../hooks/useMyWaitings";
 import { useWaitingCarousel } from "../hooks/useWaitingCarousel";
-import { NoneWaitingSection } from "./NoneWaiting";
 import { GlassCard } from "./GlassCard";
+import { NoneWaitingSection } from "./NoneWaiting";
 import { WaitingCard } from "./WaitingCard";
 import styled from "@emotion/native";
 
@@ -26,13 +27,23 @@ interface MyWaitingSectionProps {
 
 interface WaitingItem {
   type: "waiting";
+  waitingNumber: string;
+  publicCode: string;
   storeName: string;
+  departmentName: string;
   teamsAhead: number;
+  partySize: number;
+  registeredAt: string;
+  location: string;
   profileImageUrl: string;
 }
 
 type NoneItem = { type: "none" };
 
+/**
+ * 메인 화면의 나의 대기 카드 섹션
+ * - 대기 목록 캐러셀과 빈 상태를 표시한다.
+ */
 export const MyWaitingSection = ({
   onPressFind,
 }: MyWaitingSectionProps) => {
@@ -44,6 +55,24 @@ export const MyWaitingSection = ({
     () =>
       waitings.slice(0, 3).map((w) => ({ ...w, type: "waiting" })),
     [waitings],
+  );
+
+  const waitingDetailItems = useMemo<WaitingDetailRouteItem[]>(
+    () =>
+      reservations.map((reservation) => ({
+        teamsAhead: reservation.teamsAhead,
+        card: {
+          waitingNumber: reservation.waitingNumber,
+          publicCode: reservation.publicCode,
+          storeName: reservation.storeName,
+          departmentName: reservation.departmentName,
+          partySize: reservation.partySize,
+          registeredAt: reservation.registeredAt,
+          location: reservation.location,
+          profileImageUrl: reservation.profileImageUrl,
+        },
+      })),
+    [reservations],
   );
 
   const carouselItems = useMemo<(WaitingItem | NoneItem)[]>(() => {
@@ -121,7 +150,12 @@ export const MyWaitingSection = ({
                           teamsAhead={item.teamsAhead}
                           profileImageUrl={item.profileImageUrl}
                           onRefresh={refetch}
-                          onPress={() => navigation.navigate("WaitingDetail")}
+                          onPress={() =>
+                            navigation.navigate("WaitingDetail", {
+                              waitings: waitingDetailItems,
+                              selectedWaitingNumber: item.waitingNumber,
+                            })
+                          }
                         />
                       )}
                     </Animated.View>

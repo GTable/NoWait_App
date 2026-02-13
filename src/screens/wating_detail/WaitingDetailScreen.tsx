@@ -1,13 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useEffect, useMemo } from "react";
 import { ScreenLayout } from "@/app/layout/ScreenLayout";
 import { RootStackParamList } from "@/app/config/routes/routes.core";
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import { WaitingCancelButton } from "@/features/waiting_detail/components/WaitingCancelButton";
 import { WaitingDetailCarousel } from "@/features/waiting_detail/components/WaitingDetailCarousel";
+import { useCancelWaiting } from "@/features/waiting_detail/hooks/useCancelWaiting";
 import { useWaitingDetailCarousel } from "@/features/waiting_detail/hooks/useWaitingDetailCarousel";
-import { MOCK_WAITING_DETAILS } from "@/features/waiting_detail/model/WaitingDetailModel";
+import { useWaitingDetails } from "@/features/waiting_detail/hooks/useWaitingDetails";
 import { BackHeader } from "@/shared/ui/BackHeader";
 import styled from "@emotion/native";
 
@@ -15,9 +17,24 @@ type WaitingDetailNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "WaitingDetail"
 >;
+type WaitingDetailRouteProp = RouteProp<RootStackParamList, "WaitingDetail">;
 
 const WaitingDetailScreen = () => {
   const navigation = useNavigation<WaitingDetailNavigationProp>();
+  const route = useRoute<WaitingDetailRouteProp>();
+  const { waitings, selectedWaitingNumber } = route.params;
+  const { waitingDetails } = useWaitingDetails(waitings);
+  const { cancelWaiting, isPending } = useCancelWaiting();
+  const initialIndex = useMemo(
+    () =>
+      Math.max(
+        0,
+        waitingDetails.findIndex(
+          (item) => item.card.waitingNumber === selectedWaitingNumber,
+        ),
+      ),
+    [selectedWaitingNumber, waitingDetails],
+  );
   const {
     scrollX,
     activeIndex,
@@ -26,11 +43,32 @@ const WaitingDetailScreen = () => {
     cardGap,
     handleScroll,
     handleScrollEnd,
-  } = useWaitingDetailCarousel(MOCK_WAITING_DETAILS);
-  const teamsAhead = MOCK_WAITING_DETAILS[activeIndex]?.teamsAhead ?? 0;
+    setInitialIndex,
+  } = useWaitingDetailCarousel(waitingDetails);
+  const currentWaiting = waitingDetails[activeIndex];
+  const teamsAhead = currentWaiting?.teamsAhead ?? 0;
 
-  const handleCancelWaiting = () => {
-    navigation.goBack();
+  useEffect(() => {
+    setInitialIndex(initialIndex);
+  }, [initialIndex, setInitialIndex]);
+
+  useEffect(() => {
+    if (waitingDetails.length === 0 && !isPending) {
+      navigation.goBack();
+    }
+  }, [isPending, navigation, waitingDetails.length]);
+
+  const handleCancelWaiting = async () => {
+    const publicCode = currentWaiting?.card.publicCode;
+    const waitingNumber = currentWaiting?.card.waitingNumber;
+    if (!publicCode || !waitingNumber || isPending) return;
+
+    try {
+      await cancelWaiting({ publicCode, waitingNumber });
+      setInitialIndex(0);
+    } catch (error: unknown) {
+      console.error("대기 취소 실패:", error);
+    }
   };
 
   return (
@@ -54,17 +92,22 @@ const WaitingDetailScreen = () => {
         <E.WaitingCardSection>
           {/* 대기 상세 카드 캐러셀 */}
           <WaitingDetailCarousel
-            items={MOCK_WAITING_DETAILS}
+            items={waitingDetails}
             cardWidth={cardWidth}
             cardGap={cardGap}
             snapInterval={snapInterval}
+            initialIndex={initialIndex}
+            scrollEnabled={!isPending}
             scrollX={scrollX}
             onScroll={handleScroll}
             onScrollEnd={handleScrollEnd}
           />
 
           {/* 대기 취소 액션 버튼 */}
-          <WaitingCancelButton onPress={handleCancelWaiting} />
+          <WaitingCancelButton
+            onPress={handleCancelWaiting}
+            disabled={isPending}
+          />
         </E.WaitingCardSection>
       </E.Container>
     </ScreenLayout>

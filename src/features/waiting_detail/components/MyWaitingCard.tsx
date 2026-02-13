@@ -2,7 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "@/app/styles/colors";
 import { typography } from "@/app/styles/typography";
 import { Images } from "@/shared/assets/images";
-import { WaitingCardData } from "../model/WaitingDetailModel";
+import { WaitingCardData } from "../model/WaitingDetailApi";
 import styled from "@emotion/native";
 
 interface MyWaitingCardProps {
@@ -15,7 +15,7 @@ interface MyWaitingCardProps {
  */
 export const MyWaitingCard = ({ data }: MyWaitingCardProps) => {
   const {
-    reservationId,
+    waitingNumber,
     storeName,
     departmentName,
     partySize,
@@ -48,15 +48,19 @@ export const MyWaitingCard = ({ data }: MyWaitingCardProps) => {
         <E.CardContent>
           {/* 상단: 대기 번호와 프로필 이미지 */}
           <E.CardHeader>
-            <E.QueueNumberText>#{reservationId}</E.QueueNumberText>
+            <E.QueueNumberText>#{waitingNumber}</E.QueueNumberText>
             <E.ProfileBadge source={{ uri: profileImageUrl }} />
           </E.CardHeader>
 
           <E.CardBody>
             {/* 매장 기본 정보 */}
             <E.StoreInfoSection>
-              <E.StoreNameText>{storeName}</E.StoreNameText>
-              <E.DepartmentText>{departmentName}</E.DepartmentText>
+              <E.StoreNameText numberOfLines={1} ellipsizeMode="tail">
+                {storeName}
+              </E.StoreNameText>
+              <E.DepartmentText numberOfLines={1} ellipsizeMode="tail">
+                {departmentName}
+              </E.DepartmentText>
             </E.StoreInfoSection>
 
             {/* 대기 상세 정보 목록 */}
@@ -160,7 +164,7 @@ const E = {
   StoreInfoSection: styled.View({
     flexDirection: "column",
     gap: 4,
-    width: 125,
+    width: 140,
   }),
 
   StoreNameText: styled.Text({

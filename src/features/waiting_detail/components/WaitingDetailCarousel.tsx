@@ -5,7 +5,7 @@ import {
   ScrollView,
 } from "react-native";
 import { MyWaitingCard } from "./MyWaitingCard";
-import { WaitingDetailItem } from "../model/WaitingDetailModel";
+import { WaitingDetailItem } from "../model/WaitingDetailApi";
 import styled from "@emotion/native";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -15,6 +15,8 @@ interface WaitingDetailCarouselProps {
   cardWidth: number;
   cardGap: number;
   snapInterval: number;
+  initialIndex: number;
+  scrollEnabled?: boolean;
   scrollX: Animated.Value;
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   onScrollEnd: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -28,6 +30,8 @@ export const WaitingDetailCarousel = ({
   cardWidth,
   cardGap,
   snapInterval,
+  initialIndex,
+  scrollEnabled = true,
   scrollX,
   onScroll,
   onScrollEnd,
@@ -44,6 +48,8 @@ export const WaitingDetailCarousel = ({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={contentStyle}
       snapToInterval={snapInterval}
+      contentOffset={{ x: initialIndex * snapInterval, y: 0 }}
+      scrollEnabled={scrollEnabled}
       decelerationRate="fast"
       disableIntervalMomentum
       onScroll={Animated.event(
@@ -72,7 +78,7 @@ export const WaitingDetailCarousel = ({
 
         return (
           <E.WaitingCardItem
-            key={waitingDetail.card.reservationId}
+            key={`${waitingDetail.card.publicCode}-${waitingDetail.card.waitingNumber}-${waitingDetail.card.registeredAt}`}
             style={{ width: cardWidth }}
           >
             {/* 포커스 카드 강조를 위한 tilt/translate 애니메이션 */}
