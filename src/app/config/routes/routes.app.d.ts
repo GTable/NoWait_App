@@ -10,6 +10,7 @@ import EnterPersonScreen from "@/screens/waiting_register/EnterPersonScreen";
 import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScreen";
 import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
 import AlertScreen from "@/screens/alert/AlertScreen";
+import WaitingDetailScreen from "@/screens/wating_detail/WaitingDetailScreen";
 
 declare module "./routes.core" {
   interface AppRouteMap {
@@ -25,5 +26,6 @@ declare module "./routes.core" {
     enterPerson: ReturnType<typeof EnterPersonScreen.useParams>;
     confirmWaiting: ReturnType<typeof ConfirmWaitingScreen.useParams>;
     waitingSuccess: ReturnType<typeof WaitingSuccessScreen.useParams>;
+    waitingDetail: ReturnType<typeof WaitingDetailScreen.useParams>;
   }
 }

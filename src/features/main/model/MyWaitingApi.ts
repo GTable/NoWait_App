@@ -1,9 +1,12 @@
-import { usersApi } from "@/shared/api/usersApi";
 import { z } from "zod";
+import { usersApiTest } from "@/shared/api/usersApiTest";
+import { formatDateTime } from "@/shared/utils/formatDateTime";
+import { formatWaitingNumber } from "@/shared/utils/formatWaitingNumber";
 
 const MyWaitingItemSchema = z.object({
   reservationId: z.string(),
   storeId: z.number(),
+  publicCode: z.string(),
   storeName: z.string(),
   departmentName: z.string(),
   rank: z.number(),
@@ -13,7 +16,7 @@ const MyWaitingItemSchema = z.object({
   registeredAt: z.string(),
   location: z.string(),
   profileImageUrl: z.string(),
-  bannerImageUrl: z.array(z.string()),
+  bannerImageUrl: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
 const MyWaitingResponseSchema = z.object({
@@ -22,8 +25,14 @@ const MyWaitingResponseSchema = z.object({
 });
 
 export interface MyWaiting {
+  waitingNumber: string;
+  publicCode: string;
   storeName: string;
+  departmentName: string;
   teamsAhead: number;
+  partySize: number;
+  registeredAt: string;
+  location: string;
   profileImageUrl: string;
 }
 
@@ -33,12 +42,18 @@ export interface MyWaiting {
  */
 export const getMyWaitings = async (): Promise<MyWaiting[]> => {
   try {
-    const raw = await usersApi.get("/waitings");
+    const raw = await usersApiTest.get("/waitings");
     const validated = MyWaitingResponseSchema.parse(raw);
 
     return validated.response.map((item) => ({
+      waitingNumber: formatWaitingNumber(item.reservationId),
+      publicCode: item.publicCode,
       storeName: item.storeName,
+      departmentName: item.departmentName,
       teamsAhead: item.teamsAhead,
+      partySize: item.partySize,
+      registeredAt: formatDateTime(item.registeredAt),
+      location: item.location,
       profileImageUrl: item.profileImageUrl,
     }));
   } catch {
