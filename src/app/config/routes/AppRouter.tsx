@@ -18,6 +18,7 @@ import ConfirmWaitingScreen from "@/screens/waiting_register/ConfirmWaitingScree
 import WaitingSuccessScreen from "@/screens/waiting_register/WaitingSuccessScreen";
 import { ModalProvider } from "@/shared/contexts/ModalContext";
 import AlertScreen from "@/screens/alert/AlertScreen";
+import WaitingDetailScreen from "@/screens/wating_detail/WaitingDetailScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -109,6 +110,12 @@ export function AppRouter() {
           <Stack.Screen
             name="WaitingSuccess"
             component={WaitingSuccessScreen}
+            options={{ headerShown: false }}
+          />
+          {/* 내 예약 상세 화면 */}
+          <Stack.Screen
+            name="WaitingDetail"
+            component={WaitingDetailScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

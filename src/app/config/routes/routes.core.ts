@@ -5,6 +5,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import z, { ZodType } from "zod";
+import { WaitingDetailRouteParams } from "./routes.types";
 
 /**
  * 앱 전체 라우트 타입 맵
@@ -15,8 +16,6 @@ export interface AppRouteMap extends ParamListBase {}
 // 헬퍼 타입
 export type RouteName = keyof AppRouteMap;
 export type RouteParams<T extends RouteName> = AppRouteMap[T];
-
-type AnyRoute = RouteProp<Record<string, object | undefined>, string>;
 
 /**
  * 앱 전체 라우트 타입 맵
@@ -30,7 +29,7 @@ export function createRoute<
 
   function useParams(): Params {
     const route = useRoute<RouteProp<AppRouteMap, Name>>();
-    return options.params.parse(route.params) as Params;
+    return options.params.parse(route.params);
   }
 
   return {
@@ -61,6 +60,7 @@ export type RootStackParamList = {
   Tabs: NavigatorScreenParams<BottomTabParamList>;
   StoreDetail: { publicCode: string };
   NoticeDetail: { noticeTitle: string; noticeContent: string };
+  WaitingDetail: WaitingDetailRouteParams;
   Alert: AppRouteMap["Alert"];
   Login: AppRouteMap["Login"];
   Search: AppRouteMap["Search"];
